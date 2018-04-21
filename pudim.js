@@ -72,20 +72,21 @@ class Player {
 	}
 
 	draw(){
-		let dx = this.velocity.x-this.velocity1.x;
-		let dy = this.velocity.y-this.velocity1.y;
-		let shearCoef = -this.size;
+		const dx = this.velocity.x-this.velocity1.x;
+		const dy = this.velocity.y-this.velocity1.y;
+		const shearCoef = -this.size;
+		const strechCoef = this.size/16;
 
+		let shearTop, shearBot, shearLeft, shearRight;
 		if((this.touchingTop || this.touchingBot) && (this.touchingLeft || this.touchingRight)){
-			shearCoef = 0;
+			shearTop = shearBot = shearLeft = shearRight = 0;
+		} else {
+			shearTop = this.touchingBot*shearCoef*dx;
+			shearBot = this.touchingTop*shearCoef*dx;
+			shearLeft = this.touchingRight*shearCoef*dy;
+			shearRight = this.touchingLeft*shearCoef*dy;
 		}
 
-		let shearTop = this.touchingBot*shearCoef*dx;
-		let shearBot = this.touchingTop*shearCoef*dx;
-		let shearLeft = this.touchingRight*shearCoef*dy;
-		let shearRight = this.touchingLeft*shearCoef*dy;
-
-		const strechCoef = this.size/16;
 		let pushTop = this.down*strechCoef;
 		let pushBot = -this.up*strechCoef;
 		let pushLeft = this.right*strechCoef;
@@ -95,6 +96,7 @@ class Player {
 		let botleft = new Vector(this.position.x + shearBot + pushLeft, this.position.y + this.size + shearLeft + pushBot);
 		let botright = new Vector(this.position.x + this.size + shearBot + pushRight, this.position.y + this.size + shearRight + pushBot);
 		let topright = new Vector(this.position.x + this.size + shearTop + pushRight, this.position.y + shearRight + pushTop);
+		
 		context.beginPath();
 		context.moveTo(topleft.x, topleft.y);
 		context.lineTo(botleft.x, botleft.y);
@@ -134,10 +136,11 @@ class Player {
 	}
 }
 
-let player = new Player ;
+const player = new Player ;
 
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext("2d");
+const bodyEl = document.querySelector('body');
 
 function clear() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
@@ -168,11 +171,11 @@ function handleKeyUp(e){
 	handleKey(e.keyCode, false);
 }
 
-function draw(){
+function update(){
 	player.move();
 	clear();
 	player.draw();
-	window.requestAnimationFrame(draw);
+	window.requestAnimationFrame(update);
 }
 
 function resize() {
@@ -187,4 +190,10 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight	;
 window.addEventListener('keydown',handleKeyDown,true);
 window.addEventListener('keyup',handleKeyUp,true);
-window.requestAnimationFrame(draw);
+window.requestAnimationFrame(update);
+
+function clickTeste(e){
+	console.log(document.elementsFromPoint(e.clientX, e.clientY));
+}
+
+bodyEl.addEventListener('click', clickTeste);
