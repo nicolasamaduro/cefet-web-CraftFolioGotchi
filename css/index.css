@@ -1,0 +1,16 @@
+body {
+    
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#login {
+    display: flex;
+    width: 400px;
+}
