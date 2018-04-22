@@ -96,7 +96,7 @@ class Player {
 		let botleft = new Vector(this.position.x + shearBot + pushLeft, this.position.y + this.size + shearLeft + pushBot);
 		let botright = new Vector(this.position.x + this.size + shearBot + pushRight, this.position.y + this.size + shearRight + pushBot);
 		let topright = new Vector(this.position.x + this.size + shearTop + pushRight, this.position.y + shearRight + pushTop);
-		
+
 		context.beginPath();
 		context.moveTo(topleft.x, topleft.y);
 		context.lineTo(botleft.x, botleft.y);
@@ -140,7 +140,6 @@ const player = new Player ;
 
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext("2d");
-const bodyEl = document.querySelector('body');
 
 function clear() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
@@ -183,17 +182,16 @@ function resize() {
     canvas.height = window.innerHeight;
 };
 
-window.addEventListener('resize', resize, false);
+const NO_GAME = true;
 
+if(NO_GAME){
+	canvas.remove();
+} else {
+	window.addEventListener('resize', resize, false);
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight	;
-window.addEventListener('keydown',handleKeyDown,true);
-window.addEventListener('keyup',handleKeyUp,true);
-window.requestAnimationFrame(update);
-
-function clickTeste(e){
-	console.log(document.elementsFromPoint(e.clientX, e.clientY));
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight	;
+	window.addEventListener('keydown',handleKeyDown,true);
+	window.addEventListener('keyup',handleKeyUp,true);
+	window.requestAnimationFrame(update);
 }
-
-bodyEl.addEventListener('click', clickTeste);
