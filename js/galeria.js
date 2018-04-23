@@ -2,39 +2,48 @@
 
 const galeriaEl = document.querySelector('#galeria');
 //vai vir do backend
-const filelist = ['images/adamjensen.jpg','images/adamjensen2.jpg','images/jcdenton.png','images/k.jpg','images/neuromancer.jpg','images/replicant.jpg'];
-for(let f of filelist){
-  const img = document.createElement('img');
-  img.src = f;
-  img.classList.add('conteudo');
-  img.classList.add('hidden');
-  img.addEventListener('click', activateGalery);
-  galeriaEl.appendChild(img);
+const fileList = ['images/adamjensen.jpg','images/adamjensen2.jpg','images/jcdenton.png','images/k.jpg','images/neuromancer.jpg','images/replicant.jpg'];
+
+function generateImgElement(parent, srcList, classList, addClickEvent){
+  for(let s of srcList){
+    const img = document.createElement('img');
+    img.src = s;
+    for(let c of classList){
+      img.classList.add(c);
+    }
+    if(addClickEvent){
+      img.addEventListener('click', activateGalery);
+    }
+    parent.appendChild(img);
+  }
 }
+
+generateImgElement(galeriaEl, fileList, ['conteudo', 'hidden'], true);
 galeriaEl.firstElementChild.classList.remove('hidden');
 
 function activateGalery(e){
-  if(!this.galeriaJs){
+  if(!this.galeriaDiv){
     const galeriaJs = document.createElement('script');
     const galeriaCss = document.createElement('link');
+    const titulo = document.createElement('h1')
+    const voltarBtn = document.createElement('span');
+    const galeriaDiv = document.createElement('div');
     galeriaJs.src = 'js/masonry.pkgd.min.js';
     galeriaCss.rel='stylesheet';
     galeriaCss.href='css/galeria.css';
-    this.galeriaJs = galeriaJs;
-    this.galeriaCss = galeriaCss;
-  }
-  fetch('galeria.html')
-    .then(response => response.text())
-    .then(text => {
-      desabilitaPrincipal();
+    titulo.innerHTML = 'Galeria';
+    voltarBtn.id='voltar-principal';
 
-      const galery = document.createElement('div');
-      galery.innerHTML=text;
-      galery.appendChild(this.galeriaJs);
-      galery.appendChild(this.galeriaCss);
-      bodyEl.prepend(galery);
-      const botaoVoltar = document.querySelector('#voltar-principal');
-      botaoVoltar.addEventListener('click', habilitaPrincipal);
-      this.cached = true;
-    })
+    generateImgElement(galeriaDiv, fileList, ['grid-item'], true);
+    galeriaDiv.dataset.masonry='{ "itemSelector": ".grid-item", "columnWidth": 50, "gutter": 10}'
+    galeriaDiv.appendChild(galeriaJs);
+    galeriaDiv.appendChild(galeriaCss);
+    galeriaDiv.appendChild(voltarBtn);
+    this.galeriaDiv = galeriaDiv;
+  }
+
+  desabilitaPrincipal();
+  bodyEl.prepend(this.galeriaDiv);
+  const botaoVoltar = document.querySelector('#voltar-principal');
+  botaoVoltar.addEventListener('click', habilitaPrincipal);
 }

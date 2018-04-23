@@ -140,7 +140,7 @@ const player = new Player ;
 
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext("2d");
-
+galeria.html
 function clear() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 }
