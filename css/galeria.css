@@ -1,0 +1,29 @@
+.grid-item {
+  margin-bottom: 10px;
+}
+
+img {
+  max-width: 700px;
+}
+
+#voltar-principal {
+  background-color: white;
+  border-radius: 20%;
+  border: 2px solid silver;
+  font-size: 35px;
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  text-align: center;
+  text-decoration: none;
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  outline: 0;
+  z-index: 2;
+}
+
+#voltar-principal::before {
+  content: "←";
+  display: inline;
+}
