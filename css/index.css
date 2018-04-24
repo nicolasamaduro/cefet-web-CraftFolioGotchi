@@ -1,7 +1,6 @@
-body {
-    
+.campo-index{
+    width:100%;
 }
-
 main {
     display: flex;
     align-items: center;
@@ -10,7 +9,7 @@ main {
     margin: 0;
 }
 
-#login {
+md-card {
     display: flex;
     width: 400px;
 }
