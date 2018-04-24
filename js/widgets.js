@@ -41,14 +41,14 @@ function changeWidget(e){
 function getSentinelWidget(){
   if(!this.widget){
     const widget = document.createElement('div');
-    const h2 = document.createElement('h2');
+    //const h2 = document.createElement('h2');
     const plus = document.createElement('div');
     widget.classList.add('conteudo');
     widget.classList.add('sentinela');
     widget.classList.add('hidden');
-    h2.textContent = "Adicionar";
+    //h2.textContent = "Adicionar";
     plus.classList.add('circle');
-    widget.appendChild(h2);
+    //widget.appendChild(h2);
     widget.appendChild(plus);
     this.widget = widget;
   }

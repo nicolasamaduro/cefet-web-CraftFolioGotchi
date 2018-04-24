@@ -5,3 +5,6 @@ craftFolioGotchiApp.config(function($mdThemingProvider) {
     .primaryPalette('green')
     .accentPalette('red');
 });
+craftFolioGotchiApp.config(function($mdIconProvider) {
+    $mdIconProvider.fontSet('md', 'material-icons');
+  });

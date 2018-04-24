@@ -27,7 +27,8 @@ canvas {
   align-items: center;
   width: 32%;
   height: 75%;
-  background-color: rgb(255,187,128);
+  z-index: 0;
+ /* background-color: rgb(255,187,128);*/
 }
 
 .lista-conteudo {
@@ -45,7 +46,7 @@ canvas {
 
 .widget > .nextprev {
     width: 80%;
-    margin: 0 auto;
+    margin: 16px auto;
     height: 30px;
     background-color: rgba(0,0,0,0.5);
 }
@@ -72,6 +73,7 @@ canvas {
   height: 0;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
+  
 
   border-bottom: 20px solid rgba(255,255,255,0.8);
   margin: 5px auto 5px auto;
@@ -89,7 +91,20 @@ canvas {
   pointer-events: none;
 }
 
+.campo-texto{
+  margin: 0px;
+  padding: 0px;
+  width: 48%;
+}
+
+#texto{
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
 .circle {
+  margin: 16px;
   border-radius: 50%;
   width: 120px;
   height: 120px;

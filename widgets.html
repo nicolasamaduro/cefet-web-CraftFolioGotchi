@@ -11,30 +11,64 @@
   <script src="./node_modules/angular-material/angular-material.min.js"></script>  
   <script src="./node_modules/angular-messages/angular-messages.js"></script>
   <script src="js/craftFolioGotchiApp.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body ng-app="craftFolioGotchiApp">
   <div class='widget-container'>
-    <div class='widget'>
+    <md-card class='widget md-padding'>
+      
+        <md-toolbar>
+            <div class="md-toolbar-tools" layout="row"  layout-align="center center" >        
+                <span class="md-headline">Galeria </span>
+            </div>            
+        </md-toolbar>
       <div class='nextprev prev'><div class="arrow-up"></div></div>
-      <h2>Galeria</h2>
+
       <div class='lista-conteudo' id='galeria'>
       </div>
       <div class='nextprev next'><div class="arrow-down"></div></div>
-    </div>
+    </md-card>
 
-    <div class='widget'>
+    <md-card class='widget md-padding' >
+        <md-toolbar >
+            <div class="md-toolbar-tools" layout="row"  layout-align="center center" >        
+                <span class="md-headline">Texto</span>
+            </div>            
+        </md-toolbar>
       <div class='nextprev prev'><div class="arrow-up"></div></div>
+      <form name="textoForm" novalidate>
+        <md-input-container class="campo-texto"> 
+            <label>Tamanho</label>
+            <input name="usuario" ng-model="textoCtrl.tamanho" ng-required="true">
+        </md-input-container>
+        <md-input-container  class="campo-texto">
+            <label>Bordas</label>
+            <input name="bordas" ng-model="textoCtrl.bordas" ng-required="true">
+        </md-input-container>                           
+        <md-input-container  class="campo-texto">
+            <input name="cor" ng-model="textoCtrl.cor" type="color" ng-required="true">
+        </md-input-container>
+        <md-input-container class="campo-texto">
+            <label>Fonte</label>
+            <input name="fonte" ng-model="textoCtrl.fonte" ng-required="true">
+        </md-input-container>
+        <md-input-container id="texto"> 
+            <label>Texto</label>
+            <input name="texto" ng-model="textoCtrl.tamanho" ng-required="true">
+        </md-input-container>
+      </form>
       <div class='lista-conteudo'>
-    </div>
-      <div class='nextprev next'><div class="arrow-down"></div></div>
-    </div>
 
-    <div class='widget'>
+      </div>
+      <div class='nextprev next'><div class="arrow-down"></div></div>
+    </md-card>
+
+    <md-card class='widget md-padding'>
       <div class='nextprev prev'><div class="arrow-up"></div></div>
       <div class='lista-conteudo'>
       </div>
       <div class='nextprev next'><div class="arrow-down"></div></div>
-    </div>
+    </md-card>
   </div>
   <canvas>
     This text is displayed if your browser does not support HTML5 Canvas.
