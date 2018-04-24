@@ -182,7 +182,7 @@ function resize() {
     canvas.height = window.innerHeight;
 };
 
-const NO_GAME = true;
+const NO_GAME = false;
 
 if(NO_GAME){
 	canvas.remove();

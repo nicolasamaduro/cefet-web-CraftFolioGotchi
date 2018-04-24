@@ -77,10 +77,12 @@ for(let w of widgetsEl){
 function desabilitaPrincipal(){
     mainCss.disabled = true;
     widgetContainerEl.remove();
+    canvas.remove();
 }
 
 function habilitaPrincipal(){
   mainCss.disabled = false;
   bodyEl.firstElementChild.remove();
   bodyEl.prepend(widgetContainerEl);
+  bodyEl.appendChild(canvas);
 }

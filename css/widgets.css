@@ -10,6 +10,7 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
+  pointer-events: none;
 }
 
 .widget-container{
@@ -90,9 +91,10 @@ canvas {
 }
 
 .circle {
+  margin: 0 auto;
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  width: 10vw;
+  height: 10vw;
   background-color: rgba(0,0,0,0.5);
   position: relative;
 }
