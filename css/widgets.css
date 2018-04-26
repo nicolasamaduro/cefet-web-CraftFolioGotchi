@@ -93,8 +93,8 @@ canvas {
 .circle {
   margin: 0 auto;
   border-radius: 50%;
-  width: 10vw;
-  height: 10vw;
+  width: 8vw;
+  height: 8vw;
   background-color: rgba(0,0,0,0.5);
   position: relative;
 }
@@ -121,6 +121,68 @@ canvas {
   top: 15%;
 }
 
-.hidden {
-  display: none;
+.switch_container {
+  position: absolute;
+  top: 2vh;
+  right:2vw;
+  display: flex;
+}
+
+.switch_container label:first-child {
+  display: inline-block;
+  margin: auto 2px auto 0;
+}
+
+.switch {
+  position: absolute;
+  visibility: hidden;
+}
+
+.switch + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.switch--shadow + label {
+  padding: 2px;
+  width: 40px;
+  height: 20px;
+  background-color: #dddddd;
+  border-radius: 20px;
+}
+
+.switch--shadow + label:before,
+.switch--shadow + label:after {
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  content: "";
+}
+.switch--shadow + label:before {
+  right: 1px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  transition: all 0.4s;
+}
+.switch--shadow + label:after {
+  width: 22px;
+  background-color: #fff;
+  border-radius: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s;
+}
+.switch--shadow:checked + label:before {
+  background-color: #bba064;
+}
+.switch--shadow:checked + label:after {
+  transform: translateX(20px);
+}
+
+.hidden{
+  display: none !important;
 }

@@ -43,6 +43,8 @@ function activateGalery(e){
   }
 
   desabilitaPrincipal();
+  url = window.location.href.match(/^.*\//)+'galeria.html';
+  history.pushState({at:'galeria'}, null, '?galeria');
   bodyEl.prepend(this.galeriaDiv);
   const botaoVoltar = document.querySelector('#voltar-principal');
   botaoVoltar.addEventListener('click', habilitaPrincipal);

@@ -3,7 +3,6 @@
 const headEl = document.querySelector('head');
 const bodyEl = document.querySelector('body');
 const widgetContainerEl = document.querySelector('.widget-container');
-const widgetsEl = document.querySelectorAll('.widget-container > .widget');
 
 const mainCss = document.querySelector('link[href="css/widgets.css"]');
 
@@ -38,46 +37,39 @@ function changeWidget(e){
   target.classList.remove('hidden');
 }
 
-function getSentinelWidget(){
-  if(!this.widget){
-    const widget = document.createElement('div');
-    const h2 = document.createElement('h2');
-    const plus = document.createElement('div');
-    widget.classList.add('conteudo');
-    widget.classList.add('sentinela');
-    widget.classList.add('hidden');
-    h2.textContent = "Adicionar";
-    plus.classList.add('circle');
-    widget.appendChild(h2);
-    widget.appendChild(plus);
-    this.widget = widget;
-  }
-  return this.widget.cloneNode(true);
-};
+function prepareWidgets(){
+  const widgetsEl = document.querySelectorAll('.widget-container > .widget');
+  const sentinel = document.createElement('div');
+  const plus = document.createElement('div');
+  sentinel.classList.add('conteudo');
+  sentinel.classList.add('sentinela');
+  sentinel.classList.add('hidden');
+  plus.classList.add('circle');
+  sentinel.appendChild(plus);
 
+  for(let w of widgetsEl){
+    const prevBtn = w.querySelector('.prev');
+    const nextBtn = w.querySelector('.next');
+    nextBtn.addEventListener('click', changeWidget);
+    prevBtn.addEventListener('click', changeWidget);
 
-for(let w of widgetsEl){
-  const prevBtn = w.querySelector('.prev');
-  const nextBtn = w.querySelector('.next');
-  nextBtn.addEventListener('click', changeWidget);
-  prevBtn.addEventListener('click', changeWidget);
+    const contentList = w.querySelector('.lista-conteudo');
 
-  const contentList = w.querySelector('.lista-conteudo');
+    contentList.prepend(sentinel.cloneNode(true));
+    contentList.appendChild(sentinel.cloneNode(true));
 
-  contentList.prepend(getSentinelWidget());
-  contentList.appendChild(getSentinelWidget());
-
-  if(contentList.childElementCount == 2){
-    contentList.firstElementChild.classList.remove('hidden');
-    prevBtn.classList.add('hidden');
-    nextBtn.classList.add('hidden');
+    if(contentList.childElementCount == 2){
+      contentList.firstElementChild.classList.remove('hidden');
+      prevBtn.classList.add('hidden');
+      nextBtn.classList.add('hidden');
+    }
   }
 }
 
 function desabilitaPrincipal(){
-    mainCss.disabled = true;
-    widgetContainerEl.remove();
-    canvas.remove();
+  mainCss.disabled = true;
+  widgetContainerEl.remove();
+  canvas.remove();
 }
 
 function habilitaPrincipal(){
@@ -86,3 +78,21 @@ function habilitaPrincipal(){
   bodyEl.prepend(widgetContainerEl);
   bodyEl.appendChild(canvas);
 }
+
+function handleHistory(e){
+  if(e.state){
+    let at = e.state.at;
+    if(at == 'galeria'){
+      console.log('load g');
+      activateGalery();
+    } else {
+      habilitaPrincipal();
+    }
+  } else {
+    habilitaPrincipal();
+  }
+}
+
+prepareWidgets();
+
+window.addEventListener('popstate', handleHistory);
