@@ -8,14 +8,16 @@ const galeriaEl = document.querySelector('#galeria');
 const switchContainerEl = document.querySelector('.switch_container');
 const chaoEl = document.querySelector('.chao');
 const canvas = document.querySelector('canvas');
+const modalEl = document.querySelector('#modal');
 
 const mainCss = document.querySelector('link[href="css/widgets.css"]');
 
-const removeList = [canvas, chaoEl, switchContainerEl, widgetContainerEl];
+const removeList = [modalEl, canvas, chaoEl, switchContainerEl, widgetContainerEl];
 
 const galeria = new Galeria(galeriaEl, bodyEl, mainCss, removeList);
 const fundo = new Fundo(widgetContainerEl, chaoEl);
 
+initGame(); 
 
 function habilitaPrincipal(){
   mainCss.disabled = false;

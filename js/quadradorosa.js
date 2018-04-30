@@ -136,14 +136,6 @@ class Player {
 	}
 }
 
-const player = new Player ;
-
-const context = canvas.getContext("2d");
-galeria.html
-function clear() {
-	context.clearRect(0, 0, canvas.width, canvas.height);
-}
-
 function handleKey(keyCode, setValue){
 	switch (keyCode) {
 		case 38:  //up
@@ -186,16 +178,23 @@ function resize() {
 	player.position.y = vScale*canvas.height-player.size/2;
 };
 
-const NO_GAME = false;
-
-if(NO_GAME){
-	canvas.remove();
-} else {
-	window.addEventListener('resize', resize, false);
+function clear() {
+	context.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 
-	resize();
-	window.addEventListener('keydown',handleKeyDown,true);
-	window.addEventListener('keyup',handleKeyUp,true);
-	window.requestAnimationFrame(update);
+const player = new Player;
+let context;
+function initGame(){
+	context = canvas.getContext("2d");
+	const NO_GAME = false;
+	if(NO_GAME){
+		canvas.remove();
+	} else {
+		window.addEventListener('resize', resize, false);
+		resize();
+		window.addEventListener('keydown',handleKeyDown,true);
+		window.addEventListener('keyup',handleKeyUp,true);
+		window.requestAnimationFrame(update);
+	}
 }
