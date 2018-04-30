@@ -3,13 +3,22 @@
 const headEl = document.querySelector('head');
 const bodyEl = document.querySelector('body');
 const widgetContainerEl = document.querySelector('.widget-container');
+const widgetsEl = document.querySelectorAll('.widget-container > .widget');
+const galeriaEl = document.querySelector('#galeria');
+const chaoEl = document.querySelector('.chao');
 
 const mainCss = document.querySelector('link[href="css/widgets.css"]');
 
+const historyHandler = new HistoryHandler(mainCss, widgetContainerEl, canvas, bodyEl);
+const galeria = new Galeria(galeriaEl, historyHandler);
+const fundo = new Fundo(widgetContainerEl, chaoEl);
+
+window.addEventListener('popstate', historyHandler.handleEvent);
+
 function changeWidget(e){
   const widgetEl = e.target.parentElement;
-  const prevBtn = widgetEl.querySelector('.prev');
-  const nextBtn = widgetEl.querySelector('.next');
+  const prevBtn = widgetEl.firstElementChild;
+  const nextBtn = widgetEl.lastElementChild;
   const isPrev = e.target == prevBtn;
   const contentList = widgetEl.querySelector('.lista-conteudo');
   const currentActive = contentList.querySelector('.conteudo:not(.hidden)');
@@ -44,33 +53,31 @@ function pudim(e){
 }
 
 function prepareWidgets(){
-  const widgetsEl = document.querySelectorAll('.widget-container > .widget');
-  const sentinel = document.createElement('div');
-  const input = document.createElement('input')
-  const plus = document.createElement('div');
-  input.type = 'file';
-  input.classList.add('hidden');
-  plus.classList.add('circle');
-  sentinel.classList.add('conteudo');
-  sentinel.classList.add('sentinela');
-  sentinel.classList.add('hidden');
-  sentinel.appendChild(plus);
-  sentinel.appendChild(input);
+  function makeSentinel(){
+    const sentinel = document.createElement('div');
+    const input = document.createElement('input')
+    const plus = document.createElement('div');
+    input.type = 'file';
+    input.classList.add('hidden');
+    plus.classList.add('circle');
+    plus.addEventListener('click', pudim);
+    sentinel.classList.add('conteudo');
+    sentinel.classList.add('sentinela');
+    sentinel.classList.add('hidden');
+    sentinel.appendChild(plus);
+    sentinel.appendChild(input);
+    return sentinel;
+  }
 
   for(let w of widgetsEl){
-    const prevBtn = w.querySelector('.prev');
-    const nextBtn = w.querySelector('.next');
+    const prevBtn = w.firstElementChild;
+    const contentList = prevBtn.nextElementSibling;
+    const nextBtn = w.lastElementChild;
+
     nextBtn.addEventListener('click', changeWidget);
     prevBtn.addEventListener('click', changeWidget);
-
-    const contentList = w.querySelector('.lista-conteudo');
-
-    const s1 = sentinel.cloneNode(true);
-    const s2 = sentinel.cloneNode(true);
-    s1.firstElementChild.addEventListener('click', pudim);
-    s2.firstElementChild.addEventListener('click', pudim);
-    contentList.prepend(s1);
-    contentList.appendChild(s2);
+    contentList.prepend(makeSentinel());
+    contentList.appendChild(makeSentinel());
 
     if(contentList.childElementCount == 2){
       contentList.firstElementChild.classList.remove('hidden');
@@ -80,33 +87,4 @@ function prepareWidgets(){
   }
 }
 
-function desabilitaPrincipal(){
-  mainCss.disabled = true;
-  widgetContainerEl.remove();
-  canvas.remove();
-}
-
-function habilitaPrincipal(){
-  mainCss.disabled = false;
-  bodyEl.firstElementChild.remove();
-  bodyEl.prepend(widgetContainerEl);
-  bodyEl.appendChild(canvas);
-}
-
-function handleHistory(e){
-  if(e.state){
-    let at = e.state.at;
-    if(at == 'galeria'){
-      console.log('load g');
-      activateGalery();
-    } else {
-      habilitaPrincipal();
-    }
-  } else {
-    habilitaPrincipal();
-  }
-}
-
 prepareWidgets();
-
-window.addEventListener('popstate', handleHistory);
