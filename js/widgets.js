@@ -37,15 +37,25 @@ function changeWidget(e){
   target.classList.remove('hidden');
 }
 
+function pudim(e){
+  console.log(e.target.nextElementSibling);
+  const input = e.target.nextElementSibling;
+  input.click();
+}
+
 function prepareWidgets(){
   const widgetsEl = document.querySelectorAll('.widget-container > .widget');
   const sentinel = document.createElement('div');
+  const input = document.createElement('input')
   const plus = document.createElement('div');
+  input.type = 'file';
+  input.classList.add('hidden');
+  plus.classList.add('circle');
   sentinel.classList.add('conteudo');
   sentinel.classList.add('sentinela');
   sentinel.classList.add('hidden');
-  plus.classList.add('circle');
   sentinel.appendChild(plus);
+  sentinel.appendChild(input);
 
   for(let w of widgetsEl){
     const prevBtn = w.querySelector('.prev');
@@ -55,8 +65,12 @@ function prepareWidgets(){
 
     const contentList = w.querySelector('.lista-conteudo');
 
-    contentList.prepend(sentinel.cloneNode(true));
-    contentList.appendChild(sentinel.cloneNode(true));
+    const s1 = sentinel.cloneNode(true);
+    const s2 = sentinel.cloneNode(true);
+    s1.firstElementChild.addEventListener('click', pudim);
+    s2.firstElementChild.addEventListener('click', pudim);
+    contentList.prepend(s1);
+    contentList.appendChild(s2);
 
     if(contentList.childElementCount == 2){
       contentList.firstElementChild.classList.remove('hidden');
