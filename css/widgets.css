@@ -75,6 +75,10 @@ canvas {
   margin: auto 0;
 }
 
+.conteudo > .user-markdown {
+  pointer-events: none;
+}
+
 .chao {
   box-sizing: border-box;
   width: 100%;
