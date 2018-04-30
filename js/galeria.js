@@ -6,15 +6,17 @@ const fileList = ['images/adamjensen.jpg','images/adamjensen2.jpg','images/jcden
 
 function generateImgElement(parent, srcList, classList, addClickEvent){
   for(let s of srcList){
+    const conteudo = document.createElement('div');
     const img = document.createElement('img');
     img.src = s;
     for(let c of classList){
-      img.classList.add(c);
+      conteudo.classList.add(c);
     }
     if(addClickEvent){
-      img.addEventListener('click', activateGalery);
+      conteudo.addEventListener('click', activateGalery);
     }
-    parent.appendChild(img);
+    conteudo.appendChild(img);
+    parent.appendChild(conteudo);
   }
 }
 
