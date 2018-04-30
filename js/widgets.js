@@ -1,19 +1,29 @@
 "strict mode"
 
-const headEl = document.querySelector('head');
 const bodyEl = document.querySelector('body');
+const headEl = document.querySelector('head');
 const widgetContainerEl = document.querySelector('.widget-container');
 const widgetsEl = document.querySelectorAll('.widget-container > .widget');
 const galeriaEl = document.querySelector('#galeria');
+const switchContainerEl = document.querySelector('.switch_container');
 const chaoEl = document.querySelector('.chao');
+const canvas = document.querySelector('canvas');
 
 const mainCss = document.querySelector('link[href="css/widgets.css"]');
 
-const historyHandler = new HistoryHandler(mainCss, widgetContainerEl, canvas, bodyEl);
-const galeria = new Galeria(galeriaEl, historyHandler);
+const removeList = [canvas, chaoEl, switchContainerEl, widgetContainerEl];
+
+const galeria = new Galeria(galeriaEl, bodyEl, mainCss, removeList);
 const fundo = new Fundo(widgetContainerEl, chaoEl);
 
-window.addEventListener('popstate', historyHandler.handleEvent);
+
+function habilitaPrincipal(){
+  mainCss.disabled = false;
+  bodyEl.firstElementChild.remove();
+  for (r of removeList){
+    bodyEl.prepend(r);
+  }
+}
 
 function changeWidget(e){
   const widgetEl = e.target.parentElement;

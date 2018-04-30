@@ -1,9 +1,11 @@
 "strict mode"
 
 class Galeria{
-  constructor(galeriaEL, historyHandler){
+  constructor(galeriaEL, bodyEl, mainCss, removeList){
     this.galeriaEL = galeriaEL;
-    this.historyHandler = historyHandler;
+    this.bodyEl = bodyEl;
+    this.mainCss = mainCss;
+    this.removeList = removeList;
     this.fileList = ['images/adamjensen.jpg','images/adamjensen2.jpg','images/jcdenton.png','images/k.jpg','images/neuromancer.jpg','images/replicant.jpg'];
     this.fillWidget();
     this.fillGallery();
@@ -49,10 +51,12 @@ class Galeria{
   }
 
   activateGalery(e){
-    historyHandler.desabilitaPrincipal();
-    history.pushState({at:'galeria'}, null, '?galeria');
+    this.mainCss.disabled = true;
+    for(let r of this.removeList){
+      r.remove();
+    }
     bodyEl.prepend(this.galeriaDiv);
     const botaoVoltar = document.querySelector('#voltar-principal');
-    botaoVoltar.addEventListener('click', (e) =>  this.historyHandler.habilitaPrincipal(e));
+    botaoVoltar.addEventListener('click', (e) =>  habilitaPrincipal(e));
   }
 }

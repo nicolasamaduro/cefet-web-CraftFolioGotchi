@@ -138,7 +138,6 @@ class Player {
 
 const player = new Player ;
 
-const canvas = document.querySelector('canvas');
 const context = canvas.getContext("2d");
 galeria.html
 function clear() {
