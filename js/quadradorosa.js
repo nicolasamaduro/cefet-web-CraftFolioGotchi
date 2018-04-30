@@ -178,8 +178,10 @@ function update(){
 }
 
 function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+	const widgetContainerEl = document.querySelector('.widget-container');
+  canvas.width = widgetContainerEl.clientWidth;
+  canvas.height = widgetContainerEl.clientHeight;
+	console.log(canvas.height);
 };
 
 const NO_GAME = false;
@@ -189,8 +191,7 @@ if(NO_GAME){
 } else {
 	window.addEventListener('resize', resize, false);
 
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight	;
+	resize();
 	window.addEventListener('keydown',handleKeyDown,true);
 	window.addEventListener('keyup',handleKeyUp,true);
 	window.requestAnimationFrame(update);

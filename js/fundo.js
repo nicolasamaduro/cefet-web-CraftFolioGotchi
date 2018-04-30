@@ -8,13 +8,31 @@ const gradientInputEl2 = document.querySelector('[data-formname=gradient] input:
 const imageInputEl = document.querySelector('[data-formname=image] input');
 const applyButtonEl = document.querySelector('#modal button');
 
-let activeTab;
+const chaoEl = document.querySelector('.chao');
 
-widgetContainerEl.addEventListener('click', function(e){
+let activeTab;
+let editTarget;
+
+editSwitchEl.checked=false;
+editSwitchEl.addEventListener('click', (e) => {
+  if(e.target.checked){
+    widgetContainerEl.style.border=('3px dashed #00bfff');
+    chaoEl.style.border=('2px dashed #ffffff');
+  } else {
+    widgetContainerEl.style.border=null;
+    chaoEl.style.border=null;
+  }
+});
+
+function activeModal(e){
   if(e.eventPhase == Event.AT_TARGET && editSwitchEl.checked){
     modalEl.classList.add('active');
+    editTarget = e.target;
   }
-})
+}
+
+widgetContainerEl.addEventListener('click', activeModal);
+chaoEl.addEventListener('click', activeModal);
 
 modalEl.addEventListener('click', function(e){
   if(e.eventPhase == Event.AT_TARGET){
@@ -22,10 +40,9 @@ modalEl.addEventListener('click', function(e){
   }
 })
 
-
 function applyBgColor(e){
-  bodyEl.style.backgroundImage=null;
-  bodyEl.style.backgroundColor=e.target.value;
+  editTarget.style.backgroundImage=null;
+  editTarget.style.backgroundColor=e.target.value;
 }
 
 function applyBgGradient(e){
@@ -37,12 +54,12 @@ function applyBgGradient(e){
     in1=e.target;
     in2=e.target.nextElementSibling;
   }
-  bodyEl.style.backgroundImage=`linear-gradient(${in1.value},${in2.value})`;
+  editTarget.style.backgroundImage=`linear-gradient(${in1.value},${in2.value})`;
 }
 
 function applyBgImage(e){
-  bodyEl.style.backgroundImage=`url(${e.target.value})`;
-  bodyEl.style.backgroundSize='cover';
+  editTarget.style.backgroundImage=`url(${e.target.value})`;
+  editTarget.style.backgroundSize='cover';
 }
 
 function activateTab(e){
