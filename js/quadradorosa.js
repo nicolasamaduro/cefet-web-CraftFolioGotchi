@@ -179,9 +179,12 @@ function update(){
 
 function resize() {
 	const widgetContainerEl = document.querySelector('.widget-container');
+	let wScale = (player.position.x+player.size/2)/canvas.width;
+	let vScale = (player.position.y+player.size/2)/canvas.height;
   canvas.width = widgetContainerEl.clientWidth;
   canvas.height = widgetContainerEl.clientHeight;
-	console.log(canvas.height);
+	player.position.x = wScale*canvas.width-player.size/2;
+	player.position.y = vScale*canvas.height-player.size/2;
 };
 
 const NO_GAME = false;
@@ -191,7 +194,10 @@ if(NO_GAME){
 } else {
 	window.addEventListener('resize', resize, false);
 
-	resize();
+
+	const widgetContainerEl = document.querySelector('.widget-container');
+  canvas.width = widgetContainerEl.clientWidth;
+  canvas.height = widgetContainerEl.clientHeight;
 	window.addEventListener('keydown',handleKeyDown,true);
 	window.addEventListener('keyup',handleKeyUp,true);
 	window.requestAnimationFrame(update);
