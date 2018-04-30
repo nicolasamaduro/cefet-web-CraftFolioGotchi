@@ -195,9 +195,7 @@ if(NO_GAME){
 	window.addEventListener('resize', resize, false);
 
 
-	const widgetContainerEl = document.querySelector('.widget-container');
-  canvas.width = widgetContainerEl.clientWidth;
-  canvas.height = widgetContainerEl.clientHeight;
+	resize();
 	window.addEventListener('keydown',handleKeyDown,true);
 	window.addEventListener('keyup',handleKeyUp,true);
 	window.requestAnimationFrame(update);
