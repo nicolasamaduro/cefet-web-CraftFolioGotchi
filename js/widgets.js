@@ -60,26 +60,15 @@ function changeWidget(e){
   target.classList.remove('hidden');
 }
 
-function pudim(e){
-  console.log(e.target.nextElementSibling);
-  const input = e.target.nextElementSibling;
-  input.click();
-}
-
 function prepareWidgets(){
   function makeSentinel(){
     const sentinel = document.createElement('div');
-    const input = document.createElement('input')
     const plus = document.createElement('div');
-    input.type = 'file';
-    input.classList.add('hidden');
     plus.classList.add('circle');
-    plus.addEventListener('click', pudim);
     sentinel.classList.add('conteudo');
     sentinel.classList.add('sentinela');
     sentinel.classList.add('hidden');
     sentinel.appendChild(plus);
-    sentinel.appendChild(input);
     return sentinel;
   }
 
@@ -102,3 +91,4 @@ function prepareWidgets(){
 }
 
 prepareWidgets();
+notas.prepareSentinelNodes();

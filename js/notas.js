@@ -5,9 +5,9 @@ class Notas {
     this.persistence = persistence;
     this.notasEl = document.querySelector('#notas');
     this.converter = new showdown.Converter();
-    this.fileListNotas = ['notas/nota1.md', 'notas/nota2.md'];
+    this.fileListNotas = persistence.getNotes();
 
-    this.generateMdElement(this.notasEl, this.fileListNotas, ['conteudo', 'hidden']);
+    this.generateMdElements(this.notasEl, this.fileListNotas);
     this.notasEl.firstElementChild.classList.remove('hidden');
   }
 
@@ -26,36 +26,57 @@ class Notas {
     conteudo.classList.toggle('hidden');
   }
 
-  generateMdElement(parent, srcList, classList){
+  generateMdElement(){
+    const md = document.createElement('div');
+    const textArea = document.createElement('textarea');
+    const conteudo = document.createElement('div');
+    conteudo.classList.add('user-markdown');
+    textArea.classList.add('hidden');
+    textArea.style.width = '90%';
+    textArea.style.height = '90%';
+    md.appendChild(textArea);
+    md.appendChild(conteudo);
+    md.classList.add('conteudo');
+    md.classList.add('hidden');
+    md.addEventListener('dblclick', e => this.editMd(e));
+    return md;
+  }
+
+  generateMdElements(parent, srcList){
     function fillMd(md, text, converter){
       md.dataset.text = text;
       md.lastElementChild.innerHTML = converter.makeHtml(text);
     }
 
     for(let s of srcList){
-      const md = document.createElement('div');
-      const textArea = document.createElement('textarea');
-      const conteudo = document.createElement('div');
-      conteudo.classList.add('user-markdown');
-      textArea.classList.add('hidden');
-      textArea.style.width = '90%';
-      textArea.style.height = '90%';
+      const md = this.generateMdElement();
       md.dataset.url = s;
-      md.appendChild(textArea);
-      md.appendChild(conteudo);
-      if(localStorage[s] != undefined){
-        fillMd(md,localStorage[s],this.converter);
-      } else {
-        fetch(s)
-        .then((response) => {return response.text();})
-        .then((text) => fillMd(md, text, this.converter));
-      }
-      for(let c of classList){
-        md.classList.add(c);
-      }
-      md.addEventListener('dblclick', e => this.editMd(e));
+      persistence.fetchText(s, (text) => fillMd(md, text, this.converter));
 
       parent.appendChild(md);
     }
+  }
+
+  prepareSentinelNodes(){
+    const sentinelTop = this.notasEl.firstElementChild;
+    const sentinelBot = this.notasEl.lastElementChild;
+    const circleTop = sentinelTop.firstElementChild;
+    const circleBot = sentinelBot.firstElementChild;
+    circleTop.addEventListener('click', (e) => {
+      const md = this.generateMdElement();
+      md.dataset.url = persistence.addNote(false);
+      this.editMd({target:md});
+      this.notasEl.insertBefore(md, this.notasEl.firstElementChild.nextElementSibling);
+      this.notasEl.nextElementSibling.dispatchEvent(new Event('click'));
+      md.firstElementChild.value = '';
+    });
+    circleBot.addEventListener('click', (e) => {
+      const md = this.generateMdElement();
+      md.dataset.url = persistence.addNote(true);
+      this.editMd({target:md});
+      this.notasEl.insertBefore(md, this.notasEl.lastElementChild);
+      this.notasEl.previousElementSibling.dispatchEvent(new Event('click'));
+      md.firstElementChild.value = '';
+    })
   }
 }
