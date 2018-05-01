@@ -1,7 +1,8 @@
 "strict mode"
 
 class Notas {
-  constructor(){
+  constructor(persistence){
+    this.persistence = persistence;
     this.notasEl = document.querySelector('#notas');
     this.converter = new showdown.Converter();
     this.fileListNotas = ['notas/nota1.md', 'notas/nota2.md'];
@@ -19,6 +20,7 @@ class Notas {
     } else {
       md.dataset.text = textArea.value;
       conteudo.innerHTML = this.converter.makeHtml(md.dataset.text);
+      this.persistence.updateNote(md);
     }
     textArea.classList.toggle('hidden');
     conteudo.classList.toggle('hidden');
@@ -38,11 +40,16 @@ class Notas {
       textArea.classList.add('hidden');
       textArea.style.width = '90%';
       textArea.style.height = '90%';
+      md.dataset.url = s;
       md.appendChild(textArea);
       md.appendChild(conteudo);
-      fetch(s)
+      if(localStorage[s] != undefined){
+        fillMd(md,localStorage[s],this.converter);
+      } else {
+        fetch(s)
         .then((response) => {return response.text();})
         .then((text) => fillMd(md, text, this.converter));
+      }
       for(let c of classList){
         md.classList.add(c);
       }

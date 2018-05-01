@@ -14,8 +14,9 @@ const mainCss = document.querySelector('link[href="css/widgets.css"]');
 
 const removeList = [modalEl, canvas, chaoEl, switchContainerEl, widgetContainerEl];
 
+const persistence = new Persistence();
 const galeria = new Galeria(galeriaEl, bodyEl, mainCss, removeList);
-const notas = new Notas();
+const notas = new Notas(persistence);
 const fundo = new Fundo(widgetContainerEl, chaoEl);
 
 initGame();
