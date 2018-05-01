@@ -4,6 +4,29 @@ class Persistence{
   constructor(){
   }
 
+  getImages(){
+    if(!localStorage['images']){
+      localStorage['images'] = JSON.stringify([{id:0, url:'images/adamjensen.jpg'},{id:0, url:'images/adamjensen2.jpg'},{id:0, url:'images/jcdenton.png'},{id:0, url:'images/k.jpg'},{id:0, url:'images/neuromancer.jpg'},{id:0, url:'images/replicant.jpg'}]); //primeira execucao
+    }
+    const images = JSON.parse(localStorage['images']);
+    images.sort((a,b) => {return a.id - b.id});
+    return images.map(x => x.url);
+  }
+
+  addImage(url, addBack){
+    const images = JSON.parse(localStorage['images']);
+    let id;
+    if(addBack){
+      id = images[images.length-1].id+1;
+      images.push({id,url});
+    } else {
+      id = images[0].id-1;
+      images.unshift({id,url});
+    }
+    localStorage['images'] = JSON.stringify(images);
+  }
+
+
   fetchText(url, textFunc){
     if(localStorage[url] != undefined){
       textFunc(localStorage[url]);
