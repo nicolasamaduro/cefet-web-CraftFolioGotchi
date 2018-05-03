@@ -52,7 +52,7 @@ class Vector {
 
 class Player {
 	constructor(){
-		this.size = 24;
+		this.size = 40;
 
 		this.up = false;
 		this.down = false;
@@ -69,6 +69,18 @@ class Player {
 		this.touchingBot = false;
 		this.touchingLeft = false;
 		this.touchingRight = false;
+
+
+		this.frameIndex = 0;
+		this.tickCount = 0;
+		this.ticksPerFrame = 10;
+		this.numberOfSprite = 8;
+		this.goingRight = 0;
+		this.goingLeft = 4;
+		this.goingUp = 6;
+		this.goingDown = 2;
+		this.img = new Image();
+		this.img.src = "images/ghost.png";
 	}
 
 	draw(){
@@ -97,13 +109,43 @@ class Player {
 		let botright = new Vector(this.position.x + this.size + shearBot + pushRight, this.position.y + this.size + shearRight + pushBot);
 		let topright = new Vector(this.position.x + this.size + shearTop + pushRight, this.position.y + shearRight + pushTop);
 
-		context.beginPath();
-		context.moveTo(topleft.x, topleft.y);
-		context.lineTo(botleft.x, botleft.y);
-		context.lineTo(botright.x, botright.y);
-		context.lineTo(topright.x, topright.y);
-		context.fillStyle = "#ff00ce";
-		context.fill();
+		context.drawImage(
+			this.img,
+			this.frameIndex*this.img.width/this.numberOfSprite,
+			0,
+			this.img.width/this.numberOfSprite,
+			this.img.height,
+			topleft.x,
+			topleft.y,
+			this.img.width/this.numberOfSprite,
+			this.img.height);
+		
+
+		if(this.right){
+			this.frameIndex = this.goingRight;
+		}else{
+			if(this.left){
+				this.frameIndex = this.goingLeft;
+			}else{
+				if(this.up){
+					this.frameIndex = this.goingUp;
+				}else{
+					if(this.down){
+						this.frameIndex = this.goingDown;
+					}else{
+						this.tickCount++;
+						if(this.tickCount == this.ticksPerFrame-1){
+							if(this.frameIndex < this.numberOfSprite-1){
+								this.frameIndex++;
+							}else{
+								this.frameIndex = 0;
+							}
+							this.tickCount = 0;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	move(){
