@@ -52,7 +52,7 @@ class Vector {
 
 class Player {
 	constructor(){
-		this.size = 40;
+		this.size = 85;
 
 		this.up = false;
 		this.down = false;
@@ -63,13 +63,11 @@ class Player {
 		this.maxSpeed = 6;
 		this.acceleration = 0.3;
 		this.velocity = new Vector(0,0);
-		this.velocity1 = new Vector(0,0);
 		this.position = new Vector(10,10);
 		this.touchingTop = false;
 		this.touchingBot = false;
 		this.touchingLeft = false;
 		this.touchingRight = false;
-
 
 		this.frameIndex = 0;
 		this.tickCount = 0;
@@ -84,72 +82,39 @@ class Player {
 	}
 
 	draw(){
-		const dx = this.velocity.x-this.velocity1.x;
-		const dy = this.velocity.y-this.velocity1.y;
-		const shearCoef = -this.size;
-		const strechCoef = this.size/16;
-
-		let shearTop, shearBot, shearLeft, shearRight;
-		if((this.touchingTop || this.touchingBot) && (this.touchingLeft || this.touchingRight)){
-			shearTop = shearBot = shearLeft = shearRight = 0;
-		} else {
-			shearTop = this.touchingBot*shearCoef*dx;
-			shearBot = this.touchingTop*shearCoef*dx;
-			shearLeft = this.touchingRight*shearCoef*dy;
-			shearRight = this.touchingLeft*shearCoef*dy;
-		}
-
-		let pushTop = this.down*strechCoef;
-		let pushBot = -this.up*strechCoef;
-		let pushLeft = this.right*strechCoef;
-		let pushRight = -this.left*strechCoef;
-
-		let topleft = new Vector(this.position.x + shearTop + pushLeft, this.position.y + shearLeft + pushTop);
-		let botleft = new Vector(this.position.x + shearBot + pushLeft, this.position.y + this.size + shearLeft + pushBot);
-		let botright = new Vector(this.position.x + this.size + shearBot + pushRight, this.position.y + this.size + shearRight + pushBot);
-		let topright = new Vector(this.position.x + this.size + shearTop + pushRight, this.position.y + shearRight + pushTop);
-
 		context.drawImage(
 			this.img,
 			this.frameIndex*this.img.width/this.numberOfSprite,
 			0,
 			this.img.width/this.numberOfSprite,
 			this.img.height,
-			topleft.x,
-			topleft.y,
+			this.position.x,
+			this.position.y,
 			this.img.width/this.numberOfSprite,
 			this.img.height);
-		
 
 		if(this.right){
 			this.frameIndex = this.goingRight;
+		}else if(this.left){
+			this.frameIndex = this.goingLeft;
+		}else if(this.up){
+			this.frameIndex = this.goingUp;
+		}else if(this.down){
+			this.frameIndex = this.goingDown;
 		}else{
-			if(this.left){
-				this.frameIndex = this.goingLeft;
-			}else{
-				if(this.up){
-					this.frameIndex = this.goingUp;
+			this.tickCount++;
+			if(this.tickCount == this.ticksPerFrame-1){
+				if(this.frameIndex < this.numberOfSprite-1){
+					this.frameIndex++;
 				}else{
-					if(this.down){
-						this.frameIndex = this.goingDown;
-					}else{
-						this.tickCount++;
-						if(this.tickCount == this.ticksPerFrame-1){
-							if(this.frameIndex < this.numberOfSprite-1){
-								this.frameIndex++;
-							}else{
-								this.frameIndex = 0;
-							}
-							this.tickCount = 0;
-						}
-					}
+					this.frameIndex = 0;
 				}
+				this.tickCount = 0;
 			}
 		}
 	}
 
 	move(){
-		this.velocity1.copyFrom(this.velocity);
 		this.velocity.y += this.acceleration*(this.down - this.up);
 		this.velocity.x += this.acceleration*(this.right - this.left);
 		if(this.touchingTop || this.touchingBot || this.touchingLeft || this.touchingRight){
