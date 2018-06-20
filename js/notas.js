@@ -1,6 +1,6 @@
 "strict mode"
 
-class Notas {
+export default class Notas {
   constructor(persistence){
     this.persistence = persistence;
     this.notasEl = document.querySelector('#notas');

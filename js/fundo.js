@@ -1,6 +1,6 @@
 "strict mode"
 
-class Fundo{
+export default class Fundo{
   constructor(widgetContainerEl, chaoEL){
     this.widgetContainer = widgetContainerEl;
     this.chao = chaoEl;

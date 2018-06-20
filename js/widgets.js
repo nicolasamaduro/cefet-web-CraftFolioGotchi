@@ -1,5 +1,11 @@
 "strict mode"
 
+import Persistence from 'persistence.js'
+import Fundo from 'fundo.js'
+import Galeria from 'galeria.js'
+import Notas from 'notas.js'
+import initGame from 'game.js'
+
 const bodyEl = document.querySelector('body');
 const headEl = document.querySelector('head');
 const widgetContainerEl = document.querySelector('.widget-container');

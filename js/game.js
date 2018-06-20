@@ -192,7 +192,7 @@ function clear() {
 
 const player = new Player;
 let context;
-function initGame(){
+export default function initGame(){
 	context = canvas.getContext("2d");
 	const NO_GAME = false;
 	if(NO_GAME){

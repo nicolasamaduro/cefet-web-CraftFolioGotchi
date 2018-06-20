@@ -1,6 +1,6 @@
 "strict mode"
 
-class Persistence{
+export default class Persistence{
   constructor(){
   }
 

@@ -1,6 +1,6 @@
 "strict mode"
 
-class Galeria{
+export default class Galeria{
   constructor(persistence, galeriaEl, bodyEl, mainCss, removeList){
     this.persistence = persistence;
     this.galeriaEl = galeriaEl;
