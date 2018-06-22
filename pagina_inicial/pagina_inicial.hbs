@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>CFGhost</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="../node_modules/angular-material/angular-material.min.css">
+    <script src="../node_modules/angular/angular.min.js"></script> 
+    <script src="../node_modules/angular-aria/angular-aria.js"></script>
+    <script src="../node_modules/angular-animate/angular-animate.js"></script>
+    <script src="../node_modules/angular-material/angular-material.min.js"></script>    
+    <script src="../node_modules/angular-messages/angular-messages.js"></script>
+    <script src="../js/craftFolioGotchiApp.js"></script>  
+</head>
+
+<body ng-app="craftFolioGotchiApp" ng-controller="IndexController as indexCtrl">
+    <main>
+        <md-card class="md-padding" ng-if="indexCtrl.modo=='login'"> 
+            <md-toolbar >
+                <div class="md-toolbar-tools" layout="row"  layout-align="center center" >        
+                    <span class="md-headline">
+                        Logue no CraftFolioGhost
+                    </span>
+                </div>            
+            </md-toolbar>
+            <form name="loginForm" novalidate>
+                <md-card-content>
+                    <md-input-container class="campo-index"> 
+                        <label>Usuário</label>
+                        <input name="usuario" ng-model="indexCtrl.usuario" ng-required="true">
+                        <div ng-messages="loginForm.usuario.$error" role="alert">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>                            
+                    <md-input-container class="campo-index">
+                        <label>Senha</label>
+                        <input name="senha" ng-model="indexCtrl.senha" type="password" ng-required="true">
+                        <div ng-messages="loginForm.senha.$error" role="alert">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center"> 
+                    <md-button class="md-raised" ng-href="widgets.html">Mock</md-button>
+                    <md-button ng-click="indexCtrl.mudarModo()">Cadastrar</md-button>
+                    <md-button class="md-raised md-accent" type="submit">Logar</md-button>
+                </md-card-actions>
+            </form>
+        </md-card>
+        <md-card class="md-padding" ng-if="indexCtrl.modo=='cadastro'"> 
+            <md-toolbar >
+                <div class="md-toolbar-tools" layout="row"  layout-align="center center" >        
+                    <span class="md-headline">
+                        Cadastre-se no CraftFolioGotchi
+                    </span>
+                </div>            
+            </md-toolbar>
+            <form name="cadastroForm" novalidate>
+                <md-card-content>
+                    <md-input-container class="campo-index"> 
+                        <label>Usuário</label>
+                        <input name="usuario" ng-model="indexCtrl.usuario" ng-required="true">
+                        <div ng-messages="cadastroForm.usuario.$error" role="alert">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="campo-index">
+                        <label>E-mail</label>
+                        <input name="email" ng-model="indexCtrl.email" type="email" ng-required="true">
+                        <div ng-messages="cadastroForm.email.$error" role="alert">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="email">Endereço de e-mail inválido.</div>
+                        </div>
+                    </md-input-container>                           
+                    <md-input-container class="campo-index">
+                        <label>Senha</label>
+                        <input name="senha" ng-model="indexCtrl.senha" type="password" ng-required="true">
+                        <div ng-messages="cadastroForm.senha.$error" role="alert">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="campo-index">
+                        <label>Confirmar senha</label>
+                        <input name="confirmarSenha" ng-model="indexCtrl.confirmarSenha" type="password" ng-required="true">
+                        <div ng-messages="cadastroForm.confirmarSenha.$error" role="alert">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center"> 
+                    <md-button class="md-raised md-accent" type="submit" ng-click="indexCtrl.cadastrar(cadastroForm.$valid)" >Cadastrar</md-button>
+                    <md-button ng-click="indexCtrl.mudarModo()">Logar</md-button>
+                </md-card-actions>
+            </form>
+        </md-card>
+        <script src="../js/IndexController.js"></script>
+    </body>
+</html>
