@@ -1,5 +1,7 @@
 "strict mode"
 
+const canvas = document.querySelector('canvas');
+
 class Vector {
 	constructor(x,y) {
 		this.x = x;

@@ -1,10 +1,10 @@
 "strict mode"
+import Persistence from './persistence.js'
+import Fundo from './fundo.js'
+import Galeria from './galeria.js'
+import Notas from './notas.js'
+import initGame from './game.js'
 
-import Persistence from 'persistence.js'
-import Fundo from 'fundo.js'
-import Galeria from 'galeria.js'
-import Notas from 'notas.js'
-import initGame from 'game.js'
 
 const bodyEl = document.querySelector('body');
 const headEl = document.querySelector('head');
@@ -21,7 +21,7 @@ const mainCss = document.querySelector('link[href="css/widgets.css"]');
 const removeList = [modalEl, canvas, chaoEl, switchContainerEl, widgetContainerEl];
 
 const persistence = new Persistence();
-const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList);
+const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
 const notas = new Notas(persistence);
 const fundo = new Fundo(widgetContainerEl, chaoEl);
 
@@ -30,7 +30,7 @@ initGame();
 function habilitaPrincipal(){
   mainCss.disabled = false;
   bodyEl.firstElementChild.remove();
-  for (r of removeList){
+  for (const r of removeList){
     bodyEl.prepend(r);
   }
 }

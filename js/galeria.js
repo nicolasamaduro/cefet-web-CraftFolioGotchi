@@ -1,12 +1,13 @@
 "strict mode"
 
 export default class Galeria{
-  constructor(persistence, galeriaEl, bodyEl, mainCss, removeList){
+  constructor(persistence, galeriaEl, bodyEl, mainCss, removeList, deactivateFunction){
     this.persistence = persistence;
     this.galeriaEl = galeriaEl;
     this.bodyEl = bodyEl;
     this.mainCss = mainCss;
     this.removeList = removeList;
+    this.deactivateGalery = deactivateFunction;
     this.fileList = this.persistence.getImages();
     this.fReader = new FileReader();
     this.fillWidget();
@@ -61,9 +62,9 @@ export default class Galeria{
     for(let r of this.removeList){
       r.remove();
     }
-    bodyEl.prepend(this.galeriaDiv);
+    this.bodyEl.prepend(this.galeriaDiv);
     const botaoVoltar = document.querySelector('#voltar-principal');
-    botaoVoltar.addEventListener('click', (e) =>  habilitaPrincipal(e));
+    botaoVoltar.addEventListener('click', (e) =>  this.deactivateGalery(e));
   }
 
   prepareSentinelNodes(){

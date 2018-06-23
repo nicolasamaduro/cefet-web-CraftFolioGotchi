@@ -1,9 +1,9 @@
 "strict mode"
 
 export default class Fundo{
-  constructor(widgetContainerEl, chaoEL){
-    this.widgetContainer = widgetContainerEl;
+  constructor(widgetContainerEl, chaoEl){
     this.chao = chaoEl;
+    this.widgetContainer = widgetContainerEl;
 
     this.prepareEditSwitch();
     this.prepareModal();

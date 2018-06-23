@@ -51,7 +51,7 @@ export default class Notas {
     for(let s of srcList){
       const md = this.generateMdElement();
       md.dataset.url = s;
-      persistence.fetchText(s, (text) => fillMd(md, text, this.converter));
+      this.persistence.fetchText(s, (text) => fillMd(md, text, this.converter));
 
       parent.appendChild(md);
     }
