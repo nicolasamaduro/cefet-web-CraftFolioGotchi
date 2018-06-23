@@ -80,7 +80,7 @@ class Player {
 		this.goingUp = 6;
 		this.goingDown = 2;
 		this.img = new Image();
-		this.img.src = "images/ghost.png";
+		this.img.src = "/images/ghost.png";
 	}
 
 	draw(){

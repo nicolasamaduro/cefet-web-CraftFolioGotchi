@@ -6,7 +6,7 @@ export default class Persistence{
 
   getImages(){
     if(!localStorage['images']){
-      localStorage['images'] = JSON.stringify([{id:0, url:'images/adamjensen.jpg'},{id:0, url:'images/adamjensen2.jpg'},{id:0, url:'images/jcdenton.png'},{id:0, url:'images/k.jpg'},{id:0, url:'images/neuromancer.jpg'},{id:0, url:'images/replicant.jpg'}]); //primeira execucao
+      localStorage['images'] = JSON.stringify([{id:0, url:'/images/adamjensen.jpg'},{id:0, url:'/images/adamjensen2.jpg'},{id:0, url:'/images/jcdenton.png'},{id:0, url:'/images/k.jpg'},{id:0, url:'/images/neuromancer.jpg'},{id:0, url:'/images/replicant.jpg'}]); //primeira execucao
     }
     const images = JSON.parse(localStorage['images']);
     images.sort((a,b) => {return a.id - b.id});
@@ -39,7 +39,7 @@ export default class Persistence{
 
   getNotes(){
     if(!localStorage['notes']){
-      localStorage['notes'] = JSON.stringify([{id:0, url:'notas/nota1.md'}, {id:1, url:'notas/nota2.md'}]); //primeira execucao
+      localStorage['notes'] = JSON.stringify([{id:0, url:'/notas/nota1.md'}, {id:1, url:'/notas/nota2.md'}]); //primeira execucao
     }
     const notes = JSON.parse(localStorage['notes']);
     notes.sort((a,b) => {return a.id - b.id});

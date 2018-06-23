@@ -16,7 +16,7 @@ const chaoEl = document.querySelector('.chao');
 const canvas = document.querySelector('canvas');
 const modalEl = document.querySelector('#modal');
 
-const mainCss = document.querySelector('link[href="css/widgets.css"]');
+const mainCss = document.querySelector('link[href="/css/widgets.css"]');
 
 const removeList = [modalEl, canvas, chaoEl, switchContainerEl, widgetContainerEl];
 

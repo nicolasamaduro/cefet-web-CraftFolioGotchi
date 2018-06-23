@@ -1,6 +1,6 @@
 craftFolioGotchiApp.controller('PaginaInicialController',
     function($http,$mdDialog,$window,$location) {
-        var paginaInicialCrtl=this;   
+        var paginaInicialCrtl=this;
 
         paginaInicialCrtl.modo='login';
 
@@ -14,7 +14,7 @@ craftFolioGotchiApp.controller('PaginaInicialController',
 
         paginaInicialCrtl.cadastrar=function(isFormValido){
             if(isFormValido){
-                if (paginaInicialCrtl.senha!= paginaInicialCrtl.confirmarSenha){                    
+                if (paginaInicialCrtl.senha!= paginaInicialCrtl.confirmarSenha){
                     mostrarDialog("Falha","As senhas não estão iguais.");
                     return;
                 }
@@ -26,7 +26,7 @@ craftFolioGotchiApp.controller('PaginaInicialController',
                 $http.post( '/cadastrar', payloadCadastro)
                 .then(function(response) {
                     mostrarDialog("Sucesso",response.data);
-                }, 
+                },
                 function(response) {
                     mostrarDialog("Falha",response.data);
                 });
@@ -35,15 +35,15 @@ craftFolioGotchiApp.controller('PaginaInicialController',
 
         paginaInicialCrtl.logar=function(isFormValido){
             if(isFormValido){
-                let payloadLogin= {
-                    usuario : paginaInicialCrtl.usuario,
-                    senha : paginaInicialCrtl.senha
+                const payloadLogin= {
+                    usuario: paginaInicialCrtl.usuario,
+                    senha: paginaInicialCrtl.senha
                 }
-                $http.post( '/logar', payloadLogin)
-                .then(function(response) {                     
-                    $window.sessionStorage.setItem('usuarioLogado', JSON.stringify(response.data)); 
-                    window.location.href+=  "world/"+response.data.usuario;
-                }, 
+                $http.post('/logar', payloadLogin)
+                .then(function(response) {
+                    $window.sessionStorage.setItem('usuarioLogado', JSON.stringify(response.data));
+                    window.location.href += "world/"+response.data.usuario;
+                },
                 function(response) {
                     mostrarDialog("Falha",response.data);
                 });
@@ -55,7 +55,7 @@ craftFolioGotchiApp.controller('PaginaInicialController',
                 title: titulo,
                 textContent: conteudo,
                 ok: 'Fechar'
-              }));   
+              }));
         }
 
 

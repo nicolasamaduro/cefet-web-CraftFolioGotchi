@@ -2,7 +2,7 @@
   "name": "cefet-web-craftfoliogotchi",
   "version": "1.0.0",
   "description": "O que acontece quando a (a) liberdade de se construir um mundinho virtual se une à possibilidade de se (b) mostrar suas habilidades em um portfolio, que também se liga aos (c) cuidados que um jogador deve ter para cuidar de um bichinho virtual? Senhoras e senhores, dêem boas vindas ao CraftFolioGotchi®",
-  "main": "config/server.js",
+  "main": "server/server.js",
   "dependencies": {
     "angular": "^1.6.9",
     "angular-animate": "^1.6.10",
