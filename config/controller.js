@@ -1,5 +1,5 @@
-var pagina_inicial = require('../pagina_inicial/pagina_inicial.js');
+var paginaInicial = require('../paginaInicial/paginaInicial.js');
 
 module.exports.set = function(app) {
-    pagina_inicial.set(app);
+    paginaInicial.set(app);
 }

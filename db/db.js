@@ -1,4 +1,4 @@
-const mysql = require('sync-mysql'), wait=require('wait.for-es6');
+const mysql = require('sync-mysql');
 const host = 'us-cdbr-iron-east-04.cleardb.net',
       usuario ='bd9dc389335c87',
       senha ='737ead3c',
