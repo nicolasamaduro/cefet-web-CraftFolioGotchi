@@ -4,16 +4,39 @@ const host = 'us-cdbr-iron-east-04.cleardb.net',
       senha ='737ead3c',
       banco = 'heroku_6eb9ea850d4b68c';
 
-function criarConexao(){
-  return new mysql({
-    host: host,
-    user: usuario,
-    password: senha,
-    database : banco
-  });
-}
-module.exports.executarScprit =function (sql){
-  let conexaoDb = criarConexao();
-  return conexaoDb.query(sql);	
+
+const conexaoDb = new mysql({
+  host: host,
+  user: usuario,
+  password: senha,
+  database: banco
+});
+
+
+module.exports.executarQuery = function (sql){
+  return conexaoDb.query(sql);
 }
 
+module.exports.resetDb = function(){
+  queries=[
+    'drop table usuario',
+    `create table usuario(
+      codigo int(11) not null auto_increment,
+      usuario varchar(45) not null,
+      email varchar(200) not null,
+      senha char(32) not null,
+      PRIMARY KEY (codigo)
+    )`,
+    'describe usuario',
+  ]
+
+  for (const q of queries){
+    console.log(q);
+    try {
+      console.log(conexaoDb.query(q))
+    } catch(e) {
+      console.log(e)
+    }
+    console.log();
+  }
+}
