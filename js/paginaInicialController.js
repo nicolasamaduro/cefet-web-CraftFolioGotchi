@@ -1,5 +1,5 @@
 craftFolioGotchiApp.controller('PaginaInicialController',
-    function($http,$mdDialog,$window) {
+    function($http,$mdDialog,$window,$location) {
         var paginaInicialCrtl=this;   
 
         paginaInicialCrtl.modo='login';
@@ -41,7 +41,8 @@ craftFolioGotchiApp.controller('PaginaInicialController',
                 }
                 $http.post( '/logar', payloadLogin)
                 .then(function(response) {                     
-                    $window.sessionStorage.setItem('usuarioLogado', JSON.stringify(response.data));   
+                    $window.sessionStorage.setItem('usuarioLogado', JSON.stringify(response.data)); 
+                    window.location.href+=  "world/"+response.data.usuario;
                 }, 
                 function(response) {
                     mostrarDialog("Falha",response.data);
