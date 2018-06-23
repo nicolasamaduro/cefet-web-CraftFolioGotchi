@@ -19,7 +19,7 @@ module.exports.executarQuery = function (sql){
 
 module.exports.resetDb = function(){
   queries=[
-    'drop table usuario',
+    /*'drop table usuario',
     `create table usuario(
       codigo int(11) not null auto_increment,
       usuario varchar(45) not null,
@@ -27,7 +27,16 @@ module.exports.resetDb = function(){
       senha char(32) not null,
       PRIMARY KEY (codigo)
     )`,
-    'describe usuario',
+    'describe usuario',*/
+    `drop table imagens`,
+    `create table imagens(
+      codigo int(11) not null auto_increment,
+      usuario int(11) not null,
+      caminho varchar(200) not null,
+      foreign key (usuario) references usuario(codigo) on update cascade,
+      primary key (codigo)
+    )`,
+    'describe imagens',
   ]
 
   for (const q of queries){

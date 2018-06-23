@@ -1,7 +1,7 @@
 const db = require('./db.js');
 
 module.exports.cadastrarUsuario = function (usuario){
-    let sql =`INSERT INTO usuario(usuario,email,senha)
+    const sql =`INSERT INTO usuario(usuario,email,senha)
               VALUES('${usuario.usuario}', '${usuario.email}', MD5('${usuario.senha}'))`
     console.log(sql);
     try{
@@ -17,11 +17,11 @@ module.exports.cadastrarUsuario = function (usuario){
 }
 
 module.exports.logarUsuario = function (usuario){
-    let sql =`select * from usuario
-              where usuario='${usuario.usuario}'
-              and senha=MD5('${usuario.senha}');`
+    const sql =`select * from usuario
+                where usuario='${usuario.usuario}'
+                and senha=MD5('${usuario.senha}');`
     try{
-       let resultado = db.executarQuery(sql);
+       const resultado = db.executarQuery(sql);
        if (resultado){
            return resultado[0];
        }
@@ -30,4 +30,16 @@ module.exports.logarUsuario = function (usuario){
       console.log(err)
     }
     return null;
+}
+
+module.exports.recuperarUsuario = function(nome) {
+  const sql = `select * from usuario
+               where usuario='${nome}'`
+  let resultado = db.executarQuery(sql)
+  if(resultado.length != 0){
+    resultado = resultado[0];
+  } else {
+    resultado = null;
+  }
+  return resultado
 }

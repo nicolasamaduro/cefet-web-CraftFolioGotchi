@@ -22,7 +22,12 @@ module.exports.set = function(app) {
         }
     });
 
-    app.get('/world/:id', function(req, res) {
-      res.render('world')
+    app.get('/world/:nome', function(req, res) {
+      const u = usuario.recuperarUsuario(req.params.nome);
+      if(u){
+        res.render('world', u)
+      } else {
+        res.status(400).send("Mundo não encontrado.");
+      }
     });
 }
