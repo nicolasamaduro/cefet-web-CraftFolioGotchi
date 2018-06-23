@@ -2,7 +2,8 @@ const db = require('./db.js');
 
 module.exports.cadastrarUsuario = function (usuario){
     let sql =`INSERT INTO usuario(usuario,email,senha)
-              VALUES(${usuario.usuario}, ${usuario.email}, MD5(${usuario.senha}))`
+              VALUES('${usuario.usuario}', '${usuario.email}', MD5('${usuario.senha}'))`
+    console.log(sql);
     try{
        let resultado = db.executarQuery(sql)
        if (resultado.affectedRows=='1'){
