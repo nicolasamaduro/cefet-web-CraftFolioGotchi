@@ -1,0 +1,33 @@
+{
+  "name": "cefet-web-craftfoliogotchi",
+  "version": "1.0.0",
+  "description": "O que acontece quando a (a) liberdade de se construir um mundinho virtual se une à possibilidade de se (b) mostrar suas habilidades em um portfolio, que também se liga aos (c) cuidados que um jogador deve ter para cuidar de um bichinho virtual? Senhoras e senhores, dêem boas vindas ao CraftFolioGotchi®",
+  "main": "config/server.js",
+  "dependencies": {
+    "angular": "^1.6.9",
+    "angular-animate": "^1.6.10",
+    "angular-aria": "^1.6.10",
+    "angular-material": "^1.1.8",
+    "angular-messages": "^1.6.10",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "hbs": "^4.0.1",
+    "mysql": "^2.15.0",
+    "sync-mysql": "^3.0.1",
+    "wait.for-es6": "^0.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicolasamaduro/cefet-web-CraftFolioGotchi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicolasamaduro/cefet-web-CraftFolioGotchi/issues"
+  },
+  "homepage": "https://github.com/nicolasamaduro/cefet-web-CraftFolioGotchi#readme"
+}
