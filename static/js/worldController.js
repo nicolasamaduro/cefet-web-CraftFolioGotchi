@@ -77,14 +77,14 @@ function prepareWidgets(){
     const sentinel = document.createElement('div');
     let paginaEditavel = isPaginaEditavel();
     let plus;
-    if (paginaEditavel){        
+    if (paginaEditavel){
         plus = document.createElement('div')
         plus.classList.add('circle');
     }
     sentinel.classList.add('conteudo');
     sentinel.classList.add('sentinela');
     sentinel.classList.add('hidden');
-    if (paginaEditavel){  
+    if (paginaEditavel){
         sentinel.appendChild(plus);
     }
     return sentinel;
@@ -108,14 +108,14 @@ function prepareWidgets(){
   }
 }
 
-function isPaginaEditavel(){   
+function isPaginaEditavel(){
     let regex = /[0-9]*$/gm;
     let match = regex.exec(window.location.href);
     let codigoPagina=0;
     let paginalEditavel=false;
     if (match){
         codigoPagina = match[0];
-    }              
+    }
     let usarioLogadoStr =sessionStorage['usuarioLogado'];
     let usarioLogado;
     if (usarioLogadoStr){
@@ -127,17 +127,13 @@ function isPaginaEditavel(){
     return paginalEditavel;
 }
 
-prepareWidgets();
-notas.prepareSentinelNodes();
-galeria.prepareSentinelNodes();
-
 craftFolioGotchiApp.controller('WorldController',
     function($http,$mdDialog) {
         var worldCrtl=this;
-        function inicializar(){         
+        function inicializar(){
             worldCrtl.paginaEditavel = isPaginaEditavel();
-        }        
-        inicializar();  
-        
+        }
+        inicializar();
+
     }
 );

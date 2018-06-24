@@ -1,10 +1,9 @@
 const db = require('./db.js');
 
-module.exports.listaImagensUsuario = function(nome_usuario) {
+module.exports.listaImagensUsuario = function(codigo_usuario) {
   const sql =
   `select i.url from imagens i
-  join usuario u on (i.usuario=u.codigo)
-  where u.usuario='${nome_usuario}'`
+  where i.usuario=${codigo_usuario}`
 
   return db.executarQuery(sql)
 }

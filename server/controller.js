@@ -35,10 +35,10 @@ module.exports.set = function(app) {
       }
     });
 
-    app.get('/usuario/:nome/imagelist', function(req, res) {
-      let resultado = imagens.listaImagensUsuario(req.params.nome);
+    app.get('/usuario/:codigo/imagelist', function(req, res) {
+      let resultado = imagens.listaImagensUsuario(req.params.codigo);
       if(resultado.length != 0){
-        resultado = resultado.map(x => `/usuario/${req.params.nome}/img/${x.url}`)
+        resultado = resultado.map(x => `/usuario/${req.params.codigo}/img/${x.url}`)
       }
       res.send(JSON.stringify(resultado));
     });
