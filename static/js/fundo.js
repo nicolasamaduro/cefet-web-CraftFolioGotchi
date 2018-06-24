@@ -7,11 +7,39 @@ export default class Fundo{
 
     this.prepareEditSwitch();
     this.prepareModal();
+    this.setInitialBackground();
+    
+  }
+
+  setInitialBackground(){
+    this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
+    this.fundo = fetch(`/fundo/${this.username}/obter`)
+    .then( response=>response.json())
+    .then(function(fundo) {
+     
+      let widgetContainer = document.querySelector('.widget-container'); 
+      let chao = document.querySelector('.chao'); 
+      if (fundo.tipo_atual=="cor"){
+        widgetContainer.style.backgroundColor=fundo.cor1;
+      }else if (fundo.tipo_atual=="gradiente"){
+        widgetContainer.style.backgroundImage=`linear-gradient(${fundo.cor1},${fundo.cor2})`;
+      }else{
+        widgetContainer.style.backgroundImage=`url(${fundo.urlImage})`;
+        widgetContainer.style.backgroundSize='cover';
+      }
+      if (fundo.tipo_atual_chao=="cor"){
+        chao.style.backgroundColor=fundo.cor1_chao;
+      }else if (fundo.tipo_atual_chao=="gradiente"){
+        chao.style.backgroundImage=`linear-gradient(${fundo.cor1_chao},${fundo.cor2_chao})`;
+      }else{
+        chao.style.backgroundImage=`url(${fundo.urlImage_chao})`;
+        chao.style.backgroundSize='cover';
+      }
+    })
   }
 
   prepareEditSwitch(){
     this.editSwitchEl = document.querySelector('.switch--shadow');
-    if (this.editSwitchEl){
       this.editSwitchEl.checked=false;
       this.editSwitchEl.addEventListener('click', (e) => {
         if(e.target.checked){
@@ -22,7 +50,6 @@ export default class Fundo{
           this.chao.style.border=null;
         }
       });
-    }
   }
 
   prepareModal(){

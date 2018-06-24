@@ -1,4 +1,4 @@
-"strict mode"
+//"strict mode"
 import Persistence from './persistence.js'
 import Fundo from './fundo.js'
 import Galeria from './galeria.js'
@@ -20,7 +20,14 @@ const mainCss = document.querySelector('link[href="/css/widgets.css"]');
 
 const removeList = [modalEl, canvas, chaoEl, switchContainerEl, widgetContainerEl];
 
-const persistence = new Persistence();
+function escondeSeletor(){
+    if (!isPaginaEditavel()){
+        switchContainerEl.classList.add('hidden');
+    }
+}
+escondeSeletor();
+
+const persistence = new  Persistence();
 const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
 const notas = new Notas(persistence);
 const fundo = new Fundo(widgetContainerEl, chaoEl);
@@ -32,6 +39,9 @@ persistence.executeAfterFetch(() => {
   notas.prepareSentinelNodes();
   galeria.prepareSentinelNodes();
 });
+
+
+
 
 function habilitaPrincipal(){
   mainCss.disabled = false;
@@ -127,13 +137,4 @@ function isPaginaEditavel(){
     return paginalEditavel;
 }
 
-craftFolioGotchiApp.controller('WorldController',
-    function($http,$mdDialog) {
-        var worldCrtl=this;
-        function inicializar(){
-            worldCrtl.paginaEditavel = isPaginaEditavel();
-        }
-        inicializar();
 
-    }
-);

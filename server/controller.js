@@ -1,5 +1,6 @@
 const usuario = require('./usuario.js');
 const imagens = require('./imagens.js');
+const fundo = require('./fundo.js');
 const fs = require('fs')
 const path = require('path')
 const mime = require('mime')
@@ -10,7 +11,9 @@ module.exports.set = function(app) {
     });
 
     app.post('/cadastrar', function (req, res) {
-       if (usuario.cadastrarUsuario(req.body)){
+       if (usuario.cadastrarUsuario(req.body)){           
+            u = usuario.logarUsuario(req.body);
+            fundo.cadastrarFundoPadrao(u.codigo);
             res.send("Sucesso ao cadastrar");
         } else {
             res.status(400).send("Falha ao cadastrar");
@@ -33,14 +36,22 @@ module.exports.set = function(app) {
       } else {
         res.status(400).send("Mundo não encontrado.");
       }
-    });
+    });    
 
-    app.get('/usuario/:codigo/imagelist', function(req, res) {
+    app.get('/usuario/:codigo/imagelist', function(req, res) {        
       let resultado = imagens.listaImagensUsuario(req.params.codigo);
       if(resultado.length != 0){
         resultado = resultado.map(x => `/usuario/${req.params.codigo}/img/${x.url}`)
       }
       res.send(JSON.stringify(resultado));
+    });
+
+    app.post('/usuario/:codigo/adicionarImagem', function(req, res) {
+        if (imagens.cadastrarImagemUsuario(req.body)){
+            res.send("Sucesso ao cadastrar");
+        } else {
+            res.status(400).send("Falha ao cadastrar");
+       }
     });
 
     app.get('/usuario/:usuario/img/:arquivo', function(req, res) {
@@ -49,12 +60,22 @@ module.exports.set = function(app) {
       const s = fs.createReadStream(path.join('userdata',usuario,'img',arquivo));
       const mimetype = mime.lookup(arquivo);
       s.on('open', function () {
-          res.set('Content-Type', mimetype);
-          s.pipe(res);
+        res.set('Content-Type', mimetype);
+        s.pipe(res);
       });
       s.on('error', function () {
-          res.set('Content-Type', 'text/plain');
-          res.status(404).end('Not found');
+        res.set('Content-Type', 'text/plain');
+        res.status(404).end('Not found');
       });
+    });
+
+    app.get('/fundo/:codigo/obter', function(req, res) {
+        let f = fundo.recuperarFundo(req.params.codigo);
+        if(f){
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify(f))
+        } else {
+          res.status(400).send("Fundo não encontrado.");
+        }
     });
 }

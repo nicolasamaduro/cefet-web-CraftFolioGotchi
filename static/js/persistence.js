@@ -4,6 +4,7 @@ export default class Persistence{
   constructor(){
     this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
     this.imagelist = fetch(`/usuario/${this.username}/imagelist`).then(response => response.json())
+    //this.notelist = fetch(`/usuario/${this.username}/notelist`).then(response => response.json())
   }
 
   executeAfterFetch(callback){
@@ -15,6 +16,7 @@ export default class Persistence{
   }
 
   addImage(url, addBack){
+
     const images = JSON.parse(localStorage['images']);
     let id;
     if(addBack){
