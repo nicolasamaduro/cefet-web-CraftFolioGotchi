@@ -2,15 +2,16 @@
 
 export default class Persistence{
   constructor(){
+    this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
+    this.imagelist = fetch(`/usuario/${this.username}/imagelist`).then(response => response.json())
+  }
+
+  executeAfterFetch(callback){
+    Promise.all([this.imagelist]).then(callback)
   }
 
   getImages(){
-    if(!localStorage['images']){
-      localStorage['images'] = JSON.stringify([{id:0, url:'/images/adamjensen.jpg'},{id:0, url:'/images/adamjensen2.jpg'},{id:0, url:'/images/jcdenton.png'},{id:0, url:'/images/k.jpg'},{id:0, url:'/images/neuromancer.jpg'},{id:0, url:'/images/replicant.jpg'}]); //primeira execucao
-    }
-    const images = JSON.parse(localStorage['images']);
-    images.sort((a,b) => {return a.id - b.id});
-    return images.map(x => x.url);
+    return this.imagelist;
   }
 
   addImage(url, addBack){

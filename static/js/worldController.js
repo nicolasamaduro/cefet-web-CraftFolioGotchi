@@ -27,6 +27,12 @@ const fundo = new Fundo(widgetContainerEl, chaoEl);
 
 initGame();
 
+persistence.executeAfterFetch(() => {
+  prepareWidgets();
+  notas.prepareSentinelNodes();
+  galeria.prepareSentinelNodes();
+});
+
 function habilitaPrincipal(){
   mainCss.disabled = false;
   bodyEl.firstElementChild.remove();
@@ -95,6 +101,7 @@ function prepareWidgets(){
     }
   }
 }
+<<<<<<< HEAD:static/js/worldController.js
 
 function inicializar(){            
     let regex = /[0-9]*$/gm;
@@ -144,3 +151,5 @@ craftFolioGotchiApp.controller('WorldController',
         
     }
 );
+=======
+>>>>>>> 40e28467bdb904679b441011633feed6c51615a4:static/js/widgets.js
