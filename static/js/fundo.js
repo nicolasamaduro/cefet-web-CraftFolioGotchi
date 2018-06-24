@@ -13,10 +13,10 @@ export default class Fundo{
 
   setInitialBackground(){
     this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
-    this.fundo = fetch(`/fundo/${this.username}/obter`)
+    fetch(`/fundo/${this.username}/obter`)
     .then( response=>response.json())
     .then(function(fundo) {
-     
+
       let widgetContainer = document.querySelector('.widget-container'); 
       let chao = document.querySelector('.chao'); 
       if (fundo.tipo_atual=="cor"){
@@ -135,14 +135,61 @@ export default class Fundo{
     this.editTarget.style.backgroundSize='cover';
   }
 
-  buttonAction(e){
+  buttonAction(e){    
+    let payload = null;
     const formtype = this.activeTab.dataset.formlink;
     if(formtype == 'color'){
       this.applyBgColor({target:this.colorInputEl});
-    } else if(formtype == 'gradient'){
+      if (this.editTarget.classList.value=='widget-container'){
+        payload = {
+          cor1: this.colorInputEl.value,
+          tipo_atual:'cor'
+        };
+      }else{
+        payload = {
+          cor1_chao: this.colorInputEl.value,
+          tipo_atual_chao:'cor'
+        };
+      }
+    } else if(formtype == 'gradient'){      
       this.applyBgGradient({target:this.gradientInputEl1});
+      if (this.editTarget.classList.value=='widget-container'){
+        payload = {
+          cor1: this.gradientInputEl1.value,
+          cor2: this.gradientInputEl2.value,
+          tipo_atual:'gradiente'
+        };
+      }else{
+        payload = {
+          cor1_chao: this.gradientInputEl1.value,
+          cor2_chao: this.gradientInputEl2.value,
+          tipo_atual_chao:'gradiente'
+        };
+      }
     } else {
       this.applyBgImage({target:this.imageInputEl});
-    }
+      if (this.editTarget.classList.value=='widget-container'){
+        payload = {
+          urlImage:this.imageInputEl.value,
+          tipo_atual:'imagem'
+        };
+      }else{
+        payload = {
+          urlImage_chao: this.imageInputEl.value,
+          tipo_atual_chao:'imagem'
+        };
+      }
+    }    
+  
+    let data = new FormData();
+    data.append( "json", JSON.stringify( payload ) );
+    fetch(`/fundo/${this.username}/cadastrar/`,
+    {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify( payload )
+    })
   }
 }
