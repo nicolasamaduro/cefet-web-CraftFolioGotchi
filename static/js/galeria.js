@@ -32,7 +32,9 @@ export default class Galeria{
     for(let s of this.fileList){
       this.galeriaEl.appendChild(this.generateContent(s));
     }
-    this.galeriaEl.firstElementChild.classList.remove('hidden');
+    if (this.galeriaEl.firstElementChild){
+      this.galeriaEl.firstElementChild.classList.remove('hidden');
+    }
   }
 
   fillGallery(){
@@ -82,6 +84,7 @@ export default class Galeria{
     const inputBot = inputTop.cloneNode();
     sentinelTop.appendChild(inputTop);
     sentinelBot.appendChild(inputBot);
+    if (circleBot&&circleTop){
     circleTop.addEventListener('click', e => inputTop.click(e));
     circleBot.addEventListener('click', e => inputBot.click(e));
     inputTop.addEventListener('change', e => {
@@ -95,6 +98,7 @@ export default class Galeria{
       this.galeriaEl.insertBefore(content, this.galeriaEl.firstElementChild.nextElementSibling);
       this.galeriaEl.nextElementSibling.dispatchEvent(new Event('click'));
     });
+  }
     inputBot.addEventListener('change', e => {
       const content = this.generateContent('');
       this.fReader.readAsDataURL(e.target.files[0]);

@@ -62,21 +62,23 @@ export default class Notas {
     const sentinelBot = this.notasEl.lastElementChild;
     const circleTop = sentinelTop.firstElementChild;
     const circleBot = sentinelBot.firstElementChild;
-    circleTop.addEventListener('click', (e) => {
-      const md = this.generateMdElement();
-      md.dataset.url = persistence.addNote(false);
-      this.editMd({target:md});
-      this.notasEl.insertBefore(md, this.notasEl.firstElementChild.nextElementSibling);
-      this.notasEl.nextElementSibling.dispatchEvent(new Event('click'));
-      md.firstElementChild.value = '';
-    });
-    circleBot.addEventListener('click', (e) => {
-      const md = this.generateMdElement();
-      md.dataset.url = persistence.addNote(true);
-      this.editMd({target:md});
-      this.notasEl.insertBefore(md, this.notasEl.lastElementChild);
-      this.notasEl.previousElementSibling.dispatchEvent(new Event('click'));
-      md.firstElementChild.value = '';
-    })
+    if (circleTop &&circleBot){
+      circleTop.addEventListener('click', (e) => {
+        const md = this.generateMdElement();
+        md.dataset.url = persistence.addNote(false);
+        this.editMd({target:md});
+        this.notasEl.insertBefore(md, this.notasEl.firstElementChild.nextElementSibling);
+        this.notasEl.nextElementSibling.dispatchEvent(new Event('click'));
+        md.firstElementChild.value = '';
+      });
+      circleBot.addEventListener('click', (e) => {
+        const md = this.generateMdElement();
+        md.dataset.url = persistence.addNote(true);
+        this.editMd({target:md});
+        this.notasEl.insertBefore(md, this.notasEl.lastElementChild);
+        this.notasEl.previousElementSibling.dispatchEvent(new Event('click'));
+        md.firstElementChild.value = '';
+      })
+    }
   }
 }
