@@ -22,8 +22,8 @@ module.exports.set = function(app) {
         }
     });
 
-    app.get('/world/:nome', function(req, res) {
-      const u = usuario.recuperarUsuario(req.params.nome);
+    app.get('/world/:codigo', function(req, res) {
+      const u = usuario.recuperarUsuario(req.params.codigo);
       if(u){
         res.render('world', u)
       } else {

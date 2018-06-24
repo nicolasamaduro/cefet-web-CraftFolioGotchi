@@ -11,16 +11,18 @@ export default class Fundo{
 
   prepareEditSwitch(){
     this.editSwitchEl = document.querySelector('.switch--shadow');
-    this.editSwitchEl.checked=false;
-    this.editSwitchEl.addEventListener('click', (e) => {
-      if(e.target.checked){
-        this.widgetContainer.style.border=('3px dashed #00bfff');
-        this.chao.style.border=('2px dashed #ffffff');
-      } else {
-        this.widgetContainer.style.border=null;
-        this.chao.style.border=null;
-      }
-    });
+    if (this.editSwitchEl){
+      this.editSwitchEl.checked=false;
+      this.editSwitchEl.addEventListener('click', (e) => {
+        if(e.target.checked){
+          this.widgetContainer.style.border=('3px dashed #00bfff');
+          this.chao.style.border=('2px dashed #ffffff');
+        } else {
+          this.widgetContainer.style.border=null;
+          this.chao.style.border=null;
+        }
+      });
+    }
   }
 
   prepareModal(){

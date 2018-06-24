@@ -14,7 +14,7 @@
   <script src="/js/showdown.min.js"></script>
   <script src="/js/craftFolioGotchiApp.js"></script>
 </head>
-<body>
+<body ng-app="craftFolioGotchiApp" ng-controller="WorldController as worldCrtl">
   <div class='widget-container'>
     <div class='widget'>
       <div class='nextprev'><div class="arrow-up"></div></div>
@@ -30,8 +30,7 @@
       <div class='nextprev'><div class="arrow-down"></div></div>
     </div>
   </div>
-
-  <div class="switch_container">
+  <div class="switch_container" ng-if='worldCrtl.paginalEditavel'>
     <label>Modo edição</label>
     <input id="switch-shadow" class="switch switch--shadow" type="checkbox">
     <label for="switch-shadow"></label>
@@ -62,6 +61,6 @@
   <canvas>
     This text is displayed if your browser does not support HTML5 Canvas.
   </canvas>
-  <script type="module" src='/js/widgets.js'></script>
+  <script type="module" src='/js/worldController.js'></script>
 </body>
 </html>

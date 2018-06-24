@@ -3,7 +3,6 @@ const db = require('./db.js');
 module.exports.cadastrarUsuario = function (usuario){
     const sql =`INSERT INTO usuario(usuario,email,senha)
               VALUES('${usuario.usuario}', '${usuario.email}', MD5('${usuario.senha}'))`
-    console.log(sql);
     try{
        let resultado = db.executarQuery(sql)
        if (resultado.affectedRows=='1'){
@@ -34,7 +33,7 @@ module.exports.logarUsuario = function (usuario){
 
 module.exports.recuperarUsuario = function(nome) {
   const sql = `select * from usuario
-               where usuario='${nome}'`
+               where codigo='${nome}'`
   let resultado = db.executarQuery(sql)
   if(resultado.length != 0){
     resultado = resultado[0];

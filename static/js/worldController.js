@@ -96,6 +96,51 @@ function prepareWidgets(){
   }
 }
 
+function inicializar(){            
+    let regex = /[0-9]*$/gm;
+    let match = regex.exec(window.location.href);
+    let codigoPagina=0;
+    var paginalEditavel=false;
+    if (match){
+        codigoPagina = match[0];
+    }              
+    let usarioLogadoStr =sessionStorage['usuarioLogado'];
+    let usarioLogado;
+    if (usarioLogadoStr){
+        usarioLogado = JSON.parse(usarioLogadoStr);
+        if (codigoPagina == usarioLogado.codigo){
+            paginalEditavel = true;
+        }
+    }
+}
+
 prepareWidgets();
 notas.prepareSentinelNodes();
 galeria.prepareSentinelNodes();
+
+craftFolioGotchiApp.controller('WorldController',
+    function($http,$mdDialog) {
+        var worldCrtl=this;
+        function inicializar(){            
+            let regex = /[0-9]*$/gm;
+            let match = regex.exec(window.location.href);
+            let codigoPagina=0;
+            worldCrtl.paginalEditavel=false;
+            if (match){
+                codigoPagina = match[0];
+            }              
+            let usarioLogadoStr =sessionStorage['usuarioLogado'];
+            let usarioLogado;
+            if (usarioLogadoStr){
+                usarioLogado = JSON.parse(usarioLogadoStr);
+                if (codigoPagina == usarioLogado.codigo){
+                    worldCrtl.paginalEditavel = true;
+                }
+            }
+        }
+        
+        inicializar();
+        
+        
+    }
+);
