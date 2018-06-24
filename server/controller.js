@@ -1,4 +1,8 @@
 const usuario = require('./usuario.js');
+const imagens = require('./imagens.js');
+const fs = require('fs')
+const path = require('path')
+const mime = require('mime')
 
 module.exports.set = function(app) {
     app.get('/', function(req, res) {
@@ -29,5 +33,28 @@ module.exports.set = function(app) {
       } else {
         res.status(400).send("Mundo não encontrado.");
       }
+    });
+
+    app.get('/usuario/:nome/imagelist', function(req, res) {
+      let resultado = imagens.listaImagensUsuario(req.params.nome);
+      if(resultado.length != 0){
+        resultado = resultado.map(x => `/usuario/${req.params.nome}/img/${x.url}`)
+      }
+      res.send(JSON.stringify(resultado));
+    });
+
+    app.get('/usuario/:usuario/img/:arquivo', function(req, res) {
+      const usuario=req.params.usuario
+      const arquivo=req.params.arquivo
+      const s = fs.createReadStream(path.join('userdata',usuario,'img',arquivo));
+      const mimetype = mime.lookup(arquivo);
+      s.on('open', function () {
+          res.set('Content-Type', mimetype);
+          s.pipe(res);
+      });
+      s.on('error', function () {
+          res.set('Content-Type', 'text/plain');
+          res.status(404).end('Not found');
+      });
     });
 }

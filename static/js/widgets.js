@@ -27,6 +27,12 @@ const fundo = new Fundo(widgetContainerEl, chaoEl);
 
 initGame();
 
+persistence.executeAfterFetch(() => {
+  prepareWidgets();
+  notas.prepareSentinelNodes();
+  galeria.prepareSentinelNodes();
+});
+
 function habilitaPrincipal(){
   mainCss.disabled = false;
   bodyEl.firstElementChild.remove();
@@ -95,7 +101,3 @@ function prepareWidgets(){
     }
   }
 }
-
-prepareWidgets();
-notas.prepareSentinelNodes();
-galeria.prepareSentinelNodes();

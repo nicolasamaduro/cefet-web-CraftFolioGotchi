@@ -8,10 +8,13 @@ export default class Galeria{
     this.mainCss = mainCss;
     this.removeList = removeList;
     this.deactivateGalery = deactivateFunction;
-    this.fileList = this.persistence.getImages();
     this.fReader = new FileReader();
-    this.fillWidget();
-    this.fillGallery();
+
+    this.persistence.getImages().then((json) => {
+      this.fileList=json;
+      this.fillWidget();
+      this.fillGallery();
+    })
   }
 
   generateContent(src){
