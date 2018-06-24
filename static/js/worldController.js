@@ -101,25 +101,6 @@ function prepareWidgets(){
     }
   }
 }
-<<<<<<< HEAD:static/js/worldController.js
-
-function inicializar(){            
-    let regex = /[0-9]*$/gm;
-    let match = regex.exec(window.location.href);
-    let codigoPagina=0;
-    var paginalEditavel=false;
-    if (match){
-        codigoPagina = match[0];
-    }              
-    let usarioLogadoStr =sessionStorage['usuarioLogado'];
-    let usarioLogado;
-    if (usarioLogadoStr){
-        usarioLogado = JSON.parse(usarioLogadoStr);
-        if (codigoPagina == usarioLogado.codigo){
-            paginalEditavel = true;
-        }
-    }
-}
 
 prepareWidgets();
 notas.prepareSentinelNodes();
@@ -144,12 +125,8 @@ craftFolioGotchiApp.controller('WorldController',
                     worldCrtl.paginalEditavel = true;
                 }
             }
-        }
-        
-        inicializar();
-        
+        }        
+        inicializar();  
         
     }
 );
-=======
->>>>>>> 40e28467bdb904679b441011633feed6c51615a4:static/js/widgets.js
