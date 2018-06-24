@@ -75,12 +75,18 @@ function changeWidget(e){
 function prepareWidgets(){
   function makeSentinel(){
     const sentinel = document.createElement('div');
-    const plus = document.createElement('div');
-    plus.classList.add('circle');
+    let paginaEditavel = isPaginaEditavel();
+    let plus;
+    if (paginaEditavel){        
+        plus = document.createElement('div')
+        plus.classList.add('circle');
+    }
     sentinel.classList.add('conteudo');
     sentinel.classList.add('sentinela');
     sentinel.classList.add('hidden');
-    sentinel.appendChild(plus);
+    if (paginaEditavel){  
+        sentinel.appendChild(plus);
+    }
     return sentinel;
   }
 
@@ -102,6 +108,25 @@ function prepareWidgets(){
   }
 }
 
+function isPaginaEditavel(){   
+    let regex = /[0-9]*$/gm;
+    let match = regex.exec(window.location.href);
+    let codigoPagina=0;
+    let paginalEditavel=false;
+    if (match){
+        codigoPagina = match[0];
+    }              
+    let usarioLogadoStr =sessionStorage['usuarioLogado'];
+    let usarioLogado;
+    if (usarioLogadoStr){
+        usarioLogado = JSON.parse(usarioLogadoStr);
+        if (codigoPagina == usarioLogado.codigo){
+            paginalEditavel = true;
+        }
+    }
+    return paginalEditavel;
+}
+
 prepareWidgets();
 notas.prepareSentinelNodes();
 galeria.prepareSentinelNodes();
@@ -109,22 +134,8 @@ galeria.prepareSentinelNodes();
 craftFolioGotchiApp.controller('WorldController',
     function($http,$mdDialog) {
         var worldCrtl=this;
-        function inicializar(){            
-            let regex = /[0-9]*$/gm;
-            let match = regex.exec(window.location.href);
-            let codigoPagina=0;
-            worldCrtl.paginalEditavel=false;
-            if (match){
-                codigoPagina = match[0];
-            }              
-            let usarioLogadoStr =sessionStorage['usuarioLogado'];
-            let usarioLogado;
-            if (usarioLogadoStr){
-                usarioLogado = JSON.parse(usarioLogadoStr);
-                if (codigoPagina == usarioLogado.codigo){
-                    worldCrtl.paginalEditavel = true;
-                }
-            }
+        function inicializar(){         
+            worldCrtl.paginaEditavel = isPaginaEditavel();
         }        
         inicializar();  
         

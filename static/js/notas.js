@@ -1,7 +1,7 @@
 "strict mode"
 
 export default class Notas {
-  constructor(persistence,paginaEditavel){
+  constructor(persistence){
     this.persistence = persistence;
     this.notasEl = document.querySelector('#notas');
     this.converter = new showdown.Converter();
