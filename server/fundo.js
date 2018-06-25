@@ -48,10 +48,10 @@ function  excluirFundo(codigo){
 }
 
 function  cadastrarFundo(fundo){
-    const sql =`INSERT INTO fundo(usuario,tipo_atual,cor1,cor2,urlImage, tipo_atual_chao,`+
-            `cor1_chao, cor2_chao, urlImage_chao) `+
-            `VALUES('${fundo.usuario}', '${fundo.tipo_atual}','${fundo.cor1}', '${fundo.cor2}','${fundo.urlImage}',` +
-            `'${fundo.tipo_atual_chao}', '${fundo.cor1_chao}','${fundo.cor2_chao}', '${fundo.urlImage_chao}')`;     
+    const sql =`INSERT INTO fundo(usuario,tipo_atual,cor1,cor2,urlImage, tipo_atual_chao,
+            cor1_chao, cor2_chao, urlImage_chao) 
+            VALUES('${fundo.usuario}', '${fundo.tipo_atual}','${fundo.cor1}', '${fundo.cor2}','${fundo.urlImage}',
+            '${fundo.tipo_atual_chao}', '${fundo.cor1_chao}','${fundo.cor2_chao}', '${fundo.urlImage_chao}')`;     
      try{
        let resultado = db.executarQuery(sql)
        if (resultado.affectedRows=='1'){          

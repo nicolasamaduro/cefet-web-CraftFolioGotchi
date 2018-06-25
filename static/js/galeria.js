@@ -79,7 +79,7 @@ export default class Galeria{
     const circleBot = sentinelBot.firstElementChild;
     const inputTop = document.createElement('input');
     inputTop.type = 'file';
-    inputTop.accept='image/png, image/jpeg';
+    inputTop.accept='image/png';
     inputTop.classList.add('hidden');
     const inputBot = inputTop.cloneNode();
     sentinelTop.appendChild(inputTop);
@@ -93,7 +93,7 @@ export default class Galeria{
       this.fReader.addEventListener('load', e => {
         const img = content.querySelector('img');
         img.src = e.target.result;
-        persistence.addImage(img.src, false);
+        this.persistence.addImage(img.src, false);
       });
       this.galeriaEl.insertBefore(content, this.galeriaEl.firstElementChild.nextElementSibling);
       this.galeriaEl.nextElementSibling.dispatchEvent(new Event('click'));
@@ -105,7 +105,7 @@ export default class Galeria{
       this.fReader.addEventListener('load', e => {
         const img = content.querySelector('img');
         img.src = e.target.result;
-        persistence.addImage(img.src, true);
+        this.persistence.addImage(img.src, true);
       });
       this.galeriaEl.insertBefore(content, this.galeriaEl.lastElementChild);
       this.galeriaEl.previousElementSibling.dispatchEvent(new Event('click'));

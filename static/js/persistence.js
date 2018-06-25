@@ -17,7 +17,15 @@ export default class Persistence{
 
   addImage(url, addBack){
 
-    const images = JSON.parse(localStorage['images']);
+      
+    var formData = new FormData();
+    formData.append('image', url);
+    fetch(`/usuario/${this.username}/adicionarImagem/`,
+    {
+        method: "POST",
+        body:formData
+    })
+    /*const images = JSON.parse(localStorage['images']);
     let id;
     if(addBack){
       id = images[images.length-1].id+1;
@@ -26,7 +34,7 @@ export default class Persistence{
       id = images[0].id-1;
       images.unshift({id,url});
     }
-    localStorage['images'] = JSON.stringify(images);
+    localStorage['images'] = JSON.stringify(images);*/
   }
 
 
