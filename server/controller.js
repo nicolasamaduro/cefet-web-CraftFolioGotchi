@@ -5,6 +5,8 @@ const fundo = require('./fundo.js');
 const fs = require('fs')
 const path = require('path')
 const mime = require('mime')
+const multer = require("multer");
+
 
 module.exports.set = function(app) {
     app.get('/', function(req, res) {
@@ -15,6 +17,9 @@ module.exports.set = function(app) {
        if (usuario.cadastrarUsuario(req.body)){           
             u = usuario.logarUsuario(req.body);
             fundo.cadastrarFundoPadrao(u.codigo);
+            //cria diretório de imagens
+            fs.mkdirSync(`./userdata/${u.codigo}`);
+            fs.mkdirSync(`./userdata/${u.codigo}/img`);
             res.send("Sucesso ao cadastrar");
         } else {
             res.status(400).send("Falha ao cadastrar");
@@ -47,13 +52,38 @@ module.exports.set = function(app) {
       res.send(JSON.stringify(resultado));
     });
 
-    app.post('/usuario/:codigo/adicionarImagem', function(req, res) {
-        if (imagens.cadastrarImagemUsuario(req.body)){
-            res.send("Sucesso ao cadastrar");
-        } else {
-            res.status(400).send("Falha ao cadastrar");
-       }
+    
+    const handleError = (err, res) => {
+      res
+        .status(500)
+        .contentType("text/plain")
+        .end("Oops! Something went wrong!");
+    };
+    
+    const upload = multer({
+      dest: "/usuario"
     });
+    
+    app.post("/usuario/:codigo/adicionarImagem",  upload.single("file"),function  (req, res) {
+        const nome= `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
+        const localDeEscrita = path.join(__dirname, `../userdata/${req.params.codigo}/img/${nome}`);
+        const base64Data =req.body.image.replace(/^data:image\/png;base64,/, "");
+        try{
+            require("fs").writeFileSync(localDeEscrita, base64Data, 'base64');
+            if (imagens.cadastrarImagemUsuario({
+                url:nome,
+                usuario:req.params.codigo
+            })){
+                res.send("Sucesso ao cadastrar");
+            } else {
+                res.status(400).send("Falha ao cadastrar");
+            }
+        }catch(err){
+            console.log(err);            
+            res.status(400).send("Falha ao cadastrar");
+        }
+      }
+    );
 
     app.get('/usuario/:usuario/img/:arquivo', function(req, res) {
       const usuario=req.params.usuario
@@ -65,7 +95,7 @@ module.exports.set = function(app) {
         s.pipe(res);
       });
       s.on('error', function () {
-        res.set('Content-Type', 'text/plain');
+        res.set('Content-Type', 'etext/plain');
         res.status(404).end('Not found');
       });
     });
