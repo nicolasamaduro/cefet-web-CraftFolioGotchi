@@ -1,5 +1,6 @@
 const usuario = require('./usuario.js');
 const imagens = require('./imagens.js');
+const notas = require('./notas.js');
 const fs = require('fs')
 const path = require('path')
 const mime = require('mime')
@@ -57,4 +58,20 @@ module.exports.set = function(app) {
           res.status(404).end('Not found');
       });
     });
+
+    app.post('/nota/addNota', function(req, res) {
+        notas.addNota(req.body.codigo, req.body.text);
+    });
+
+    app.get('/nota/:codigo/obter', function(req, res) {
+        let n = notas.recuperarNota(req.params.codigo);
+
+        if(n){
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(n))
+          } else {
+            res.status(400).send("Nota não encontrado.");
+        }
+    });
+
 }

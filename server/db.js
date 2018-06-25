@@ -27,7 +27,7 @@ module.exports.resetDb = function(){
       senha char(32) not null,
       PRIMARY KEY (codigo)
     )`,
-    'describe usuario',*/
+    'describe usuario',
     `drop table imagens`,
     `create table imagens(
       codigo int(11) not null auto_increment,
@@ -36,7 +36,16 @@ module.exports.resetDb = function(){
       foreign key (usuario) references usuario(codigo) on update cascade,
       primary key (codigo)
     )`,
-    'describe imagens',
+    'describe imagens',*/
+    `drop table notas`,
+    `create table notas(
+      codigo int(11) not null auto_increment,
+      usuario int(11) not null,
+      nota varchar(200) not null,
+      foreign key (usuario) references usuario(codigo) on update cascade,
+      primary key (codigo)
+    )`,
+    'describe notas',
   ]
 
   for (const q of queries){

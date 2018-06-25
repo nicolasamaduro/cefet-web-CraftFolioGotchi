@@ -22,16 +22,20 @@ const removeList = [modalEl, canvas, chaoEl, switchContainerEl, widgetContainerE
 
 const persistence = new Persistence();
 const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
-const notas = new Notas(persistence);
+let notas;
 const fundo = new Fundo(widgetContainerEl, chaoEl);
 
 initGame();
 
-persistence.executeAfterFetch(() => {
-  prepareWidgets();
-  notas.prepareSentinelNodes();
-  galeria.prepareSentinelNodes();
-});
+persistence.notesAfterFetch(() => {
+  notas = new Notas(persistence);
+  persistence.executeAfterFetch(() => {
+    prepareWidgets();
+    notas.prepareSentinelNodes();
+    galeria.prepareSentinelNodes();
+  });
+})
+
 
 function habilitaPrincipal(){
   mainCss.disabled = false;

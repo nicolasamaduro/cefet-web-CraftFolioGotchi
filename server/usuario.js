@@ -21,6 +21,7 @@ module.exports.logarUsuario = function (usuario){
                 and senha=MD5('${usuario.senha}');`
     try{
        const resultado = db.executarQuery(sql);
+       //db.resetDb();
        if (resultado){
            return resultado[0];
        }

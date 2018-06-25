@@ -6,7 +6,7 @@ export default class Notas {
     this.notasEl = document.querySelector('#notas');
     this.converter = new showdown.Converter();
     this.fileListNotas = persistence.getNotes();
-
+    
     this.generateMdElements(this.notasEl, this.fileListNotas);
     this.notasEl.firstElementChild.classList.remove('hidden');
   }
@@ -49,9 +49,10 @@ export default class Notas {
     }
 
     for(let s of srcList){
+      console.log(s)
       const md = this.generateMdElement();
       md.dataset.url = s;
-      this.persistence.fetchText(s, (text) => fillMd(md, text, this.converter));
+      //this.persistence.fetchText(s, (text) => fillMd(md, text, this.converter));
 
       parent.appendChild(md);
     }
@@ -73,7 +74,7 @@ export default class Notas {
       });
       circleBot.addEventListener('click', (e) => {
         const md = this.generateMdElement();
-        md.dataset.url = persistence.addNote(true);
+        md.dataset.url = this.persistence.addNote(true);
         this.editMd({target:md});
         this.notasEl.insertBefore(md, this.notasEl.lastElementChild);
         this.notasEl.previousElementSibling.dispatchEvent(new Event('click'));

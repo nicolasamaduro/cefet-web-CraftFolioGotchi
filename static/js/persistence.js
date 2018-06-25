@@ -4,6 +4,8 @@ export default class Persistence{
   constructor(){
     this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
     this.imagelist = fetch(`/usuario/${this.username}/imagelist`).then(response => response.json())
+    this.notes = fetch(`/nota/${this.username}/obter`)
+    .then(response => response.json())
   }
 
   executeAfterFetch(callback){
@@ -38,19 +40,45 @@ export default class Persistence{
     }
   }
 
+  notesAfterFetch(callback){
+    Promise.all([this.notes]).then(callback)
+  }
+
   getNotes(){
+    
+    return this.notes
+
+    /*
     if(!localStorage['notes']){
       localStorage['notes'] = JSON.stringify([{id:0, url:'/notas/nota1.md'}, {id:1, url:'/notas/nota2.md'}]); //primeira execucao
     }
     const notes = JSON.parse(localStorage['notes']);
     notes.sort((a,b) => {return a.id - b.id});
-    return notes.map(x => x.url);
+    //return notes.map(x => x.url);*/
   }
+
+ 
 
   updateNote(note){
     const url = note.dataset.url;
     const text = note.firstElementChild.value;
-    localStorage[url] = text;
+    //localStorage[url] = text;
+
+    //let usuario = JSON.parse(window.sessionStorage.getItem('usuarioLogado'))
+
+    let payload = {
+      codigo: this.username,
+      text: text
+    };
+
+    fetch("/nota/addNota", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(payload)
+    })
   }
 
   addNote(addBack){
