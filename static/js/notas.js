@@ -1,11 +1,12 @@
 "strict mode"
 
 export default class Notas {
-  constructor(persistence){
+  constructor(persistence,paginaEditavel){
     this.persistence = persistence;
     this.notasEl = document.querySelector('#notas');
     this.converter = new showdown.Converter();
     this.fileListNotas = persistence.getNotes();
+    this.paginaEditavel=paginaEditavel;
 
     this.generateMdElements(this.notasEl, this.fileListNotas);
     this.notasEl.firstElementChild.classList.remove('hidden');
@@ -38,7 +39,9 @@ export default class Notas {
     md.appendChild(conteudo);
     md.classList.add('conteudo');
     md.classList.add('hidden');
+    if (this.paginaEditavel){
     md.addEventListener('dblclick', e => this.editMd(e));
+  }
     return md;
   }
 

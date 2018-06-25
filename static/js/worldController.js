@@ -19,9 +19,10 @@ const modalEl = document.querySelector('#modal');
 const mainCss = document.querySelector('link[href="/css/widgets.css"]');
 
 const removeList = [modalEl, canvas, chaoEl, switchContainerEl, widgetContainerEl];
+const paginaEditavel= isPaginaEditavel();
 
 function escondeSeletor(){
-    if (!isPaginaEditavel()){
+    if (!paginaEditavel){
         switchContainerEl.classList.add('hidden');
     }
 }
@@ -29,7 +30,7 @@ escondeSeletor();
 
 const persistence = new  Persistence();
 const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
-const notas = new Notas(persistence);
+const notas = new Notas(persistence,paginaEditavel);
 const fundo = new Fundo(widgetContainerEl, chaoEl);
 
 initGame();
@@ -85,7 +86,6 @@ function changeWidget(e){
 function prepareWidgets(){
   function makeSentinel(){
     const sentinel = document.createElement('div');
-    let paginaEditavel = isPaginaEditavel();
     let plus;
     if (paginaEditavel){
         plus = document.createElement('div')
