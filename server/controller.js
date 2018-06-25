@@ -1,18 +1,18 @@
-const usuario = require('./usuario.js');
+/*const usuario = require('./usuario.js');
 const imagens = require('./imagens.js');
 const notas = require('./notas.js');
 const fundo = require('./fundo.js');
-const fs = require('fs')
-const path = require('path')
-const mime = require('mime')
+const fs = require('fs');
+const path = require('path');
+const mime = require('mime');
 const multer = require("multer");
 
-
+*/
 module.exports.set = function(app) {
     app.get('/', function(req, res) {
         res.render('paginaInicial');
     });
-
+/*
     app.post('/cadastrar', function (req, res) {
        if (usuario.cadastrarUsuario(req.body)){           
             u = usuario.logarUsuario(req.body);
@@ -51,14 +51,6 @@ module.exports.set = function(app) {
       }
       res.send(JSON.stringify(resultado));
     });
-
-    
-    const handleError = (err, res) => {
-      res
-        .status(500)
-        .contentType("text/plain")
-        .end("Oops! Something went wrong!");
-    };
     
     const upload = multer({
       dest: "/usuario"
@@ -165,6 +157,5 @@ module.exports.set = function(app) {
           } else {
             res.status(400).send("Fundo não alterado.");
           }   
-    });
-
+    });*/
 }
