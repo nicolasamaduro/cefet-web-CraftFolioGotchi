@@ -1,4 +1,4 @@
-/*const usuario = require('./usuario.js');
+const usuario = require('./usuario.js');
 const imagens = require('./imagens.js');
 const notas = require('./notas.js');
 const fundo = require('./fundo.js');
@@ -7,14 +7,14 @@ const path = require('path');
 const mime = require('mime');
 const multer = require("multer");
 
-*/
+
 module.exports.set = function(app) {
     app.get('/', function(req, res) {
         res.render('paginaInicial');
     });
-/*
+
     app.post('/cadastrar', function (req, res) {
-       if (usuario.cadastrarUsuario(req.body)){           
+       if (usuario.cadastrarUsuario(req.body)){
             u = usuario.logarUsuario(req.body);
             fundo.cadastrarFundoPadrao(u.codigo);
             //cria diretório de imagens
@@ -42,9 +42,9 @@ module.exports.set = function(app) {
       } else {
         res.status(400).send("Mundo não encontrado.");
       }
-    });    
+    });
 
-    app.get('/usuario/:codigo/imagelist', function(req, res) {        
+    app.get('/usuario/:codigo/imagelist', function(req, res) {
       let resultado = imagens.listaImagensUsuario(req.params.codigo);
       if(resultado.length != 0){
         resultado = resultado.map(x => `/usuario/${req.params.codigo}/img/${x.url}`)
@@ -53,9 +53,9 @@ module.exports.set = function(app) {
     });
     
     const upload = multer({
-      dest: "/usuario"
+      dest: "usuario"
     });
-    
+
     app.post("/usuario/:codigo/adicionarImagem",  upload.single("file"),function  (req, res) {
         const nome= `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
         const localDeEscrita = path.join(__dirname, `../userdata/${req.params.codigo}/img/${nome}`);
@@ -71,7 +71,7 @@ module.exports.set = function(app) {
                 res.status(400).send("Falha ao cadastrar");
             }
         }catch(err){
-            console.log(err);            
+            console.log(err);
             res.status(400).send("Falha ao cadastrar");
         }
       }
@@ -157,5 +157,5 @@ module.exports.set = function(app) {
           } else {
             res.status(400).send("Fundo não alterado.");
           }   
-    });*/
+    });
 }
