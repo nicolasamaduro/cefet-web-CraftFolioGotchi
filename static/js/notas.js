@@ -23,7 +23,11 @@ export default class Notas {
     } else {
       md.dataset.text = textArea.value;
       conteudo.innerHTML = this.converter.makeHtml(md.dataset.text);
-      this.persistence.updateNote(md);
+      let upNota = this.persistence.testeNota(md);
+      console.log('updateNota: '+upNota)
+      Promise.all([upNota]).then(
+        md.dataset.url = upNota.codigo
+      )
     }
     textArea.classList.toggle('hidden');
     conteudo.classList.toggle('hidden');
@@ -38,7 +42,15 @@ export default class Notas {
     } else {
       md.dataset.text = textArea.value;
       conteudo.innerHTML = this.converter.makeHtml(md.dataset.text);
-      this.persistence.addNote(md);
+      let upNota = this.persistence.testeNota(md);
+      Promise.all([upNota]).then(function(json){
+        md.dataset.url = json[0].codigo
+      })
+
+/*
+        console.log('updateNota: '+upNota),
+        md.dataset.url = upNota.codigo
+      )*/
     }
     textArea.classList.toggle('hidden');
     conteudo.classList.toggle('hidden');
@@ -103,6 +115,7 @@ export default class Notas {
       circleTop.addEventListener('click', (e) => {
         const md = this.generateMdElementAdd();
         //md.dataset.url = this.persistence.addNote(false);
+        md.dataset.url = -1
         this.addMd({target:md});
         this.notasEl.insertBefore(md, this.notasEl.firstElementChild.nextElementSibling);
         this.notasEl.nextElementSibling.dispatchEvent(new Event('click'));
@@ -111,6 +124,7 @@ export default class Notas {
       circleBot.addEventListener('click', (e) => {
         const md = this.generateMdElementAdd();
         //md.dataset.url = this.persistence.addNote(true);
+        md.dataset.url = -1
         this.addMd({target:md});
         this.notasEl.insertBefore(md, this.notasEl.lastElementChild);
         this.notasEl.previousElementSibling.dispatchEvent(new Event('click'));

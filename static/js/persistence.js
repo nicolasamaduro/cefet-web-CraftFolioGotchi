@@ -41,16 +41,7 @@ export default class Persistence{
   }
 
   getNotes(){
-    
     return this.notes
-
-    /*
-    if(!localStorage['notes']){
-      localStorage['notes'] = JSON.stringify([{id:0, url:'/notas/nota1.md'}, {id:1, url:'/notas/nota2.md'}]); //primeira execucao
-    }
-    const notes = JSON.parse(localStorage['notes']);
-    notes.sort((a,b) => {return a.id - b.id});
-    //return notes.map(x => x.url);*/
   }
 
  
@@ -91,5 +82,42 @@ export default class Persistence{
       },
       body: JSON.stringify(payload)
     })
+    .then((codigo) => function(codigo){
+      console.log(codigo)
+      return codigo
+    })
   }
+
+  testeNota(note){
+    const url = note.dataset.url;
+    const text = note.firstElementChild.value;
+
+    let payload = {
+      codigo: url,
+      usuario: this.username,
+      text: text
+    };
+
+    let upNota = fetch("/nota/testeNota", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(res=>res.json())
+    /*
+    .then(res => {
+      if(res!='update'){
+        return res.codigo
+      }else{
+        console.log('update')
+        return res.codigo
+      }
+    });*/
+    return upNota
+  }
+
 }
+
