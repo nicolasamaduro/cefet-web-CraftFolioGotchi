@@ -1,4 +1,4 @@
-"strict mode"
+//"strict mode"
 import Persistence from './persistence.js'
 import Fundo from './fundo.js'
 import Galeria from './galeria.js'
@@ -19,23 +19,27 @@ const modalEl = document.querySelector('#modal');
 const mainCss = document.querySelector('link[href="/css/widgets.css"]');
 
 const removeList = [modalEl, canvas, chaoEl, switchContainerEl, widgetContainerEl];
+const paginaEditavel= isPaginaEditavel();
 
-const persistence = new Persistence();
+function escondeSeletor(){
+    if (!paginaEditavel){
+        switchContainerEl.classList.add('hidden');
+    }
+}
+escondeSeletor();
+
+const persistence = new  Persistence();
 const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
-let notas;
+const notas = new Notas(persistence,paginaEditavel);
 const fundo = new Fundo(widgetContainerEl, chaoEl);
 
 initGame();
 
-persistence.notesAfterFetch(() => {
-  notas = new Notas(persistence);
-  persistence.executeAfterFetch(() => {
-    prepareWidgets();
-    notas.prepareSentinelNodes();
-    galeria.prepareSentinelNodes();
-  });
-})
-
+persistence.executeAfterFetch(() => {
+  prepareWidgets();
+  notas.prepareSentinelNodes();
+  galeria.prepareSentinelNodes();
+});
 
 function habilitaPrincipal(){
   mainCss.disabled = false;
@@ -79,7 +83,6 @@ function changeWidget(e){
 function prepareWidgets(){
   function makeSentinel(){
     const sentinel = document.createElement('div');
-    let paginaEditavel = isPaginaEditavel();
     let plus;
     if (paginaEditavel){
         plus = document.createElement('div')
@@ -131,13 +134,4 @@ function isPaginaEditavel(){
     return paginalEditavel;
 }
 
-craftFolioGotchiApp.controller('WorldController',
-    function($http,$mdDialog) {
-        var worldCrtl=this;
-        function inicializar(){
-            worldCrtl.paginaEditavel = isPaginaEditavel();
-        }
-        inicializar();
 
-    }
-);

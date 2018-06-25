@@ -5,16 +5,10 @@
   <title>Canvas Test</title>
   <link rel='stylesheet' href='/css/widgets.css'>
   <link rel='stylesheet' href='/css/modal.css'>
-  <link rel="stylesheet" href="/angular-material/angular-material.min.css">
-  <script src="/angular/angular.min.js"></script>
-  <script src="/angular-aria/angular-aria.js"></script>
-  <script src="/angular-animate/angular-animate.js"></script>
-  <script src="/angular-material/angular-material.min.js"></script>
-  <script src="/angular-messages/angular-messages.js"></script>
   <script src="/js/showdown.min.js"></script>
-  <script src="/js/craftFolioGotchiApp.js"></script>
+ 
 </head>
-<body ng-app="craftFolioGotchiApp" ng-controller="WorldController as worldCrtl">
+<body ng-app="craftFolioGotchiApp">
   <div class='widget-container'>
     <div class='widget'>
       <div class='nextprev'><div class="arrow-up"></div></div>
@@ -30,7 +24,7 @@
       <div class='nextprev'><div class="arrow-down"></div></div>
     </div>
   </div>
-  <div class="switch_container" ng-if='worldCrtl.paginaEditavel'>
+  <div class="switch_container" >
     <label>Modo edição</label>
     <input id="switch-shadow" class="switch switch--shadow" type="checkbox">
     <label for="switch-shadow"></label>
@@ -55,7 +49,9 @@
       <div class="modal-content" data-formname='image'>
         <input type='url'></input>
       </div>
-      <button>Aplicar</button>
+      <div class="messagem-retorno alert">        
+      </div>
+      <button>Salvar</button>
   	</div>
   </div>
   <canvas>

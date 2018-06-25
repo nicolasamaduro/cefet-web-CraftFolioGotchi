@@ -4,12 +4,11 @@ export default class Persistence{
   constructor(){
     this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
     this.imagelist = fetch(`/usuario/${this.username}/imagelist`).then(response => response.json())
-    this.notes = fetch(`/nota/${this.username}/obter`)
-    .then(response => response.json())
+    this.notes = fetch(`/nota/${this.username}/obter`).then(response => response.json())
   }
 
   executeAfterFetch(callback){
-    Promise.all([this.imagelist]).then(callback)
+    Promise.all([this.imagelist, this.notes]).then(callback)
   }
 
   getImages(){
@@ -17,6 +16,7 @@ export default class Persistence{
   }
 
   addImage(url, addBack){
+
     const images = JSON.parse(localStorage['images']);
     let id;
     if(addBack){
@@ -40,10 +40,6 @@ export default class Persistence{
     }
   }
 
-  notesAfterFetch(callback){
-    Promise.all([this.notes]).then(callback)
-  }
-
   getNotes(){
     
     return this.notes
@@ -62,12 +58,28 @@ export default class Persistence{
   updateNote(note){
     const url = note.dataset.url;
     const text = note.firstElementChild.value;
-    //localStorage[url] = text;
-
-    //let usuario = JSON.parse(window.sessionStorage.getItem('usuarioLogado'))
 
     let payload = {
-      codigo: this.username,
+      codigo: url,
+      usuario: this.username,
+      text: text
+    };
+
+    fetch("/nota/updateNota", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(payload)
+    })
+  }
+
+  addNote(note){
+    const text = note.firstElementChild.value;
+
+    let payload = {
+      usuario: this.username,
       text: text
     };
 
@@ -79,23 +91,5 @@ export default class Persistence{
       },
       body: JSON.stringify(payload)
     })
-  }
-
-  addNote(addBack){
-    const notes = JSON.parse(localStorage['notes']);
-    let id;
-    let url;
-    if(addBack){
-      id = notes[notes.length-1].id+1;
-      url = `note-${id}`;
-      notes.push({id,url});
-    } else {
-      id = notes[0].id-1;
-      url = `note-${id}`;
-      notes.unshift({id,url});
-    }
-    localStorage[url]='';
-    localStorage['notes'] = JSON.stringify(notes);
-    return url;
   }
 }

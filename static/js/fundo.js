@@ -7,11 +7,46 @@ export default class Fundo{
 
     this.prepareEditSwitch();
     this.prepareModal();
+    this.setInitialBackground();
+    
+  }
+
+   limpaMensagemDeRetorno() {
+    let messagemRetorno=  document.querySelector('.messagem-retorno');
+    messagemRetorno.classList.remove("alert-danger");
+    messagemRetorno.classList.remove("alert-success");
+    messagemRetorno.textContent='';  
+  }
+
+  setInitialBackground(){
+    this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
+    fetch(`/fundo/${this.username}/obter`)
+    .then( response=>response.json())
+    .then(function(fundo) {
+
+      let widgetContainer = document.querySelector('.widget-container'); 
+      let chao = document.querySelector('.chao'); 
+      if (fundo.tipo_atual=="cor"){
+        widgetContainer.style.backgroundColor=fundo.cor1;
+      }else if (fundo.tipo_atual=="gradiente"){
+        widgetContainer.style.backgroundImage=`linear-gradient(${fundo.cor1},${fundo.cor2})`;
+      }else{
+        widgetContainer.style.backgroundImage=`url(${fundo.urlImage})`;
+        widgetContainer.style.backgroundSize='cover';
+      }
+      if (fundo.tipo_atual_chao=="cor"){
+        chao.style.backgroundColor=fundo.cor1_chao;
+      }else if (fundo.tipo_atual_chao=="gradiente"){
+        chao.style.backgroundImage=`linear-gradient(${fundo.cor1_chao},${fundo.cor2_chao})`;
+      }else{
+        chao.style.backgroundImage=`url(${fundo.urlImage_chao})`;
+        chao.style.backgroundSize='cover';
+      }
+    })
   }
 
   prepareEditSwitch(){
     this.editSwitchEl = document.querySelector('.switch--shadow');
-    if (this.editSwitchEl){
       this.editSwitchEl.checked=false;
       this.editSwitchEl.addEventListener('click', (e) => {
         if(e.target.checked){
@@ -22,7 +57,6 @@ export default class Fundo{
           this.chao.style.border=null;
         }
       });
-    }
   }
 
   prepareModal(){
@@ -41,7 +75,7 @@ export default class Fundo{
     for(let t of this.modalTabsEl){
       t.formlink = document.querySelector(`[data-formname=${t.dataset.formlink}]`);
       t.formlink.classList.add('hidden');
-      t.addEventListener('click', (e) => this.activateTab(e));
+      t.addEventListener('click', (e) => {this.activateTab(e); this.limpaMensagemDeRetorno();});
     }
 
     this.activeTab = this.modalTabsEl[0];
@@ -72,6 +106,7 @@ export default class Fundo{
   }
 
   deactivateModal(e){
+    this.limpaMensagemDeRetorno();
     if(e.eventPhase == Event.AT_TARGET){
       this.modalEl.classList.remove('active');
     }
@@ -108,14 +143,74 @@ export default class Fundo{
     this.editTarget.style.backgroundSize='cover';
   }
 
-  buttonAction(e){
+  buttonAction(e){    
+    this.limpaMensagemDeRetorno();
+    let payload = null;
     const formtype = this.activeTab.dataset.formlink;
     if(formtype == 'color'){
       this.applyBgColor({target:this.colorInputEl});
-    } else if(formtype == 'gradient'){
+      if (this.editTarget.classList.value=='widget-container'){
+        payload = {
+          cor1: this.colorInputEl.value,
+          tipo_atual:'cor'
+        };
+      }else{
+        payload = {
+          cor1_chao: this.colorInputEl.value,
+          tipo_atual_chao:'cor'
+        };
+      }
+    } else if(formtype == 'gradient'){      
       this.applyBgGradient({target:this.gradientInputEl1});
+      if (this.editTarget.classList.value=='widget-container'){
+        payload = {
+          cor1: this.gradientInputEl1.value,
+          cor2: this.gradientInputEl2.value,
+          tipo_atual:'gradiente'
+        };
+      }else{
+        payload = {
+          cor1_chao: this.gradientInputEl1.value,
+          cor2_chao: this.gradientInputEl2.value,
+          tipo_atual_chao:'gradiente'
+        };
+      }
     } else {
       this.applyBgImage({target:this.imageInputEl});
-    }
+      if (this.editTarget.classList.value=='widget-container'){
+        payload = {
+          urlImage:this.imageInputEl.value,
+          tipo_atual:'imagem'
+        };
+      }else{
+        payload = {
+          urlImage_chao: this.imageInputEl.value,
+          tipo_atual_chao:'imagem'
+        };
+      }
+    }    
+  
+    let data = new FormData();
+    data.append( "json", JSON.stringify( payload ) );
+    fetch(`/fundo/${this.username}/cadastrar/`,
+    {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify( payload )
+    }).then(res=>res)
+    .then(res => {
+      let messagemRetorno=  document.querySelector('.messagem-retorno');
+      if (res.status==200){
+        messagemRetorno.classList.add("alert-success");
+        messagemRetorno.textContent='Sucesso ao salvar fundo';
+      }else{
+        messagemRetorno.classList.add("alert-danger");
+        messagemRetorno.textContent='Falha ao alterar fundo';
+      }
+    });
   }
+  
+  
 }
