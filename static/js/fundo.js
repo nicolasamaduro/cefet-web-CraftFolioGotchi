@@ -11,6 +11,13 @@ export default class Fundo{
     
   }
 
+   limpaMensagemDeRetorno() {
+    let messagemRetorno=  document.querySelector('.messagem-retorno');
+    messagemRetorno.classList.remove("alert-danger");
+    messagemRetorno.classList.remove("alert-success");
+    messagemRetorno.textContent='';  
+  }
+
   setInitialBackground(){
     this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
     fetch(`/fundo/${this.username}/obter`)
@@ -68,7 +75,7 @@ export default class Fundo{
     for(let t of this.modalTabsEl){
       t.formlink = document.querySelector(`[data-formname=${t.dataset.formlink}]`);
       t.formlink.classList.add('hidden');
-      t.addEventListener('click', (e) => this.activateTab(e));
+      t.addEventListener('click', (e) => {this.activateTab(e); this.limpaMensagemDeRetorno();});
     }
 
     this.activeTab = this.modalTabsEl[0];
@@ -99,6 +106,7 @@ export default class Fundo{
   }
 
   deactivateModal(e){
+    this.limpaMensagemDeRetorno();
     if(e.eventPhase == Event.AT_TARGET){
       this.modalEl.classList.remove('active');
     }
@@ -136,6 +144,7 @@ export default class Fundo{
   }
 
   buttonAction(e){    
+    this.limpaMensagemDeRetorno();
     let payload = null;
     const formtype = this.activeTab.dataset.formlink;
     if(formtype == 'color'){
@@ -190,6 +199,18 @@ export default class Fundo{
           'Content-Type': 'application/json'
         },
         body: JSON.stringify( payload )
-    })
+    }).then(res=>res)
+    .then(res => {
+      let messagemRetorno=  document.querySelector('.messagem-retorno');
+      if (res.status==200){
+        messagemRetorno.classList.add("alert-success");
+        messagemRetorno.textContent='Sucesso ao salvar fundo';
+      }else{
+        messagemRetorno.classList.add("alert-danger");
+        messagemRetorno.textContent='Falha ao alterar fundo';
+      }
+    });
   }
+  
+  
 }

@@ -6,6 +6,26 @@ body, html, .widget-container {
     overflow: hidden;
 }
 
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+.alert {
+  padding: 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-family: Verdana,sans-serif;
+    font-size: 15px;
+}
+
 .widget-container{
   height: 95%;
 }

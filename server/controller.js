@@ -92,7 +92,10 @@ module.exports.set = function(app) {
             f.urlImage_chao=req.body.urlImage_chao;
             f.tipo_atual_chao=req.body.tipo_atual_chao;
         }
-        fundo.alterarFundo(f);
-        
+        if(fundo.alterarFundo(f)){
+            res.send("Fundo alterado com sucesso");
+          } else {
+            res.status(400).send("Fundo não alterado.");
+          }   
     });
 }
