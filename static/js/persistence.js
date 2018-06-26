@@ -52,9 +52,7 @@ export default class Persistence{
     return this.notes
   }
 
- 
-
-  updateNote(note){
+  updateNota(note){
     const url = note.dataset.url;
     const text = note.firstElementChild.value;
 
@@ -64,49 +62,7 @@ export default class Persistence{
       text: text
     };
 
-    fetch("/nota/updateNota", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify(payload)
-    })
-  }
-
-  addNote(note){
-    const text = note.firstElementChild.value;
-
-    let payload = {
-      usuario: this.username,
-      text: text
-    };
-
-    fetch("/nota/addNota", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify(payload)
-    })
-    .then((codigo) => function(codigo){
-      console.log(codigo)
-      return codigo
-    })
-  }
-
-  testeNota(note){
-    const url = note.dataset.url;
-    const text = note.firstElementChild.value;
-
-    let payload = {
-      codigo: url,
-      usuario: this.username,
-      text: text
-    };
-
-    let upNota = fetch("/nota/testeNota", {
+    let upNota = fetch("/nota/updateNota", {
       method: "POST",
       headers: {
         'Accept': 'application/json, text/plain, */*',
@@ -115,15 +71,7 @@ export default class Persistence{
       body: JSON.stringify(payload)
     })
     .then(res=>res.json())
-    /*
-    .then(res => {
-      if(res!='update'){
-        return res.codigo
-      }else{
-        console.log('update')
-        return res.codigo
-      }
-    });*/
+    
     return upNota
   }
 
