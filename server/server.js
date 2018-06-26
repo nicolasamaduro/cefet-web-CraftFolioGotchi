@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 
 controller.set(app);
 
-const port =process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 const server = app.listen(port, () => {
-  console.log('Escutando em: http://localhost:'+port + " ou em https://craft-folio-gotchi-cefet.herokuapp.com:"+port );
+  console.log(`Escutando em: http://localhost:${port} ou em https://craft-folio-gotchi-cefet.herokuapp.com:${port}`);
 });

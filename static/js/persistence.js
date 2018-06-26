@@ -16,25 +16,13 @@ export default class Persistence{
   }
 
   addImage(url, addBack){
-
-      
-    var formData = new FormData();
+    const formData = new FormData();
     formData.append('image', url);
     fetch(`/usuario/${this.username}/adicionarImagem/`,
     {
         method: "POST",
-        body:formData
+        body: formData
     })
-    /*const images = JSON.parse(localStorage['images']);
-    let id;
-    if(addBack){
-      id = images[images.length-1].id+1;
-      images.push({id,url});
-    } else {
-      id = images[0].id-1;
-      images.unshift({id,url});
-    }
-    localStorage['images'] = JSON.stringify(images);*/
   }
 
 
@@ -52,7 +40,7 @@ export default class Persistence{
     return this.notes
   }
 
- 
+
 
   updateNote(note){
     const url = note.dataset.url;
@@ -68,7 +56,7 @@ export default class Persistence{
       method: "POST",
       headers: {
         'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     })
@@ -86,12 +74,11 @@ export default class Persistence{
       method: "POST",
       headers: {
         'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     })
     .then((codigo) => function(codigo){
-      console.log(codigo)
       return codigo
     })
   }
@@ -110,7 +97,7 @@ export default class Persistence{
       method: "POST",
       headers: {
         'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     })
@@ -128,4 +115,3 @@ export default class Persistence{
   }
 
 }
-

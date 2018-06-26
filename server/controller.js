@@ -51,17 +51,17 @@ module.exports.set = function(app) {
       }
       res.send(JSON.stringify(resultado));
     });
-    
+
     const upload = multer({
       dest: "usuario"
     });
 
-    app.post("/usuario/:codigo/adicionarImagem",  upload.single("file"),function  (req, res) {
-        const nome= `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
+    app.post("/usuario/:codigo/adicionarImagem", upload.single("file"),function  (req, res) {
+        const nome = `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
         const localDeEscrita = path.join(__dirname, `../userdata/${req.params.codigo}/img/${nome}`);
-        const base64Data =req.body.image.replace(/^data:image\/png;base64,/, "");
+        const base64Data = req.body.image.replace(/^data:image\/.{1,5};base64,/, "");
         try{
-            require("fs").writeFileSync(localDeEscrita, base64Data, 'base64');
+            fs.writeFileSync(localDeEscrita, base64Data, 'base64');
             if (imagens.cadastrarImagemUsuario({
                 url:nome,
                 usuario:req.params.codigo
@@ -156,6 +156,6 @@ module.exports.set = function(app) {
             res.send("Fundo alterado com sucesso");
           } else {
             res.status(400).send("Fundo não alterado.");
-          }   
+          }
     });
 }
