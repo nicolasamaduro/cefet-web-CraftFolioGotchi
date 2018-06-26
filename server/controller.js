@@ -56,6 +56,25 @@ module.exports.set = function(app) {
       dest: "usuario"
     });
 
+    app.post('/usuario/:codigo/alterarGhost', function(req, res) {  
+        if ( usuario.alterarGhostUsuario(req.params.codigo,req.body.ghost)){
+            res.send("Alterado com sucesso");
+         } else {
+            res.status(400).send("Não foi possível alterar.");
+        }
+    });
+
+    app.get('/usuario/:codigo/obterGhost', function(req, res) {
+        let g = usuario.recuperarGhost(req.params.codigo);
+        if(g){
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify({ghost:g}))
+        } else {
+          res.status(400).send("Ghost não encontrado.");
+        }
+    });
+  
+     
     app.post("/usuario/:codigo/adicionarImagem", upload.single("file"),function  (req, res) {
         const nome = `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
         const localDeEscrita = path.join(__dirname, `../userdata/${req.params.codigo}/img/${nome}`);

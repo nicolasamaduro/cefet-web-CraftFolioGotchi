@@ -15,6 +15,8 @@ const switchContainerEl = document.querySelector('.switch_container');
 const chaoEl = document.querySelector('.chao');
 const canvas = document.querySelector('canvas');
 const modalEl = document.querySelector('#modal');
+const ghostEl = document.querySelector('.ghosts');
+const username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
 
 const mainCss = document.querySelector('link[href="/css/widgets.css"]');
 
@@ -27,13 +29,13 @@ function escondeSeletor(){
     }
 }
 escondeSeletor();
+prepareGhosts();
 
 const persistence = new Persistence();
 const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
 const notas = new Notas(persistence,paginaEditavel);
-const fundo = new Fundo(widgetContainerEl, chaoEl);
+const fundo = new Fundo(widgetContainerEl, chaoEl,ghostEl);
   
-initGame('/images/ghost.png');
 
 persistence.executeAfterFetch(() => {
   prepareWidgets();
@@ -47,6 +49,29 @@ function habilitaPrincipal(){
   for (const r of removeList){
     bodyEl.prepend(r);
   }
+}
+
+function prepareGhosts(){  
+  fetch(`/usuario/${username}/obterGhost/`)
+  .then( response=>response.json())
+  .then(function(ghost) {
+    initGame(ghost.ghost);
+  });
+
+  ghostEl.childNodes.forEach(function(ghost){
+    ghost.addEventListener('click',function(e){
+      let novaSrc = e.target.getAttribute("src").replace('unicos','completos');
+      initGame(novaSrc);
+      fetch(`/usuario/${username}/alterarGhost/`,
+      {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:  JSON.stringify({ghost:novaSrc})
+      })
+    })
+  });
 }
 
 function changeWidget(e){
@@ -116,19 +141,11 @@ function prepareWidgets(){
 }
 
 function isPaginaEditavel(){
-    let regex = /[0-9]*$/gm;
-    let match = regex.exec(window.location.href);
-    let codigoPagina=0;
-    let paginalEditavel=false;
-    if (match){
-        codigoPagina = match[0];
-    }
     let usarioLogadoStr = sessionStorage['usuarioLogado'];
+    let paginalEditavel=false;
     if (usarioLogadoStr){
         const usarioLogado = JSON.parse(usarioLogadoStr);
-        if (codigoPagina == usarioLogado.codigo){
-            paginalEditavel = true;
-        }
+        paginalEditavel = username == usarioLogado.codigo;
     }
     return paginalEditavel;
 }

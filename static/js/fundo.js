@@ -1,9 +1,11 @@
 "strict mode"
 
 export default class Fundo{
-  constructor(widgetContainerEl, chaoEl){
+  constructor(widgetContainerEl, chaoEl,ghostEl){
     this.chao = chaoEl;
     this.widgetContainer = widgetContainerEl;
+
+    this.ghostEl =ghostEl;
 
     this.prepareEditSwitch();
     this.prepareModal();
@@ -52,7 +54,11 @@ export default class Fundo{
         if(e.target.checked){
           this.widgetContainer.style.border=('3px dashed #00bfff');
           this.chao.style.border=('2px dashed #ffffff');
-        } else {
+          this.ghostEl.classList.remove("hidden");
+          this.widgetContainer.classList.add("widget-container-editando");
+        } else {          
+          this.ghostEl.classList.add("hidden");
+          this.widgetContainer.classList.remove("widget-container-editando");
           this.widgetContainer.style.border=null;
           this.chao.style.border=null;
         }
@@ -189,9 +195,7 @@ export default class Fundo{
         };
       }
     }    
-  
-    let data = new FormData();
-    data.append( "json", JSON.stringify( payload ) );
+
     fetch(`/fundo/${this.username}/cadastrar/`,
     {
         method: "POST",

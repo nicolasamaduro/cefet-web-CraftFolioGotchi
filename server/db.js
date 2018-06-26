@@ -17,16 +17,19 @@ module.exports.executarQuery = function (sql){
 
 module.exports.resetDb = function(){
   queries=[
+    `drop table imagens`,
+    `drop table notas`,
+    `drop table fundo`,
     'drop table usuario',
     `create table usuario(
       codigo int(11) not null auto_increment,
       usuario varchar(45) not null,
       email varchar(200) not null,
       senha char(32) not null,
+      ghost varchar(45) not null
       PRIMARY KEY (codigo)
     )`,
     'describe usuario',
-    `drop table imagens`,
     `create table imagens(
       codigo int(11) not null auto_increment,
       usuario int(11) not null,
@@ -35,7 +38,6 @@ module.exports.resetDb = function(){
       primary key (codigo)
     )`,
     'describe imagens',
-    `drop table notas`,
     `create table notas(
       codigo int(11) not null auto_increment,
       usuario int(11) not null,
@@ -44,7 +46,6 @@ module.exports.resetDb = function(){
       primary key (codigo)
     )`,
     'describe notas',
-    `drop table fundo`,
     `create table fundo(
 	  codigo int auto_increment,
     tipo_atual varchar(10) not null,

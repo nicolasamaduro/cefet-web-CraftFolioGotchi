@@ -15,7 +15,7 @@ export default class Persistence{
     return this.imagelist;
   }
 
-  addImage(url, addBack){
+  addImage(url){
     const formData = new FormData();
     formData.append('image', url);
     fetch(`/usuario/${this.username}/adicionarImagem/`,
