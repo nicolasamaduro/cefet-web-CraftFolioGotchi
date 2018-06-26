@@ -28,7 +28,7 @@ function escondeSeletor(){
 }
 escondeSeletor();
 
-const persistence = new  Persistence();
+const persistence = new Persistence();
 const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
 const notas = new Notas(persistence,paginaEditavel);
 const fundo = new Fundo(widgetContainerEl, chaoEl);
@@ -123,15 +123,12 @@ function isPaginaEditavel(){
     if (match){
         codigoPagina = match[0];
     }
-    let usarioLogadoStr =sessionStorage['usuarioLogado'];
-    let usarioLogado;
+    let usarioLogadoStr = sessionStorage['usuarioLogado'];
     if (usarioLogadoStr){
-        usarioLogado = JSON.parse(usarioLogadoStr);
+        const usarioLogado = JSON.parse(usarioLogadoStr);
         if (codigoPagina == usarioLogado.codigo){
             paginalEditavel = true;
         }
     }
     return paginalEditavel;
 }
-
-

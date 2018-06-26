@@ -18,12 +18,12 @@ craftFolioGotchiApp.controller('PaginaInicialController',
                     mostrarDialog("Falha","As senhas não estão iguais.");
                     return;
                 }
-                let payloadCadastro= {
-                    usuario : paginaInicialCrtl.usuario,
-                    senha : paginaInicialCrtl.senha,
-                    email : paginaInicialCrtl.email
+                const payloadCadastro= {
+                    usuario: paginaInicialCrtl.usuario,
+                    senha: paginaInicialCrtl.senha,
+                    email: paginaInicialCrtl.email
                 }
-                $http.post( '/cadastrar', payloadCadastro)
+                $http.post('/cadastrar', payloadCadastro)
                 .then(function(response) {
                     mostrarDialog("Sucesso",response.data);
                 },

@@ -51,17 +51,17 @@ module.exports.set = function(app) {
       }
       res.send(JSON.stringify(resultado));
     });
-    
+
     const upload = multer({
       dest: "usuario"
     });
 
-    app.post("/usuario/:codigo/adicionarImagem",  upload.single("file"),function  (req, res) {
-        const nome= `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
+    app.post("/usuario/:codigo/adicionarImagem", upload.single("file"),function  (req, res) {
+        const nome = `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
         const localDeEscrita = path.join(__dirname, `../userdata/${req.params.codigo}/img/${nome}`);
-        const base64Data =req.body.image.replace(/^data:image\/png;base64,/, "");
+        const base64Data = req.body.image.replace(/^data:image\/.{1,5};base64,/, "");
         try{
-            require("fs").writeFileSync(localDeEscrita, base64Data, 'base64');
+            fs.writeFileSync(localDeEscrita, base64Data, 'base64');
             if (imagens.cadastrarImagemUsuario({
                 url:nome,
                 usuario:req.params.codigo
@@ -92,28 +92,13 @@ module.exports.set = function(app) {
       });
     });
 
-
     app.post('/nota/updateNota', function(req, res) {
-        notas.updateNota(req.body.codigo, req.body.usuario, req.body.text);
-    });
-
-    app.post('/nota/testeNota', function(req, res) {
-        let query = notas.testeNota(req.body.codigo, req.body.usuario, req.body.text);
+        let query = notas.updateNota(req.body.codigo, req.body.usuario, req.body.text);
         if(query != 'update'){
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify(query[0]))
         }else{
             res.send(JSON.stringify({'codigo': req.body.codigo}));
-        }
-    });
-
-    app.post('/nota/addNota', function(req, res) {
-        let novaNota = notas.addNota(req.body.usuario, req.body.text);
-        if(novaNota){
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify(novaNota))
-        }else{
-            res.status(400).send("Nota não adicionada.");
         }
     });
 
@@ -156,6 +141,6 @@ module.exports.set = function(app) {
             res.send("Fundo alterado com sucesso");
           } else {
             res.status(400).send("Fundo não alterado.");
-          }   
+          }
     });
 }

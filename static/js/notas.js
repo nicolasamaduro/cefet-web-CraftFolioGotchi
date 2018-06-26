@@ -14,25 +14,6 @@ export default class Notas {
     })
   }
 
-  editMd(e){
-    const md = e.target.classList.contains('conteudo')? e.target:e.target.parentElement;
-    const textArea = md.firstElementChild;
-    const conteudo = md.lastElementChild;
-    if(textArea.classList.contains('hidden')){
-      textArea.value = md.dataset.text;
-    } else {
-      md.dataset.text = textArea.value;
-      conteudo.innerHTML = this.converter.makeHtml(md.dataset.text);
-      let upNota = this.persistence.testeNota(md);
-      console.log('updateNota: '+upNota)
-      Promise.all([upNota]).then(
-        md.dataset.url = upNota.codigo
-      )
-    }
-    textArea.classList.toggle('hidden');
-    conteudo.classList.toggle('hidden');
-  }
-
   addMd(e){
     const md = e.target.classList.contains('conteudo')? e.target:e.target.parentElement;
     const textArea = md.firstElementChild;
@@ -42,36 +23,13 @@ export default class Notas {
     } else {
       md.dataset.text = textArea.value;
       conteudo.innerHTML = this.converter.makeHtml(md.dataset.text);
-      let upNota = this.persistence.testeNota(md);
+      let upNota = this.persistence.updateNota(md);
       Promise.all([upNota]).then(function(json){
         md.dataset.url = json[0].codigo
       })
-
-/*
-        console.log('updateNota: '+upNota),
-        md.dataset.url = upNota.codigo
-      )*/
     }
     textArea.classList.toggle('hidden');
     conteudo.classList.toggle('hidden');
-  }
-
-  generateMdElementAdd(){
-    const md = document.createElement('div');
-    const textArea = document.createElement('textarea');
-    const conteudo = document.createElement('div');
-    conteudo.classList.add('user-markdown');
-    textArea.classList.add('hidden');
-    textArea.style.width = '90%';
-    textArea.style.height = '90%';
-    md.appendChild(textArea);
-    md.appendChild(conteudo);
-    md.classList.add('conteudo');
-    md.classList.add('hidden');
-    if (this.paginaEditavel){
-      md.addEventListener('dblclick', e => this.addMd(e));
-    }
-    return md;
   }
 
   generateMdElement(){
@@ -87,7 +45,7 @@ export default class Notas {
     md.classList.add('conteudo');
     md.classList.add('hidden');
     if (this.paginaEditavel){
-    md.addEventListener('dblclick', e => this.editMd(e));
+    md.addEventListener('dblclick', e => this.addMd(e));
   }
     return md;
   }
@@ -97,7 +55,7 @@ export default class Notas {
       md.dataset.text = text;
       md.lastElementChild.innerHTML = converter.makeHtml(text);
     }
-    
+
     for(let s of srcList){
       const md = this.generateMdElement();
       md.dataset.url = s.codigo;
@@ -106,30 +64,21 @@ export default class Notas {
     }
   }
 
+  onClickPlus(insertBefore, dispatchTo){
+    const md = this.generateMdElement();
+    md.dataset.url = -1
+    this.addMd({target:md});
+    this.notasEl.insertBefore(md, insertBefore);
+    dispatchTo.dispatchEvent(new Event('click'));
+    md.firstElementChild.value = '';
+  }
+
   prepareSentinelNodes(){
     const sentinelTop = this.notasEl.firstElementChild;
     const sentinelBot = this.notasEl.lastElementChild;
     const circleTop = sentinelTop.firstElementChild;
     const circleBot = sentinelBot.firstElementChild;
-    if (circleTop &&circleBot){
-      circleTop.addEventListener('click', (e) => {
-        const md = this.generateMdElementAdd();
-        //md.dataset.url = this.persistence.addNote(false);
-        md.dataset.url = -1
-        this.addMd({target:md});
-        this.notasEl.insertBefore(md, this.notasEl.firstElementChild.nextElementSibling);
-        this.notasEl.nextElementSibling.dispatchEvent(new Event('click'));
-        md.firstElementChild.value = '';
-      });
-      circleBot.addEventListener('click', (e) => {
-        const md = this.generateMdElementAdd();
-        //md.dataset.url = this.persistence.addNote(true);
-        md.dataset.url = -1
-        this.addMd({target:md});
-        this.notasEl.insertBefore(md, this.notasEl.lastElementChild);
-        this.notasEl.previousElementSibling.dispatchEvent(new Event('click'));
-        md.firstElementChild.value = '';
-      })
-    }
+    circleTop.addEventListener('click', (e) => this.onClickPlus(this.notasEl.firstElementChild.nextElementSibling, this.notasEl.nextElementSibling));
+    circleBot.addEventListener('click', (e) => this.onClickPlus(this.notasEl.lastElementChild, this.notasEl.previousElementSibling));
   }
 }

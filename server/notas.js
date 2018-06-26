@@ -16,7 +16,7 @@ module.exports.recuperarNota = function(usuario){
 }
 
 
-module.exports.testeNota = function(codigo, usuario, text) {
+module.exports.updateNota = function(codigo, usuario, text) {
 
     const sql_query = `SELECT * FROM notas 
                         WHERE usuario=${usuario} AND codigo=${codigo}`
