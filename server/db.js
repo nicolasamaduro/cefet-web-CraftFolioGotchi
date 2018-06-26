@@ -26,7 +26,9 @@ module.exports.resetDb = function(){
       usuario varchar(45) not null,
       email varchar(200) not null,
       senha char(32) not null,
-      ghost varchar(45) not null
+      ghost varchar(45) not null,
+      CONSTRAINT email_unico UNIQUE (email),
+      CONSTRAINT usuario_unico UNIQUE (usuario),
       PRIMARY KEY (codigo)
     )`,
     'describe usuario',

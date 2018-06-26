@@ -55,13 +55,13 @@ function prepareGhosts(){
   fetch(`/usuario/${username}/obterGhost/`)
   .then( response=>response.json())
   .then(function(ghost) {
-    initGame(ghost.ghost);
+    initGame(ghost.ghost,true);
   });
 
   ghostEl.childNodes.forEach(function(ghost){
     ghost.addEventListener('click',function(e){
       let novaSrc = e.target.getAttribute("src").replace('unicos','completos');
-      initGame(novaSrc);
+      initGame(novaSrc,false);
       fetch(`/usuario/${username}/alterarGhost/`,
       {
         method: "POST",

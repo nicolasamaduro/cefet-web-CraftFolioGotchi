@@ -194,17 +194,19 @@ function clear() {
 
 let player;
 let context;
-export default function initGame(imgSrc){
+export default function initGame(imgSrc, controleUnicidade){
 	player= new Player(imgSrc);
 	context = canvas.getContext("2d");
 	const NO_GAME = false;
 	if(NO_GAME){
 		canvas.remove();
 	} else {
-		window.addEventListener('resize', resize, false);
-		resize();
-		window.addEventListener('keydown',handleKeyDown,true);
-		window.addEventListener('keyup',handleKeyUp,true);
-		window.requestAnimationFrame(update);
+		if (controleUnicidade){
+			window.addEventListener('resize', resize, false);
+			resize();
+			window.addEventListener('keydown',handleKeyDown,true);
+			window.addEventListener('keyup',handleKeyUp,true);
+			window.requestAnimationFrame(update);
+		}
 	}
 }

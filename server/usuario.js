@@ -1,7 +1,7 @@
 const db = require('./db.js');
 module.exports.cadastrarUsuario = function (usuario){
     let ghostNum = Math.floor(Math.random() * 10)+1;
-    let ghostDir = '/images/ghosts/completas/'+ghostNum;
+    let ghostDir = '/images/ghosts/completos/'+ghostNum+'.png';
     const sql =`INSERT INTO usuario(usuario,email,senha,ghost)
               VALUES('${usuario.usuario}', '${usuario.email}', MD5('${usuario.senha}'),'${ghostDir}')`
     try{
