@@ -48,9 +48,9 @@ export default class Galeria{
     const titulo = document.createElement('h1')
     const voltarBtn = document.createElement('span');
     const galeriaDiv = document.createElement('div');
-    galeriaJs.src = 'js/masonry.pkgd.min.js';
+    galeriaJs.src = '/js/masonry.pkgd.min.js';
     galeriaCss.rel='stylesheet';
-    galeriaCss.href='css/galeria.css';
+    galeriaCss.href='/css/galeria.css';
     titulo.innerHTML = 'Galeria';
     voltarBtn.id='voltar-principal';
 
