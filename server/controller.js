@@ -2,9 +2,9 @@ const usuario = require('./usuario.js');
 const imagens = require('./imagens.js');
 const notas = require('./notas.js');
 const fundo = require('./fundo.js');
-const fs = require('fs')
-const path = require('path')
-const mime = require('mime')
+const fs = require('fs');
+const path = require('path');
+const mime = require('mime');
 const multer = require("multer");
 
 
@@ -14,7 +14,7 @@ module.exports.set = function(app) {
     });
 
     app.post('/cadastrar', function (req, res) {
-       if (usuario.cadastrarUsuario(req.body)){           
+       if (usuario.cadastrarUsuario(req.body)){
             u = usuario.logarUsuario(req.body);
             fundo.cadastrarFundoPadrao(u.codigo);
             //cria diretório de imagens
@@ -42,9 +42,9 @@ module.exports.set = function(app) {
       } else {
         res.status(400).send("Mundo não encontrado.");
       }
-    });    
+    });
 
-    app.get('/usuario/:codigo/imagelist', function(req, res) {        
+    app.get('/usuario/:codigo/imagelist', function(req, res) {
       let resultado = imagens.listaImagensUsuario(req.params.codigo);
       if(resultado.length != 0){
         resultado = resultado.map(x => `/usuario/${req.params.codigo}/img/${x.url}`)
@@ -52,24 +52,16 @@ module.exports.set = function(app) {
       res.send(JSON.stringify(resultado));
     });
 
-    
-    const handleError = (err, res) => {
-      res
-        .status(500)
-        .contentType("text/plain")
-        .end("Oops! Something went wrong!");
-    };
-    
     const upload = multer({
-      dest: "/usuario"
+      dest: "usuario"
     });
-    
-    app.post("/usuario/:codigo/adicionarImagem",  upload.single("file"),function  (req, res) {
-        const nome= `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
+
+    app.post("/usuario/:codigo/adicionarImagem", upload.single("file"),function  (req, res) {
+        const nome = `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
         const localDeEscrita = path.join(__dirname, `../userdata/${req.params.codigo}/img/${nome}`);
-        const base64Data =req.body.image.replace(/^data:image\/png;base64,/, "");
+        const base64Data = req.body.image.replace(/^data:image\/.{1,5};base64,/, "");
         try{
-            require("fs").writeFileSync(localDeEscrita, base64Data, 'base64');
+            fs.writeFileSync(localDeEscrita, base64Data, 'base64');
             if (imagens.cadastrarImagemUsuario({
                 url:nome,
                 usuario:req.params.codigo
@@ -79,7 +71,7 @@ module.exports.set = function(app) {
                 res.status(400).send("Falha ao cadastrar");
             }
         }catch(err){
-            console.log(err);            
+            console.log(err);
             res.status(400).send("Falha ao cadastrar");
         }
       }
@@ -149,7 +141,6 @@ module.exports.set = function(app) {
             res.send("Fundo alterado com sucesso");
           } else {
             res.status(400).send("Fundo não alterado.");
-          }   
+          }
     });
-
 }

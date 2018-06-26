@@ -8,7 +8,12 @@ export default class Galeria{
     this.mainCss = mainCss;
     this.removeList = removeList;
     this.deactivateGalery = deactivateFunction;
+    this.fReaderTargetImg = undefined;
     this.fReader = new FileReader();
+    this.fReader.addEventListener('load', e => {
+      this.fReaderTargetImg.src = e.target.result;
+      this.persistence.addImage(this.fReaderTargetImg.src, false);
+    });
 
     this.persistence.getImages().then((json) => {
       this.fileList=json;
@@ -84,29 +89,23 @@ export default class Galeria{
     const inputBot = inputTop.cloneNode();
     sentinelTop.appendChild(inputTop);
     sentinelBot.appendChild(inputBot);
-    if (circleBot&&circleTop){
     circleTop.addEventListener('click', e => inputTop.click(e));
     circleBot.addEventListener('click', e => inputBot.click(e));
+
+    function onFormChange(){
+
+    }
     inputTop.addEventListener('change', e => {
       const content = this.generateContent('');
+      this.fReaderTargetImg = content.querySelector('img');
       this.fReader.readAsDataURL(e.target.files[0]);
-      this.fReader.addEventListener('load', e => {
-        const img = content.querySelector('img');
-        img.src = e.target.result;
-        this.persistence.addImage(img.src, false);
-      });
       this.galeriaEl.insertBefore(content, this.galeriaEl.firstElementChild.nextElementSibling);
       this.galeriaEl.nextElementSibling.dispatchEvent(new Event('click'));
     });
-  }
     inputBot.addEventListener('change', e => {
       const content = this.generateContent('');
+      this.fReaderTargetImg = content.querySelector('img');
       this.fReader.readAsDataURL(e.target.files[0]);
-      this.fReader.addEventListener('load', e => {
-        const img = content.querySelector('img');
-        img.src = e.target.result;
-        this.persistence.addImage(img.src, true);
-      });
       this.galeriaEl.insertBefore(content, this.galeriaEl.lastElementChild);
       this.galeriaEl.previousElementSibling.dispatchEvent(new Event('click'));
     })

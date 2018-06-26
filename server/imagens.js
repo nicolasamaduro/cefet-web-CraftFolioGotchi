@@ -12,11 +12,12 @@ module.exports.buscaProximoNomeImagemUsuario = function(codigo_usuario) {
   const sql =
   `select codigo from imagens
   where usuario=${codigo_usuario}
-  order by codigo desc`
- let resultado= db.executarQuery(sql)
+  order by codigo desc
+  limit 1`
+ let resultado = db.executarQuery(sql)
   if (resultado.length){
-    return db.executarQuery(sql)[0].codigo+10
-  }else{
+    return resultado[0].codigo+10
+  } else {
     return 2
   }
 }
@@ -36,4 +37,3 @@ module.exports.cadastrarImagemUsuario = function(imagem) {
     }
     return false
 }
-

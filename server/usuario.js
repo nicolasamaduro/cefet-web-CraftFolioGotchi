@@ -4,7 +4,7 @@ module.exports.cadastrarUsuario = function (usuario){
               VALUES('${usuario.usuario}', '${usuario.email}', MD5('${usuario.senha}'))`
     try{
        let resultado = db.executarQuery(sql)
-       if (resultado.affectedRows=='1'){         
+       if (resultado.affectedRows=='1'){
           return true
        }
     } catch(err) {
@@ -20,7 +20,6 @@ module.exports.logarUsuario = function (usuario){
                 and senha=MD5('${usuario.senha}');`
     try{
        const resultado = db.executarQuery(sql);
-       //db.resetDb();
        if (resultado){
            return resultado[0];
        }
