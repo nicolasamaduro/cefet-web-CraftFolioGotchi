@@ -77,6 +77,14 @@ export default class Galeria{
     botaoVoltar.addEventListener('click', (e) =>  this.deactivateGalery(e));
   }
 
+  onFormChange(e, insertBefore, dispatchTo){
+    const content = this.generateContent('');
+    this.fReaderTargetImg = content.querySelector('img');
+    this.fReader.readAsDataURL(e.target.files[0]);
+    this.galeriaEl.insertBefore(content, insertBefore);
+    dispatchTo.dispatchEvent(new Event('click'));
+  }
+
   prepareSentinelNodes(){
     const sentinelTop = this.galeriaEl.firstElementChild;
     const sentinelBot = this.galeriaEl.lastElementChild;
@@ -92,22 +100,7 @@ export default class Galeria{
     circleTop.addEventListener('click', e => inputTop.click(e));
     circleBot.addEventListener('click', e => inputBot.click(e));
 
-    function onFormChange(){
-
-    }
-    inputTop.addEventListener('change', e => {
-      const content = this.generateContent('');
-      this.fReaderTargetImg = content.querySelector('img');
-      this.fReader.readAsDataURL(e.target.files[0]);
-      this.galeriaEl.insertBefore(content, this.galeriaEl.firstElementChild.nextElementSibling);
-      this.galeriaEl.nextElementSibling.dispatchEvent(new Event('click'));
-    });
-    inputBot.addEventListener('change', e => {
-      const content = this.generateContent('');
-      this.fReaderTargetImg = content.querySelector('img');
-      this.fReader.readAsDataURL(e.target.files[0]);
-      this.galeriaEl.insertBefore(content, this.galeriaEl.lastElementChild);
-      this.galeriaEl.previousElementSibling.dispatchEvent(new Event('click'));
-    })
+    inputTop.addEventListener('change', e => this.onFormChange(e, this.galeriaEl.firstElementChild.nextElementSibling, this.galeriaEl.nextElementSibling));
+    inputBot.addEventListener('change', e => this.onFormChange(e, this.galeriaEl.lastElementChild, this.galeriaEl.previousElementSibling));
   }
 }
