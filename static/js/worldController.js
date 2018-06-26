@@ -32,8 +32,8 @@ const persistence = new  Persistence();
 const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
 const notas = new Notas(persistence,paginaEditavel);
 const fundo = new Fundo(widgetContainerEl, chaoEl);
-
-initGame();
+  
+initGame('/images/ghost.png');
 
 persistence.executeAfterFetch(() => {
   prepareWidgets();

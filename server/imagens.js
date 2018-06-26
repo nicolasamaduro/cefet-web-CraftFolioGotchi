@@ -18,7 +18,7 @@ module.exports.buscaProximoNomeImagemUsuario = function(codigo_usuario) {
   if (resultado.length){
     return resultado[0].codigo+10
   } else {
-    return 2
+    return 2;
   }
 }
 

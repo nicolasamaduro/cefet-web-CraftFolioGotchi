@@ -53,7 +53,7 @@ class Vector {
 }
 
 class Player {
-	constructor(){
+	constructor(imgSrc){
 		this.size = 85;
 
 		this.up = false;
@@ -80,7 +80,7 @@ class Player {
 		this.goingUp = 6;
 		this.goingDown = 2;
 		this.img = new Image();
-		this.img.src = "/images/ghost.png";
+		this.img.src = imgSrc;
 	}
 
 	draw(){
@@ -192,9 +192,10 @@ function clear() {
 }
 
 
-const player = new Player;
+let player;
 let context;
-export default function initGame(){
+export default function initGame(imgSrc){
+	player= new Player(imgSrc);
 	context = canvas.getContext("2d");
 	const NO_GAME = false;
 	if(NO_GAME){

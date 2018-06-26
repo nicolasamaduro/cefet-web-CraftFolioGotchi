@@ -29,6 +29,10 @@ body, html, .widget-container {
 .widget-container{
   height: 95%;
 }
+.widget-container-editando{
+  height: 82% !important;
+}
+
 
 canvas {
   position: absolute;
@@ -220,4 +224,16 @@ canvas {
 
 .hidden{
   display: none !important;
+}
+
+
+.ghost{
+  padding: 3px;
+}
+
+.ghosts {
+  border:2px dashed #7b2929;
+  background:#e28989;
+  margin: auto;
+  text-align: center;
 }

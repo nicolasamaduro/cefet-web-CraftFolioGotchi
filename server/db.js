@@ -4,14 +4,12 @@ const host = 'us-cdbr-iron-east-04.cleardb.net',
       senha ='737ead3c',
       banco = 'heroku_6eb9ea850d4b68c';
 
-
 const conexaoDb = new mysql({
   host: host,
   user: usuario,
   password: senha,
   database: banco
 });
-
 
 module.exports.executarQuery = function (sql){
   return conexaoDb.query(sql);
