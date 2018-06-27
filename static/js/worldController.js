@@ -56,7 +56,7 @@ function prepareGhosts(){
   fetch(`/usuario/${username}/obterGhost/`)
   .then( response=>response.json())
   .then(function(ghost) {
-    initGame(ghost.ghost,true);
+    initGame(ghost.ghost,widgetContainerEl, true);
   });
 
   ghostEl.childNodes.forEach(function(ghost){

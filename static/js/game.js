@@ -1,7 +1,10 @@
 "strict mode"
 
 const canvas = document.querySelector('canvas');
+let widgetContainerEl;
 let pausegame = false;
+let player;
+let context;
 
 class Vector {
 	constructor(x,y) {
@@ -12,11 +15,6 @@ class Vector {
 	setZero(){
 		this.x = 0;
 		this.y = 0;
-	}
-
-	copyFrom(v){
-		this.x = v.x;
-		this.y = v.y;
 	}
 
 	add(v){
@@ -55,12 +53,19 @@ class Vector {
 
 class Player {
 	constructor(imgSrc){
-		this.size = 85;
+		this.size = new Vector(0,0);
+		this.img = new Image();
+		this.img.onload = () => {
+			this.resize();
+		}
+		this.img.src = imgSrc;
 
 		this.up = false;
 		this.down = false;
 		this.left = false;
 		this.right = false;
+		this.delete = false;
+		this.deleteOnRelease = false;
 
 		this.friction = 0.04;
 		this.maxSpeed = 6;
@@ -80,8 +85,13 @@ class Player {
 		this.goingLeft = 4;
 		this.goingUp = 6;
 		this.goingDown = 2;
-		this.img = new Image();
-		this.img.src = imgSrc;
+	}
+
+	resize(){
+		const scale = Math.min(1, canvas.width/800, canvas.height/600);
+		this.size.x = scale*this.img.width/this.numberOfSprite;
+		this.size.y = scale*this.img.height;
+		console.log(`${scale} ${this.size.x} ${this.size.y}`);
 	}
 
 	draw(){
@@ -93,8 +103,8 @@ class Player {
 			this.img.height,
 			this.position.x,
 			this.position.y,
-			this.img.width/this.numberOfSprite,
-			this.img.height);
+			this.size.x,
+			this.size.y);
 
 		if(this.right){
 			this.frameIndex = this.goingRight;
@@ -131,12 +141,12 @@ class Player {
 
 		this.position.add(this.velocity);
 
-		this.position.clamp(0, canvas.width - this.size, 0, canvas.height - this.size);
+		this.position.clamp(0, canvas.width - this.size.x, 0, canvas.height - this.size.y);
 
 		this.touchingLeft = this.position.x == 0;
 		this.touchingTop = this.position.y == 0;
-		this.touchingRight = this.position.x == canvas.width - this.size;
-		this.touchingBot = this.position.y == canvas.height - this.size;
+		this.touchingRight = this.position.x == canvas.width - this.size.x;
+		this.touchingBot = this.position.y == canvas.height - this.size.y;
 		if(this.touchingLeft||this.touchingRight){
 			this.velocity.x = 0;
 		}
@@ -144,6 +154,18 @@ class Player {
 			this.velocity.y = 0;
 		}
 	}
+
+	interact(){
+		if(this.deleteOnRelease && !this.delete){
+			this.deleteOnRelease = false;
+			const center = new Vector(this.position.x+this.size.x/2, this.position.y+this.size.y/2)
+			console.log(document.elementFromPoint(center.x, center.y));
+		} else if(this.delete){
+			this.deleteOnRelease = true;
+		}
+	}
+
+
 }
 
 function handleKey(keyCode, setValue){
@@ -160,6 +182,9 @@ function handleKey(keyCode, setValue){
 		case 39:  //right
 			player.right = setValue;
 			break;
+		case 46: //delete
+			player.delete = setValue;
+			break;
 	}
 }
 
@@ -172,6 +197,7 @@ function handleKeyUp(e){
 }
 
 function update(){
+	player.interact();
 	player.move();
 	clear();
 	player.draw();
@@ -179,13 +205,13 @@ function update(){
 }
 
 function resize() {
-	const widgetContainerEl = document.querySelector('.widget-container');
-	let wScale = (player.position.x+player.size/2)/canvas.width;
-	let vScale = (player.position.y+player.size/2)/canvas.height;
+	const translateXScale = (player.position.x+player.size.x/2)/canvas.width;
+	const translateYScale = (player.position.y+player.size.y/2)/canvas.height;
   canvas.width = widgetContainerEl.clientWidth;
   canvas.height = widgetContainerEl.clientHeight;
-	player.position.x = wScale*canvas.width-player.size/2;
-	player.position.y = vScale*canvas.height-player.size/2;
+	player.position.x = translateXScale*canvas.width-player.size.x/2;
+	player.position.y = translateYScale*canvas.height-player.size.y/2;
+	player.resize()
 };
 
 function clear() {
@@ -198,16 +224,15 @@ function doIfUnpaused(e, func){
 	}
 }
 
-let player;
-let context;
 export function pause(){
 	pausegame = true;
 }
 export function unpause(){
 	pausegame = false;
 }
-export function initGame(imgSrc, controleUnicidade){
-	player= new Player(imgSrc);
+export function initGame(imgSrc, _widgetContainerEl, controleUnicidade){
+	widgetContainerEl = _widgetContainerEl;
+	player = new Player(imgSrc);
 	context = canvas.getContext("2d");
 	const NO_GAME = false;
 	if(NO_GAME){
