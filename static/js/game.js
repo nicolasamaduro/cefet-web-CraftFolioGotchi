@@ -1,6 +1,7 @@
 "strict mode"
 
 const canvas = document.querySelector('canvas');
+let pausegame = false;
 
 class Vector {
 	constructor(x,y) {
@@ -191,10 +192,21 @@ function clear() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function doIfUnpaused(e, func){
+	if(!pausegame){
+		func(e)
+	}
+}
 
 let player;
 let context;
-export default function initGame(imgSrc, controleUnicidade){
+export function pause(){
+	pausegame = true;
+}
+export function unpause(){
+	pausegame = false;
+}
+export function initGame(imgSrc, controleUnicidade){
 	player= new Player(imgSrc);
 	context = canvas.getContext("2d");
 	const NO_GAME = false;
@@ -202,11 +214,11 @@ export default function initGame(imgSrc, controleUnicidade){
 		canvas.remove();
 	} else {
 		if (controleUnicidade){
-			window.addEventListener('resize', resize, false);
+			window.addEventListener('resize', (e) => doIfUnpaused(e, resize), false);
 			resize();
-			window.addEventListener('keydown',handleKeyDown,true);
-			window.addEventListener('keyup',handleKeyUp,true);
-			window.requestAnimationFrame(update);
+			window.addEventListener('keydown', (e) => doIfUnpaused(e, handleKeyDown),true);
+			window.addEventListener('keyup', (e) => doIfUnpaused(e, handleKeyUp),true);
+			window.requestAnimationFrame(() => doIfUnpaused(undefined, update));
 		}
 	}
 }

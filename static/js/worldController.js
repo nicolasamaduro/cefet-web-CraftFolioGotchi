@@ -3,7 +3,7 @@ import Persistence from './persistence.js'
 import Fundo from './fundo.js'
 import Galeria from './galeria.js'
 import Notas from './notas.js'
-import initGame from './game.js'
+import {unpause, initGame} from './game.js'
 
 
 const bodyEl = document.querySelector('body');
@@ -20,7 +20,7 @@ const username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
 
 const mainCss = document.querySelector('link[href="/css/widgets.css"]');
 
-const removeList = [modalEl, canvas, chaoEl, switchContainerEl, widgetContainerEl];
+const removeList = [ghostEl, modalEl, canvas, chaoEl, switchContainerEl, widgetContainerEl];
 const paginaEditavel= isPaginaEditavel();
 
 function escondeSeletor(){
@@ -35,7 +35,7 @@ const persistence = new Persistence();
 const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
 const notas = new Notas(persistence,paginaEditavel);
 const fundo = new Fundo(widgetContainerEl, chaoEl,ghostEl);
-  
+
 
 persistence.executeAfterFetch(() => {
   prepareWidgets();
@@ -49,9 +49,10 @@ function habilitaPrincipal(){
   for (const r of removeList){
     bodyEl.prepend(r);
   }
+  unpause();
 }
 
-function prepareGhosts(){  
+function prepareGhosts(){
   fetch(`/usuario/${username}/obterGhost/`)
   .then( response=>response.json())
   .then(function(ghost) {

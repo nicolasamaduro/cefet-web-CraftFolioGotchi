@@ -18,7 +18,7 @@ export default class Persistence{
   addImage(url){
     const formData = new FormData();
     formData.append('image', url);
-    fetch(`/usuario/${this.username}/adicionarImagem/`,
+    return fetch(`/usuario/${this.username}/adicionarImagem/`,
     {
         method: "POST",
         body: formData
@@ -59,7 +59,7 @@ export default class Persistence{
       body: JSON.stringify(payload)
     })
     .then(res=>res.json())
-    
+
     return upNota
   }
 

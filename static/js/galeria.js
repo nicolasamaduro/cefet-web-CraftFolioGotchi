@@ -1,4 +1,5 @@
 "strict mode"
+import {pause} from './game.js'
 
 export default class Galeria{
   constructor(persistence, galeriaEl, bodyEl, mainCss, removeList, deactivateFunction){
@@ -12,7 +13,7 @@ export default class Galeria{
     this.fReader = new FileReader();
     this.fReader.addEventListener('load', e => {
       this.fReaderTargetImg.src = e.target.result;
-      this.persistence.addImage(this.fReaderTargetImg.src, false);
+      this.persistence.addImage(this.fReaderTargetImg.src).then(res => res.text()).then(res => this.addToGallery(res))
     });
 
     this.persistence.getImages().then((json) => {
@@ -42,12 +43,19 @@ export default class Galeria{
     }
   }
 
+  addToGallery(s){
+    const img = document.createElement('img');
+    img.src = s;
+    img.classList.add('grid-item');
+    this.galeriaDiv.prepend(img);
+  }
+
   fillGallery(){
     const galeriaJs = document.createElement('script');
     const galeriaCss = document.createElement('link');
     const titulo = document.createElement('h1')
     const voltarBtn = document.createElement('span');
-    const galeriaDiv = document.createElement('div');
+    this.galeriaDiv = document.createElement('div');
     galeriaJs.src = '/js/masonry.pkgd.min.js';
     galeriaCss.rel='stylesheet';
     galeriaCss.href='/css/galeria.css';
@@ -55,19 +63,16 @@ export default class Galeria{
     voltarBtn.id='voltar-principal';
 
     for(let s of this.fileList){
-      const img = document.createElement('img');
-      img.src = s;
-      img.classList.add('grid-item');
-      galeriaDiv.appendChild(img);
+      this.addToGallery(s)
     }
-    galeriaDiv.dataset.masonry='{ "itemSelector": ".grid-item", "columnWidth": 50, "gutter": 10}'
-    galeriaDiv.appendChild(galeriaJs);
-    galeriaDiv.appendChild(galeriaCss);
-    galeriaDiv.appendChild(voltarBtn);
-    this.galeriaDiv = galeriaDiv;
+    this.galeriaDiv.dataset.masonry='{"itemSelector": ".grid-item", "columnWidth": 50, "gutter": 10}'
+    this.galeriaDiv.appendChild(galeriaJs);
+    this.galeriaDiv.appendChild(galeriaCss);
+    this.galeriaDiv.appendChild(voltarBtn);
   }
 
   activateGalery(e){
+    pause();
     this.mainCss.disabled = true;
     for(let r of this.removeList){
       r.remove();
@@ -92,7 +97,7 @@ export default class Galeria{
     const circleBot = sentinelBot.firstElementChild;
     const inputTop = document.createElement('input');
     inputTop.type = 'file';
-    inputTop.accept='image/png';
+    inputTop.accept='image/*';
     inputTop.classList.add('hidden');
     const inputBot = inputTop.cloneNode();
     sentinelTop.appendChild(inputTop);

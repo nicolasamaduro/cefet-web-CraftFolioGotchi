@@ -53,10 +53,11 @@ module.exports.set = function(app) {
     });
 
     const upload = multer({
-      dest: "usuario"
+      dest: "usuario",
+      limits: { fieldSize: 15 * 1024 * 1024 }
     });
 
-    app.post('/usuario/:codigo/alterarGhost', function(req, res) {  
+    app.post('/usuario/:codigo/alterarGhost', function(req, res) {
         if ( usuario.alterarGhostUsuario(req.params.codigo,req.body.ghost)){
             res.send("Alterado com sucesso");
          } else {
@@ -73,19 +74,20 @@ module.exports.set = function(app) {
           res.status(400).send("Ghost não encontrado.");
         }
     });
-  
-     
+
+
     app.post("/usuario/:codigo/adicionarImagem", upload.single("file"),function  (req, res) {
-        const nome = `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.png`;
+        const extensao = RegExp(/^data:image\/(.{3,5});base64,/).exec(req.body.image)[1]
+        const nome = `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.${extensao}`;
         const localDeEscrita = path.join(__dirname, `../userdata/${req.params.codigo}/img/${nome}`);
-        const base64Data = req.body.image.replace(/^data:image\/.{1,5};base64,/, "");
+        const base64Data = req.body.image.substring(req.body.image.indexOf(',')+1)
         try{
             fs.writeFileSync(localDeEscrita, base64Data, 'base64');
             if (imagens.cadastrarImagemUsuario({
                 url:nome,
                 usuario:req.params.codigo
             })){
-                res.send("Sucesso ao cadastrar");
+                res.send(`/usuario/${req.params.codigo}/img/${nome}`);
             } else {
                 res.status(400).send("Falha ao cadastrar");
             }
