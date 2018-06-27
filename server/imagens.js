@@ -14,7 +14,7 @@ module.exports.buscaProximoNomeImagemUsuario = function(codigo_usuario) {
   where usuario=${codigo_usuario}
   order by codigo desc
   limit 1`
- let resultado = db.executarQuery(sql)
+  let resultado = db.executarQuery(sql)
   if (resultado.length){
     return resultado[0].codigo+10
   } else {
@@ -22,18 +22,31 @@ module.exports.buscaProximoNomeImagemUsuario = function(codigo_usuario) {
   }
 }
 
-
 module.exports.cadastrarImagemUsuario = function(imagem) {
   const sql =`INSERT INTO imagens(usuario,url)
-              VALUES('${imagem.usuario}', '${imagem.url}')`
-    try{
-       let resultado = db.executarQuery(sql)
-       if (resultado.affectedRows=='1'){
-           return true
-       }
-    } catch(err) {
-      console.log('erro ao cadastrar imagem: '+ JSON.stringify(imagem))
-      console.log(err)
+  VALUES('${imagem.usuario}', '${imagem.url}')`
+  try{
+    let resultado = db.executarQuery(sql)
+    if (resultado.affectedRows=='1'){
+      return true
     }
-    return false
+  } catch(err) {
+    console.log('erro ao cadastrar imagem: '+ JSON.stringify(imagem))
+    console.log(err)
+  }
+  return false
+}
+
+module.exports.removerImagemUsuario = function(url, usuario) {
+  const sql = `DELETE FROM imagens where url='${url}' and usuario='${usuario}'`
+  try {
+    let resultado = db.executarQuery(sql)
+    if (resultado.affectedRows=='1'){
+      return true
+    }
+  } catch(err) {
+    console.log('erro ao deletar imagem: '+url)
+    console.log(err)
+  }
+  return false
 }

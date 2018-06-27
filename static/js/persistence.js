@@ -25,9 +25,8 @@ export default class Persistence{
     })
   }
 
-  removeImage(codigo){
-    fetch(`/usuario/${this.username}/imagem/${codigo}`,{method: "DELETE"});
-    console.log(`/usuario/${this.username}/imagem/${codigo}`)
+  removeImage(url){
+    fetch(`/usuario/${this.username}/imagem/${url}`,{method: "DELETE"});
   }
 
   fetchText(url, textFunc){
@@ -68,6 +67,5 @@ export default class Persistence{
 
   removeNota(codigo){
     fetch(`/usuario/${this.username}/nota/${codigo}`,{method: "DELETE"});
-    console.log(`/usuario/${this.username}/nota/${codigo}`)
   }
 }

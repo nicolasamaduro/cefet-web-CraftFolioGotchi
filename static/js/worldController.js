@@ -153,7 +153,7 @@ function isPaginaEditavel(){
 
 export default function removeConteudo(contentEl){
   if(contentEl.parentElement.id == 'galeria'){
-    persistence.removeImage(contentEl.dataset.codigo);
+    persistence.removeImage(contentEl.dataset.url);
   } else if(contentEl.parentElement.id == 'notas'){
     persistence.removeNota(contentEl.dataset.url);
   }

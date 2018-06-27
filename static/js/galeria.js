@@ -18,7 +18,7 @@ export default class Galeria{
       .then(res => res.text())
       .then(url => {
         this.addToGallery(url);
-        targetImg.parentElement.dataset.codigo = url.replace(/^.*\/([^/]+)\.[^/]+\/?$/,'$1');
+        targetImg.parentElement.dataset.url = url.replace(/^.*\/([^/]+)\/?$/,'$1');
       })
     });
 
@@ -35,7 +35,7 @@ export default class Galeria{
     img.src = src;
     conteudo.classList.add('conteudo');
     conteudo.classList.add('hidden');
-    conteudo.dataset.codigo = src.replace(/^.*\/([^/]+)\.[^/]+\/?$/,'$1');
+    conteudo.dataset.url = src.replace(/^.*\/([^/]+)\/?$/,'$1');
     conteudo.addEventListener('click', (e) => this.activateGalery(e));
     conteudo.appendChild(img);
     return conteudo;

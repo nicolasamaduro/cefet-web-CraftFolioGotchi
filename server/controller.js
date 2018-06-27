@@ -164,4 +164,21 @@ module.exports.set = function(app) {
             res.status(400).send("Fundo não alterado.");
           }
     });
+
+    app.delete('/usuario/:cod_usuario/imagem/:url_img', function(req, res) {
+      const sucesso = imagens.removerImagemUsuario(req.params.url_img, req.params.cod_usuario);
+      if(sucesso){
+        res.send("ok");
+      } else {
+        res.status(400).send("Imagem do usuário não existe");
+      }
+    })
+    app.delete('/usuario/:cod_usuario/nota/:codigo_nota', function(req, res) {
+      const sucesso = notas.removerNotaUsuario(req.params.codigo_nota, req.params.cod_usuario);
+      if(sucesso){
+        res.send("ok");
+      } else {
+        res.status(400).send("Nota do usuário não existe");
+      }
+    })
 }

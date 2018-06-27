@@ -15,10 +15,9 @@ module.exports.recuperarNota = function(usuario){
     return null;
 }
 
-
 module.exports.updateNota = function(codigo, usuario, text) {
 
-    const sql_query = `SELECT * FROM notas 
+    const sql_query = `SELECT * FROM notas
                         WHERE usuario=${usuario} AND codigo=${codigo}`
 
     let resultado_query = db.executarQuery(sql_query)
@@ -50,7 +49,21 @@ module.exports.updateNota = function(codigo, usuario, text) {
         } catch(err) {
             console.log('erro ao cadastrar nota')
             console.log(err)
-        }                   
+        }
     }
     return null;
+}
+
+module.exports.removerNotaUsuario = function(codigo, usuario) {
+  const sql = `DELETE FROM notas where codigo='${codigo}' and usuario='${usuario}'`
+  try {
+    let resultado = db.executarQuery(sql)
+    if (resultado.affectedRows=='1'){
+      return true
+    }
+  } catch(err) {
+    console.log('erro ao deletar nota: '+codigo)
+    console.log(err)
+  }
+  return false
 }
