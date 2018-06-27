@@ -30,7 +30,7 @@ body, html, .widget-container {
   height: 95%;
 }
 .widget-container-editando{
-  height: 82% !important;
+  height: 87%;
 }
 
 
@@ -226,14 +226,15 @@ canvas {
   display: none !important;
 }
 
-
 .ghost{
+  max-height: 100%;
   padding: 3px;
 }
 
 .ghosts {
+  height: 8%;
   border:2px dashed #7b2929;
-  background:#e28989;
-  margin: auto;
+  background: #e28989;
+  margin: 0;
   text-align: center;
 }

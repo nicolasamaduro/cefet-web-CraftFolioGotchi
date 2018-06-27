@@ -10,59 +10,56 @@ export default class Fundo{
     this.prepareEditSwitch();
     this.prepareModal();
     this.setInitialBackground();
-    
+
   }
 
-   limpaMensagemDeRetorno() {
+  limpaMensagemDeRetorno() {
     let messagemRetorno=  document.querySelector('.messagem-retorno');
     messagemRetorno.classList.remove("alert-danger");
     messagemRetorno.classList.remove("alert-success");
-    messagemRetorno.textContent='';  
+    messagemRetorno.textContent='';
   }
 
   setInitialBackground(){
     this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
     fetch(`/fundo/${this.username}/obter`)
     .then( response=>response.json())
-    .then(function(fundo) {
-
-      let widgetContainer = document.querySelector('.widget-container'); 
-      let chao = document.querySelector('.chao'); 
+    .then((fundo) => {
       if (fundo.tipo_atual=="cor"){
-        widgetContainer.style.backgroundColor=fundo.cor1;
-      }else if (fundo.tipo_atual=="gradiente"){
-        widgetContainer.style.backgroundImage=`linear-gradient(${fundo.cor1},${fundo.cor2})`;
-      }else{
-        widgetContainer.style.backgroundImage=`url(${fundo.urlImage})`;
-        widgetContainer.style.backgroundSize='cover';
+        this.widgetContainer.style.backgroundColor=fundo.cor1;
+      } else if (fundo.tipo_atual=="gradiente"){
+        this.widgetContainer.style.backgroundImage=`linear-gradient(${fundo.cor1},${fundo.cor2})`;
+      } else {
+        this.widgetContainer.style.backgroundImage=`url(${fundo.urlImage})`;
+        this.widgetContainer.style.backgroundSize='cover';
       }
       if (fundo.tipo_atual_chao=="cor"){
-        chao.style.backgroundColor=fundo.cor1_chao;
-      }else if (fundo.tipo_atual_chao=="gradiente"){
-        chao.style.backgroundImage=`linear-gradient(${fundo.cor1_chao},${fundo.cor2_chao})`;
-      }else{
-        chao.style.backgroundImage=`url(${fundo.urlImage_chao})`;
-        chao.style.backgroundSize='cover';
+        this.chao.style.backgroundColor=fundo.cor1_chao;
+      } else if (fundo.tipo_atual_chao=="gradiente"){
+        this.chao.style.backgroundImage=`linear-gradient(${fundo.cor1_chao},${fundo.cor2_chao})`;
+      } else {
+        this.chao.style.backgroundImage=`url(${fundo.urlImage_chao})`;
+        this.chao.style.backgroundSize='cover';
       }
     })
   }
 
   prepareEditSwitch(){
     this.editSwitchEl = document.querySelector('.switch--shadow');
-      this.editSwitchEl.checked=false;
-      this.editSwitchEl.addEventListener('click', (e) => {
-        if(e.target.checked){
-          this.widgetContainer.style.border=('3px dashed #00bfff');
-          this.chao.style.border=('2px dashed #ffffff');
-          this.ghostEl.classList.remove("hidden");
-          this.widgetContainer.classList.add("widget-container-editando");
-        } else {          
-          this.ghostEl.classList.add("hidden");
-          this.widgetContainer.classList.remove("widget-container-editando");
-          this.widgetContainer.style.border=null;
-          this.chao.style.border=null;
-        }
-      });
+    this.editSwitchEl.checked=false;
+    this.editSwitchEl.addEventListener('click', (e) => {
+      if(e.target.checked){
+        this.widgetContainer.style.border=('3px dashed #00bfff');
+        this.chao.style.border=('2px dashed #ffffff');
+        this.ghostEl.classList.remove("hidden");
+        this.widgetContainer.classList.add("widget-container-editando");
+      } else {
+        this.ghostEl.classList.add("hidden");
+        this.widgetContainer.classList.remove("widget-container-editando");
+        this.widgetContainer.style.border=null;
+        this.chao.style.border=null;
+      }
+    });
   }
 
   prepareModal(){
@@ -149,7 +146,7 @@ export default class Fundo{
     this.editTarget.style.backgroundSize='cover';
   }
 
-  buttonAction(e){    
+  buttonAction(e){
     this.limpaMensagemDeRetorno();
     let payload = null;
     const formtype = this.activeTab.dataset.formlink;
@@ -166,7 +163,7 @@ export default class Fundo{
           tipo_atual_chao:'cor'
         };
       }
-    } else if(formtype == 'gradient'){      
+    } else if(formtype == 'gradient'){
       this.applyBgGradient({target:this.gradientInputEl1});
       if (this.editTarget.classList.value=='widget-container'){
         payload = {
@@ -194,27 +191,27 @@ export default class Fundo{
           tipo_atual_chao:'imagem'
         };
       }
-    }    
+    }
 
     fetch(`/fundo/${this.username}/cadastrar/`,
-    {
+      {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify( payload )
-    }).then(res=>res)
-    .then(res => {
-      let messagemRetorno=  document.querySelector('.messagem-retorno');
-      if (res.status==200){
-        messagemRetorno.classList.add("alert-success");
-        messagemRetorno.textContent='Sucesso ao salvar fundo';
-      }else{
-        messagemRetorno.classList.add("alert-danger");
-        messagemRetorno.textContent='Falha ao alterar fundo';
-      }
-    });
+      }).then(res=>res)
+      .then(res => {
+        let messagemRetorno=  document.querySelector('.messagem-retorno');
+        if (res.status==200){
+          messagemRetorno.classList.add("alert-success");
+          messagemRetorno.textContent='Sucesso ao salvar fundo';
+        }else{
+          messagemRetorno.classList.add("alert-danger");
+          messagemRetorno.textContent='Falha ao alterar fundo';
+        }
+      });
+    }
+
+
   }
-  
-  
-}

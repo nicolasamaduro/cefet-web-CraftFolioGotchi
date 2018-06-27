@@ -1,4 +1,4 @@
-//"strict mode"
+"strict mode"
 import Persistence from './persistence.js'
 import Fundo from './fundo.js'
 import Galeria from './galeria.js'
