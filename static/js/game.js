@@ -1,5 +1,7 @@
 "strict mode"
 
+import removeConteudo from './worldController.js';
+
 const canvas = document.querySelector('canvas');
 let widgetContainerEl;
 let pausegame = false;
@@ -91,7 +93,6 @@ class Player {
 		const scale = Math.min(1, canvas.width/800, canvas.height/600);
 		this.size.x = scale*this.img.width/this.numberOfSprite;
 		this.size.y = scale*this.img.height;
-		console.log(`${scale} ${this.size.x} ${this.size.y}`);
 	}
 
 	draw(){
@@ -159,7 +160,22 @@ class Player {
 		if(this.deleteOnRelease && !this.delete){
 			this.deleteOnRelease = false;
 			const center = new Vector(this.position.x+this.size.x/2, this.position.y+this.size.y/2)
-			console.log(document.elementFromPoint(center.x, center.y));
+			let interactionEl = document.elementFromPoint(center.x, center.y);
+			if(interactionEl.parentElement.classList.contains("conteudo")){
+				interactionEl = interactionEl.parentElement
+			}
+			if(interactionEl.classList.contains("conteudo") && !interactionEl.classList.contains('sentinela')){
+				if(interactionEl.classList.contains('deleteconfirm')){
+					clearTimeout(interactionEl.dataset.tid);
+					removeConteudo(interactionEl);
+				} else {
+					interactionEl.classList.add('deleteconfirm');
+					const tid = setTimeout(() => {
+						interactionEl.classList.remove('deleteconfirm');
+					}, 400);
+					interactionEl.dataset.tid = tid;
+				}
+			}
 		} else if(this.delete){
 			this.deleteOnRelease = true;
 		}

@@ -238,3 +238,12 @@ canvas {
   margin: 0;
   text-align: center;
 }
+
+.deleteconfirm {
+  animation-duration: 0.4s;
+  animation-name: deblur;
+}
+@keyframes deblur{
+  0%{filter: blur(5px);}
+  100%{filter: none;}
+}

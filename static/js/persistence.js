@@ -25,6 +25,10 @@ export default class Persistence{
     })
   }
 
+  removeImage(codigo){
+    fetch(`/usuario/${this.username}/imagem/${codigo}`,{method: "DELETE"});
+    console.log(`/usuario/${this.username}/imagem/${codigo}`)
+  }
 
   fetchText(url, textFunc){
     if(localStorage[url] != undefined){
@@ -59,8 +63,11 @@ export default class Persistence{
       body: JSON.stringify(payload)
     })
     .then(res=>res.json())
-
     return upNota
   }
 
+  removeNota(codigo){
+    fetch(`/usuario/${this.username}/nota/${codigo}`,{method: "DELETE"});
+    console.log(`/usuario/${this.username}/nota/${codigo}`)
+  }
 }

@@ -150,3 +150,18 @@ function isPaginaEditavel(){
     }
     return paginalEditavel;
 }
+
+export default function removeConteudo(contentEl){
+  if(contentEl.parentElement.id == 'galeria'){
+    persistence.removeImage(contentEl.dataset.codigo);
+  } else if(contentEl.parentElement.id == 'notas'){
+    persistence.removeNota(contentEl.dataset.url);
+  }
+  let nextEl = contentEl.nextElementSibling;
+  if(nextEl.classList.contains('sentinela')){
+    nextEl = contentEl.previousElementSibling;
+  }
+  nextEl.classList.remove("hidden")
+  contentEl.remove();
+  changeWidget({target:nextEl.parentElement});
+}

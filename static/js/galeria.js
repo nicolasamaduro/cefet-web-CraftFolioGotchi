@@ -12,8 +12,14 @@ export default class Galeria{
     this.fReaderTargetImg = undefined;
     this.fReader = new FileReader();
     this.fReader.addEventListener('load', e => {
-      this.fReaderTargetImg.src = e.target.result;
-      this.persistence.addImage(this.fReaderTargetImg.src).then(res => res.text()).then(res => this.addToGallery(res))
+      const targetImg = this.fReaderTargetImg
+      targetImg.src = e.target.result;
+      this.persistence.addImage(targetImg.src)
+      .then(res => res.text())
+      .then(url => {
+        this.addToGallery(url);
+        targetImg.parentElement.dataset.codigo = url.replace(/^.*\/([^/]+)\.[^/]+\/?$/,'$1');
+      })
     });
 
     this.persistence.getImages().then((json) => {
@@ -29,6 +35,7 @@ export default class Galeria{
     img.src = src;
     conteudo.classList.add('conteudo');
     conteudo.classList.add('hidden');
+    conteudo.dataset.codigo = src.replace(/^.*\/([^/]+)\.[^/]+\/?$/,'$1');
     conteudo.addEventListener('click', (e) => this.activateGalery(e));
     conteudo.appendChild(img);
     return conteudo;
