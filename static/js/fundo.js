@@ -45,9 +45,11 @@ export default class Fundo{
   }
 
   prepareEditSwitch(){
+    this.editSwitchContainerEl = document.querySelector('.switch_container');
     this.editSwitchEl = document.querySelector('.switch--shadow');
     this.editSwitchEl.checked=false;
     this.editSwitchEl.addEventListener('click', (e) => {
+      console.log(e.target)
       if(e.target.checked){
         this.widgetContainer.style.border=('3px dashed #00bfff');
         this.chao.style.border=('2px dashed #ffffff');
@@ -112,6 +114,11 @@ export default class Fundo{
     this.limpaMensagemDeRetorno();
     if(e.eventPhase == Event.AT_TARGET){
       this.modalEl.classList.remove('active');
+      const elements = document.elementsFromPoint(e.clientX, e.clientY);
+      if(elements.includes(this.editSwitchContainerEl)){
+        this.editSwitchEl.checked = false;
+        this.editSwitchEl.dispatchEvent(new Event('click'));
+      }
     }
   }
 
