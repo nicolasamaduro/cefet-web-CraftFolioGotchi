@@ -21,6 +21,7 @@ module.exports.set = function(app) {
             //cria diretório de imagens
             fs.mkdirSync(`./userdata/${u.codigo}`);
             fs.mkdirSync(`./userdata/${u.codigo}/img`);
+            fs.mkdirSync(`./userdata/${u.codigo}/audio`);
             res.send("Sucesso ao cadastrar");
         } else {
             res.status(400).send("Falha ao cadastrar");
