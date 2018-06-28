@@ -10,7 +10,9 @@ export default class Notas {
     persistence.getNotes().then(notes=>{
       this.fileListNotas = notes;
       this.generateMdElements(this.notasEl, this.fileListNotas);
-      this.notasEl.firstElementChild.classList.remove('hidden');
+      if(this.notasEl.firstElementChild){
+        this.notasEl.firstElementChild.classList.remove('hidden');
+      }
     })
   }
 

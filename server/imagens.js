@@ -1,4 +1,5 @@
 const db = require('./db.js');
+const fs = require('fs');
 
 module.exports.listaImagensUsuario = function(codigo_usuario) {
   const sql =
@@ -41,7 +42,8 @@ module.exports.removerImagemUsuario = function(url, usuario) {
   const sql = `DELETE FROM imagens where url='${url}' and usuario='${usuario}'`
   try {
     let resultado = db.executarQuery(sql)
-    if (resultado.affectedRows=='1'){
+    if (resultado.affectedRows == '1'){
+      fs.unlink(`userdata/${usuario}/img/${url}`, err => {})
       return true
     }
   } catch(err) {
