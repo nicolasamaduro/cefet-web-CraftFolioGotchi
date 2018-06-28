@@ -172,7 +172,7 @@ export default class Fundo{
       }
     } else if(formtype == 'gradient'){
       this.applyBgGradient({target:this.gradientInputEl1});
-      if (this.editTarget.classList.value=='widget-container'){
+      if (this.editTarget.classList.value=='widget-container widget-container-editando'){
         payload = {
           cor1: this.gradientInputEl1.value,
           cor2: this.gradientInputEl2.value,

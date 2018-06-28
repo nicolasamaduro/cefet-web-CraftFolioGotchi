@@ -1,4 +1,4 @@
-const db = require('./db.js');
+const db = require('../db.js');
 const fs = require('fs');
 
 module.exports.buscaProximoNomeAudioUsuario = function(codigo_usuario) {

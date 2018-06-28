@@ -1,4 +1,5 @@
-const db = require('./db.js');
+const db = require('../db.js');
+
 module.exports.cadastrarUsuario = function (usuario){
     let ghostNum = Math.floor(Math.random() * 10)+1;
     let ghostDir = '/images/ghosts/completos/'+ghostNum+'.png';

@@ -1,4 +1,4 @@
-const db = require('./db.js');
+const db = require('../db.js');
 
 module.exports.recuperarNota = function(usuario){
     const sql =`select * from notas
