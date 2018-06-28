@@ -3,6 +3,7 @@ import {pause} from './game.js'
 
 export default class Galeria{
   constructor(persistence, galeriaEl, bodyEl, mainCss, removeList, deactivateFunction){
+    this.fileListPromise = persistence.getImages()
     this.persistence = persistence;
     this.galeriaEl = galeriaEl;
     this.bodyEl = bodyEl;
@@ -22,7 +23,7 @@ export default class Galeria{
       })
     });
 
-    this.persistence.getImages().then((json) => {
+    this.fileListPromise.then((json) => {
       this.fileList=json;
       this.fillWidget();
       this.fillGallery();

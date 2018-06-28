@@ -1,6 +1,7 @@
 const usuario = require('./usuario.js');
 const imagens = require('./imagens.js');
 const notas = require('./notas.js');
+const audios = require('./audios.js');
 const fundo = require('./fundo.js');
 const fs = require('fs');
 const path = require('path');
@@ -52,6 +53,19 @@ module.exports.set = function(app) {
       res.send(JSON.stringify(resultado));
     });
 
+    app.get('/usuario/:codigo/audiolist', function(req, res) {
+      let resultado = audios.listaAudiosUsuario(req.params.codigo);
+      if(resultado.length != 0){
+        resultado = resultado.map(x => {
+          return {
+            titulo:x.titulo,
+            url:`/usuario/${req.params.codigo}/audio/${x.url}`
+          }
+        })
+      }
+      res.send(JSON.stringify(resultado));
+    });
+
     const upload = multer({
       dest: "usuario",
       limits: { fieldSize: 15 * 1024 * 1024 }
@@ -76,18 +90,32 @@ module.exports.set = function(app) {
     });
 
 
-    app.post("/usuario/:codigo/adicionarImagem", upload.single("file"),function  (req, res) {
-        const extensao = RegExp(/^data:image\/(.{3,5});base64,/).exec(req.body.image)[1]
-        const nome = `${imagens.buscaProximoNomeImagemUsuario(req.params.codigo)}.${extensao}`;
-        const localDeEscrita = path.join(__dirname, `../userdata/${req.params.codigo}/img/${nome}`);
-        const base64Data = req.body.image.substring(req.body.image.indexOf(',')+1)
+    app.post("/usuario/:codigo/adicionar/:tipo", upload.single("file"),function  (req, res) {
+        const tipo = req.params.tipo;
+        const cod_usuario = req.params.codigo;
+        const payload = req.body.payload;
+        const extensao = RegExp(/^data:(image|audio)\/(.{3,5});base64,/).exec(payload)[2]
+        let nome;
+        if(tipo == 'img'){
+          nome = `${imagens.buscaProximoNomeImagemUsuario(cod_usuario)}.${extensao}`;
+        } else {
+          nome = `${audios.buscaProximoNomeAudioUsuario(cod_usuario)}.${extensao}`;
+        }
+        const localDeEscrita = path.join(__dirname, `../userdata/${cod_usuario}/${tipo}/${nome}`);
+        const base64Data = payload.substring(payload.indexOf(',')+1)
         try{
-            fs.writeFileSync(localDeEscrita, base64Data, 'base64');
-            if (imagens.cadastrarImagemUsuario({
-                url:nome,
-                usuario:req.params.codigo
-            })){
-                res.send(`/usuario/${req.params.codigo}/img/${nome}`);
+            let ans;
+            if(tipo == 'img'){
+              ans = imagens.cadastrarImagemUsuario({
+                  url:nome,
+                  usuario:cod_usuario
+              })
+            } else {
+              ans = audios.cadastrarAudioUsuario(cod_usuario, nome, req.body.titulo)
+            }
+            if (ans){
+                fs.writeFileSync(localDeEscrita, base64Data, 'base64');
+                res.send(`/usuario/${cod_usuario}/${tipo}/${nome}`);
             } else {
                 res.status(400).send("Falha ao cadastrar");
             }
@@ -98,10 +126,11 @@ module.exports.set = function(app) {
       }
     );
 
-    app.get('/usuario/:usuario/img/:arquivo', function(req, res) {
+    app.get('/usuario/:usuario/:tipo/:arquivo', function(req, res) {
       const usuario=req.params.usuario
+      const tipo=req.params.tipo
       const arquivo=req.params.arquivo
-      const s = fs.createReadStream(path.join('userdata',usuario,'img',arquivo));
+      const s = fs.createReadStream(path.join('userdata',usuario,tipo,arquivo));
       const mimetype = mime.lookup(arquivo);
       s.on('open', function () {
         res.set('Content-Type', mimetype);
@@ -175,6 +204,14 @@ module.exports.set = function(app) {
     })
     app.delete('/usuario/:cod_usuario/nota/:codigo_nota', function(req, res) {
       const sucesso = notas.removerNotaUsuario(req.params.codigo_nota, req.params.cod_usuario);
+      if(sucesso){
+        res.send("ok");
+      } else {
+        res.status(400).send("Nota do usuário não existe");
+      }
+    })
+    app.delete('/usuario/:cod_usuario/audio/:url_audio', function(req, res) {
+      const sucesso = audios.removerAudioUsuario(req.params.url_audio, req.params.cod_usuario);
       if(sucesso){
         res.send("ok");
       } else {

@@ -5,24 +5,44 @@ export default class Persistence{
     this.username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
     this.imagelist = fetch(`/usuario/${this.username}/imagelist`).then(response => response.json())
     this.notes = fetch(`/nota/${this.username}/obter`).then(response => response.json())
+    this.audioList = fetch(`/usuario/${this.username}/audiolist`).then(response => response.json())
   }
 
   executeAfterFetch(callback){
-    Promise.all([this.imagelist, this.notes]).then(callback)
+    Promise.all([this.imagelist, this.notes, this.audioList]).then(callback)
   }
 
   getImages(){
     return this.imagelist;
   }
 
+  getAudios(){
+    return this.audioList;
+  }
+
   addImage(url){
     const formData = new FormData();
-    formData.append('image', url);
-    return fetch(`/usuario/${this.username}/adicionarImagem/`,
+    formData.append('payload', url);
+    return fetch(`/usuario/${this.username}/adicionar/img`,
     {
         method: "POST",
         body: formData
     })
+  }
+
+  addAudio(url, titulo){
+    const formData = new FormData();
+    formData.append('payload', url);
+    formData.append('titulo', titulo);
+    return fetch(`/usuario/${this.username}/adicionar/audio`,
+    {
+        method: "POST",
+        body: formData
+    })
+  }
+
+  removeAudio(url){
+    fetch(`/usuario/${this.username}/audio/${url}`,{method: "DELETE"});
   }
 
   removeImage(url){

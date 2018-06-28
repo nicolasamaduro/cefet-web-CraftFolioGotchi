@@ -4,7 +4,7 @@ import Fundo from './fundo.js'
 import Galeria from './galeria.js'
 import Notas from './notas.js'
 import {unpause, initGame} from './game.js'
-
+import Audio from './audio.js'
 
 const bodyEl = document.querySelector('body');
 const headEl = document.querySelector('head');
@@ -16,6 +16,7 @@ const chaoEl = document.querySelector('.chao');
 const canvas = document.querySelector('canvas');
 const modalEl = document.querySelector('#modal');
 const ghostEl = document.querySelector('.ghosts');
+const audiosEl = document.querySelector('#audios');
 const username = window.location.href.replace(/^.*\/([^/?]+)\/?\??.*$/g, '$1')
 
 const mainCss = document.querySelector('link[href="/css/widgets.css"]');
@@ -35,12 +36,14 @@ const persistence = new Persistence();
 const galeria = new Galeria(persistence, galeriaEl, bodyEl, mainCss, removeList, habilitaPrincipal);
 const notas = new Notas(persistence,paginaEditavel);
 const fundo = new Fundo(widgetContainerEl, chaoEl,ghostEl);
+const audio = new Audio(audiosEl, persistence);
 
 
 persistence.executeAfterFetch(() => {
   prepareWidgets();
   notas.prepareSentinelNodes();
   galeria.prepareSentinelNodes();
+  audio.prepareSentinelNodes();
 });
 
 function habilitaPrincipal(){
@@ -75,12 +78,19 @@ function prepareGhosts(){
   });
 }
 
+function getWidgetElements(w){
+  const botoes = w.querySelectorAll('.pudim')
+  return {
+    prevBtn: botoes[0],
+    contentList: w.querySelector('.lista-conteudo'),
+    nextBtn: botoes[1]
+  }
+}
+
 function changeWidget(e){
   const widgetEl = e.target.parentElement;
-  const prevBtn = widgetEl.firstElementChild;
-  const nextBtn = widgetEl.lastElementChild;
+  const {prevBtn, contentList, nextBtn} = getWidgetElements(widgetEl)
   const isPrev = e.target == prevBtn;
-  const contentList = widgetEl.querySelector('.lista-conteudo');
   const currentActive = contentList.querySelector('.conteudo:not(.hidden)');
   let target;
   if(isPrev){
@@ -92,18 +102,23 @@ function changeWidget(e){
     target = contentList.querySelector('.conteudo:not(.hidden) + .conteudo.hidden');
   }
 
-  nextBtn.classList.remove('hidden');
-  prevBtn.classList.remove('hidden');
-  if(target.classList.contains('sentinela')){
-    if(isPrev){
-      prevBtn.classList.add('hidden');
-    } else {
-      nextBtn.classList.add('hidden');
+  if(target != null){
+    nextBtn.classList.remove('hidden');
+    prevBtn.classList.remove('hidden');
+    if(target.classList.contains('sentinela')){
+      if(isPrev){
+        prevBtn.classList.add('hidden');
+      } else {
+        nextBtn.classList.add('hidden');
+      }
     }
-  }
 
-  currentActive.classList.add('hidden');
-  target.classList.remove('hidden');
+    currentActive.classList.add('hidden');
+    target.classList.remove('hidden');
+  }
+  if(contentList == audiosEl){
+    audio.rolar();
+  }
 }
 
 function prepareWidgets(){
@@ -124,9 +139,7 @@ function prepareWidgets(){
   }
 
   for(let w of widgetsEl){
-    const prevBtn = w.firstElementChild;
-    const contentList = prevBtn.nextElementSibling;
-    const nextBtn = w.lastElementChild;
+    const {prevBtn, contentList, nextBtn} = getWidgetElements(w)
 
     nextBtn.addEventListener('click', changeWidget);
     prevBtn.addEventListener('click', changeWidget);
@@ -156,6 +169,8 @@ export default function removeConteudo(contentEl){
     persistence.removeImage(contentEl.dataset.url);
   } else if(contentEl.parentElement.id == 'notas'){
     persistence.removeNota(contentEl.dataset.url);
+  } else if(contentEl.parentElement.id == 'audios'){
+    persistence.removeAudio(contentEl.dataset.url);
   }
   let nextEl = contentEl.nextElementSibling;
   if(nextEl.classList.contains('sentinela')){

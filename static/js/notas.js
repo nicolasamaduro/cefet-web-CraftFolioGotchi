@@ -2,12 +2,13 @@
 
 export default class Notas {
   constructor(persistence,paginaEditavel){
+    this.fileListPromise = persistence.getNotes();
     this.persistence = persistence;
     this.notasEl = document.querySelector('#notas');
     this.converter = new showdown.Converter();
     this.paginaEditavel=paginaEditavel;
 
-    persistence.getNotes().then(notes=>{
+    this.fileListPromise.then(notes=>{
       this.fileListNotas = notes;
       this.generateMdElements(this.notasEl, this.fileListNotas);
       if(this.notasEl.firstElementChild){
